@@ -1,0 +1,127 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
+import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
+
+export default function Footer() {
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const fadeIn = {
+    initial: { opacity: 0, y: 20 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true },
+  };
+
+  const links = {
+    main: [
+      { label: "Home", path: "/" },
+      { label: "About", path: "/about" },
+      { label: "Projects", path: "/projects" },
+      { label: "Experience", path: "/experience" },
+      { label: "Contact", path: "/contact" },
+    ],
+    social: [
+      { icon: <Github size={22} />, url: "https://github.com", label: "GitHub" },
+      { icon: <Linkedin size={22} />, url: "https://linkedin.com", label: "LinkedIn" },
+      { icon: <Mail size={22} />, url: "mailto:contact@example.com", label: "Email" },
+    ],
+  };
+
+  return (
+    <footer className="relative bg-gradient-to-br from-blue-800 via-indigo-800 to-purple-700 text-gray-100">
+      {/* Wave Animation */}
+      <div className="relative overflow-hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+          className="absolute top-0 w-full opacity-25"
+        >
+          <path
+            fill="currentColor"
+            fillOpacity="0.3"
+            d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,256C672,235,768,181,864,181.3C960,181,1056,235,1152,245.3C1248,256,1344,224,1392,208L1440,192V320H0Z"
+          ></path>
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid md:grid-cols-4 gap-12 mb-16">
+          {/* Brand */}
+          <motion.div {...fadeIn} className="col-span-2">
+            <h3 className="text-4xl font-extrabold text-white mb-4">Abdo Mhmd</h3>
+            <p className="text-gray-300 mb-6 leading-relaxed">
+              Crafting digital experiences with passion and precision. Let's build something amazing together.
+            </p>
+            <div className="flex space-x-4">
+              {links.social.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.url}
+                  className="p-3 bg-white bg-opacity-10 rounded-full hover:bg-opacity-25 transition-all shadow-md hover:shadow-lg"
+                  whileHover={{ scale: 1.15, boxShadow: "0px 0px 15px rgba(255,255,255,0.4)" }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={social.label}
+                >
+                  {social.icon}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Quick Links */}
+          <motion.div {...fadeIn} transition={{ delay: 0.2 }}>
+            <h4 className="text-lg font-semibold text-white mb-4 border-b border-indigo-400 pb-2">
+              Quick Links
+            </h4>
+            <ul className="space-y-3">
+              {links.main.map((link, index) => (
+                <li key={index}>
+                  <NavLink
+                    to={link.path}
+                    className={({ isActive }) =>
+                      `hover:text-yellow-400 transition-colors ${isActive ? "text-yellow-400" : ""
+                      }`
+                    }
+                  >
+                    {link.label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Contact */}
+          <motion.div {...fadeIn} transition={{ delay: 0.4 }}>
+            <h4 className="text-lg font-semibold text-white mb-4 border-b border-indigo-400 pb-2">
+              Contact
+            </h4>
+            <ul className="space-y-3 text-gray-300">
+              <li className="hover:text-yellow-400 transition-colors">San Francisco, CA</li>
+              <li className="hover:text-yellow-400 transition-colors">contact@example.com</li>
+              <li className="hover:text-yellow-400 transition-colors">+1 (234) 567-890</li>
+            </ul>
+          </motion.div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/20">
+          <motion.p {...fadeIn} className="flex items-center gap-1 text-sm text-gray-300">
+            Made with <Heart size={16} className="text-red-400" /> by Abdo Mhmd
+          </motion.p>
+
+          <motion.button
+            onClick={scrollToTop}
+            className="mt-4 md:mt-0 p-3 bg-indigo-600 hover:bg-yellow-400 text-white rounded-full transition-all shadow-md hover:shadow-lg group"
+            whileHover={{ scale: 1.15 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp size={24} className="group-hover:text-indigo-800 transition-colors" />
+          </motion.button>
+        </div>
+      </div>
+    </footer>
+  );
+}
