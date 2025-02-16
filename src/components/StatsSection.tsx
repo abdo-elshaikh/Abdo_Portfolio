@@ -46,8 +46,13 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
                 </div>
                 <div className="flex items-center">
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                        <CountUp end={value} duration={2} suffix={suffix} />
+                    <p className="text-4xl font-bold text-gray-900 dark:text-white">
+                        <CountUp
+                            end={value}
+                            duration={2}
+                            separator=","
+                        />
+                        {suffix && <span className="text-gray-600 dark:text-gray-400">{suffix}</span>}
                     </p>
                 </div>
                 

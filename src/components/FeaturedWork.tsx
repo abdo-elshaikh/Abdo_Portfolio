@@ -13,6 +13,7 @@ export default function FeaturedWork() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
+    const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     useEffect(() => {
         fetchFeaturedProjects();
@@ -29,17 +30,27 @@ export default function FeaturedWork() {
         }
     };
 
+    // Extract unique tags from all projects
+    const allTags = Array.from(
+        new Set(featuredProjects.flatMap((project) => project.tags))
+    );
+
+    // Filter projects based on selected tag
+    const filteredProjects = selectedTag
+        ? featuredProjects.filter((project) => project.tags.includes(selectedTag))
+        : featuredProjects;
+
     if (isLoading) return null;
 
     return (
         <motion.section
-            className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white py-12 md:py-20 px-4 sm:px-6 lg:px-8"
+            className="py-20 bg-gray-50 dark:bg-gray-900"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
         >
             <div className="container max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-top">
                     {/* About Section */}
                     <motion.div
                         className="max-w-lg mx-auto lg:mx-0"
@@ -47,7 +58,7 @@ export default function FeaturedWork() {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight">
+                        <h2 className="text-3xl mb-4 sm:text-4xl md:text-5xl font-extrabold leading-tight">
                             <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
                                 Software Engineer
                             </span>
@@ -56,13 +67,19 @@ export default function FeaturedWork() {
                             Passionate about building scalable, high-performance applications
                             using modern technologies.
                         </p>
+
+                        <hr className="my-4 border-gray-300 dark:border-gray-700" />
                         <ul className="mt-4 md:mt-6 space-y-2 md:space-y-3 text-sm md:text-base text-gray-600 dark:text-gray-300">
                             <li>🚀 Specializing in React, Node.js, MongoDB, and MySQL.</li>
                             <li>🎨 Creating seamless and responsive user experiences.</li>
                             <li>🔧 Expertise in API development and cloud deployment.</li>
                             <li>🌱 Continuously learning to stay ahead in tech.</li>
                         </ul>
+                        <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            Let's collaborate and bring your ideas to life!
+                        </p>
 
+                        {/* CTA Buttons */}
                         <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
                             <motion.a
                                 href="/contact"
@@ -86,16 +103,42 @@ export default function FeaturedWork() {
 
                     {/* Featured Projects Section */}
                     <motion.div
-                        className="max-w-2xl mx-auto w-full"
+                        className="max-w-2xl mx-auto w-full lg:w-auto"
                         initial={{ opacity: 0, x: 40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h3 className="text-2xl md:text-3xl font-semibold text-center mb-6 md:mb-8">
-                            <span className="bg-gradient-to-r from-blue-500 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                                Featured Projects
-                            </span>
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                            Featured Projects 🚀 <span className="text-2xl"></span>
                         </h3>
+                        <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-300">
+                            Here are a few projects I've worked on recently.
+                        </p>
+
+                        {/* Tag Filters */}
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            <button
+                                onClick={() => setSelectedTag(null)}
+                                className={`px-3 py-1 text-sm font-medium rounded-full ${!selectedTag
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                    }`}
+                            >
+                                All
+                            </button>
+                            {allTags.map((tag) => (
+                                <button
+                                    key={tag}
+                                    onClick={() => setSelectedTag(tag)}
+                                    className={`px-3 py-1 text-sm font-medium rounded-full ${selectedTag === tag
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                        }`}
+                                >
+                                    {tag}
+                                </button>
+                            ))}
+                        </div>
 
                         {/* Swiper Carousel */}
                         <Swiper
@@ -106,34 +149,36 @@ export default function FeaturedWork() {
                             loop={true}
                             pagination={{
                                 clickable: true,
-                                dynamicBullets: true
+                                dynamicBullets: true,
                             }}
                             autoplay={{
                                 delay: 5000,
                                 disableOnInteraction: false,
-                                pauseOnMouseEnter: true
+                                pauseOnMouseEnter: true,
                             }}
                             breakpoints={{
                                 640: {
                                     slidesPerView: 1,
-                                    spaceBetween: 20
+                                    spaceBetween: 20,
                                 },
                                 768: {
                                     slidesPerView: 2,
-                                    spaceBetween: 24
+                                    spaceBetween: 24,
                                 },
                                 1024: {
                                     slidesPerView: 2,
-                                    spaceBetween: 32
+                                    spaceBetween: 32,
                                 },
                             }}
-                            className="px-2 sm:px-0 py-10"
+                            className="mt-6 pb-10"
                         >
-                            {featuredProjects?.map((project) => (
+                            {filteredProjects?.map((project) => (
                                 <SwiperSlide key={project.id}>
-                                    <div
-                                        className="relative bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow"
+                                    <motion.div
+                                        className="relative bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow border border-gray-300 dark:border-gray-700"
                                         onClick={() => navigate(`/projects/${project.id}`)}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
                                     >
                                         <img
                                             src={project.image_url}
@@ -147,7 +192,7 @@ export default function FeaturedWork() {
                                             <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3">
                                                 {project.description}
                                             </p>
-                                            {/* tags */}
+                                            {/* Tags */}
                                             <div className="mt-4 flex flex-wrap gap-2">
                                                 {project.tags.map((tag) => (
                                                     <span
@@ -159,15 +204,15 @@ export default function FeaturedWork() {
                                                 ))}
                                             </div>
                                             <hr className="my-4 border-gray-300 dark:border-gray-700" />
-                                            {/* buttons */}
+                                            {/* Buttons */}
                                             <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
                                                 <a
-                                                    // href={project.demo_url || "#"}
+                                                    href={project.demo_url || "#"}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
                                                 >
-                                                    Live Demo
+                                                    View Live
                                                 </a>
                                                 <a
                                                     href={project.link || "#"}
@@ -175,11 +220,11 @@ export default function FeaturedWork() {
                                                     rel="noreferrer"
                                                     className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-900 dark:bg-gray-700 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
                                                 >
-                                                    View Code
+                                                    View Details
                                                 </a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </motion.div>
                                 </SwiperSlide>
                             ))}
                         </Swiper>

@@ -1,136 +1,232 @@
-import { motion } from "framer-motion";
-import { Github, Linkedin, Twitter, Mail } from "lucide-react";
-
-// Animation Variants
-const fadeIn = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-};
-
-const staggerContainer = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { staggerChildren: 0.2 } },
-};
-
-const socialLinks = [
-    { label: "GitHub", url: "https://github.com", icon: <Github size={24} /> },
-    { label: "LinkedIn", url: "https://linkedin.com", icon: <Linkedin size={24} /> },
-    { label: "Twitter", url: "https://twitter.com", icon: <Twitter size={24} /> },
-    { label: "Email", url: "mailto:your@email.com", icon: <Mail size={24} /> },
-];
-
-const AnimatedBackground = () => (
-    <div className="absolute inset-0 overflow-hidden opacity-20">
-        {[0, 1, 2].map((i) => (
-            <motion.div
-                key={i}
-                className="absolute inset-0"
-                animate={{ scale: [1, 1.3, 1], rotate: [0, i % 2 === 0 ? 360 : -360] }}
-                transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "linear" }}
-                style={{
-                    background: `radial-gradient(circle at ${i * 35}% ${i * 25}%, rgba(255,255,255,0.4) 0%, transparent 80%)`,
-                    mixBlendMode: "overlay",
-                }}
-            />
-        ))}
-    </div>
-);
+import { motion, useAnimation, useInView } from "framer-motion";
+import { Github, Linkedin, Twitter, Mail, Download } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
+import * as THREE from "three";
+import { useTheme } from "../contexts/ThemeContext";
 
 const HeroSection = () => {
+    const containerRef = useRef(null);
+    const textRef = useRef(null);
+    const avatarRef = useRef(null);
+    const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+    const controls = useAnimation();
+    const isInView = useInView(textRef, { once: true, margin: "-100px" });
+
+    useEffect(() => setMounted(true), []);
+
+    // Three.js Particle System
+    useEffect(() => {
+        if (!containerRef.current) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        containerRef.current.appendChild(renderer.domElement);
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 500;
+        const positions = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount; i++) {
+            positions[i * 3] = (Math.random() - 0.5) * 10;
+            positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+        const particlesMaterial = new THREE.PointsMaterial({ color: theme === "dark" ? 0xffffff : 0x000000, size: 0.02 });
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
+
+        camera.position.z = 5;
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            particles.rotation.x += 0.001;
+            particles.rotation.y += 0.001;
+            renderer.render(scene, camera);
+        };
+        animate();
+
+        const handleResize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+            containerRef.current.removeChild(renderer.domElement);
+        };
+    }, [theme]);
+
+    // Text Animation Trigger
+    useEffect(() => {
+        if (isInView) {
+            controls.start("visible");
+        }
+    }, [isInView, controls]);
+
+    // Animation Variants
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2,
+                delayChildren: 0.3,
+            },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
+    };
+
+    const avatarVariants = {
+        hidden: { scale: 0.8, opacity: 0 },
+        visible: { scale: 1, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+    };
+
     return (
-        <section className="relative bg-gradient-to-br from-[#0f172a] via-[#312e81] to-[#1e3a8a] text-white min-h-screen flex items-center">
-            <motion.header
-                className="relative w-full text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-            >
-                <div className="container mx-auto px-6 py-10 relative z-10">
-                    <motion.div className="max-w-3xl mx-auto" variants={staggerContainer} initial="initial" animate="animate">
+        <section className="relative pt-16 min-h-screen flex items-center dark:bg-gray-900 bg-gray-100 overflow-hidden">
+            {/* Three.js Particle Background */}
+            <div ref={containerRef} className="absolute inset-0 z-0" />
+
+            <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+                <motion.div
+                    className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 py-18"
+                    initial="hidden"
+                    animate={controls}
+                    variants={containerVariants}
+                    ref={textRef}
+                >
+                    {/* Text Content */}
+                    <div className="lg:w-1/2 space-y-8 order-2 lg:order-1 text-center lg:text-left">
                         {/* Availability Badge */}
-                        <motion.div className="mb-8" variants={fadeIn}>
-                            <motion.span
-                                className="px-6 py-2 bg-white/20 rounded-full text-sm font-medium backdrop-blur-md border border-white/30 inline-flex items-center gap-2 hover:bg-white/30 transition-all cursor-pointer"
-                            >
-                                <span className="w-2.5 h-2.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                                Open to Work
-                            </motion.span>
+                        <motion.div variants={itemVariants}>
+                            <div className="mb-2 inline-flex items-center gap-3 px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded-full backdrop-blur-sm">
+                                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                                <span className="text-sm font-medium">Available for new projects</span>
+                            </div>
                         </motion.div>
 
-                        {/* Avatar with Animation */}
-                        <motion.div className="flex justify-center mb-6" variants={fadeIn}>
-                            <motion.div
-                                className="w-40 h-45 rounded-full overflow-hidden border-4 border-blue-500 shadow-xl transition-transform duration-300 bg-white"
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                whileHover={{ scale: 1.02 }}
-                            >
-                                <img
-                                    className="w-full h-full object-cover"
-                                    src="/avatar.jpg"
-                                    alt="Profile Picture"
-                                />
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Hero Title & Subtitle */}
-                        <motion.h1 className="text-4xl font-bold mb-4 font-['Chewy', serif]" variants={fadeIn}>
-                            Hi, I'm <span className="text-blue-500 "> Abdulrahman Mohammed</span>
+                        {/* Title */}
+                        <motion.h1
+                            className="text-4xl md:text-5xl xl:text-6xl font-bold mb-4"
+                            variants={itemVariants}
+                        >
+                            <span className="bg-gradient-to-r from-blue-600 to-purple-400 dark:from-blue-400 dark:to-purple-300 bg-clip-text text-transparent">
+                                Abdulrahman Mohammed
+                            </span>
                         </motion.h1>
 
-                        <motion.h2 className="text-2xl font-semibold mb-4" variants={fadeIn}>
-                            Software Enginee
-                        </motion.h2>
-                        <motion.h2 className="text-xl text-yellow-300 font-semibold mb-6" variants={fadeIn}>
-                            - Full Stack Devloper & UI/UX Designer -
-                        </motion.h2>
-
-                        {/* Stylish Divider */}
-                        <motion.div className="w-24 h-1 bg-white mx-auto mb-6 rounded-full opacity-70" variants={fadeIn}></motion.div>
-
-                        {/* Hero Description */}
-                        <motion.p className="text-lg text-gray-200 mb-8 leading-relaxed" variants={fadeIn}>
-                            Passionate about building elegant web applications with modern technologies. <br />
-                            I specialize in full-stack development, crafting seamless user experiences.
+                        {/* Subtitle */}
+                        <motion.p
+                            className="text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300 mb-8"
+                            variants={itemVariants}
+                        >
+                            Full Stack Developer &<br />
+                            <span className="text-blue-500">UI/UX Designer</span>
                         </motion.p>
 
-                        {/* Call-to-Action Buttons */}
-                        <motion.div className="flex justify-center space-x-4 mb-8" variants={fadeIn}>
+                        {/* Description */}
+                        <motion.p
+                            className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0"
+                            variants={itemVariants}
+                        >
+                            Building digital experiences that merge innovation with functionality. Specializing in modern web architectures and user-centric design.
+                        </motion.p>
+
+                        {/* CTAs */}
+                        <motion.div
+                            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                            variants={itemVariants}
+                        >
                             <motion.a
                                 href="#contact"
-                                className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-500 transition-all duration-300 shadow-lg hover:shadow-blue-400"
+                                className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium flex items-center gap-2 transition-all"
                                 whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
+                                <Mail size={20} />
                                 Get in Touch
                             </motion.a>
                             <motion.a
-                                href="#portfolio"
-                                className="px-6 py-3 bg-white/30 text-white rounded-lg font-medium border border-white/50 hover:bg-white/40 transition-all duration-300 shadow-lg"
+                                href="#cv"
+                                className="px-8 py-4 bg-gray-800 hover:bg-gray-700 text-white rounded-xl font-medium flex items-center gap-2 transition-all"
                                 whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                             >
+                                <Download size={20} />
                                 Download CV
                             </motion.a>
                         </motion.div>
 
-                        {/* Social Media Links */}
-                        <motion.div className="flex justify-center space-x-6" variants={fadeIn}>
-                            {socialLinks.map((link, index) => (
+                        {/* Social Links */}
+                        <motion.div
+                            className="mt-8 flex justify-center lg:justify-start gap-6"
+                            variants={itemVariants}
+                        >
+                            {[
+                                { icon: <Github />, link: "https://github.com/abdo-mhmd" },
+                                { icon: <Linkedin />, link: "https://linkedin.com/in/abdo-mhmd" },
+                                { icon: <Twitter />, link: "https://twitter.com/abdo_mhmd" },
+                                { icon: <Mail />, link: "mailto:abdo_mhmd@pm.me" }
+                            ].map((social, index) => (
                                 <motion.a
                                     key={index}
-                                    href={link.url}
-                                    className="p-4 bg-white/20 rounded-xl border border-white/20 hover:bg-white/30 backdrop-blur-md transition-all duration-300 hover:scale-110 hover:shadow-lg hover:border-white/40"
-                                    whileHover={{ y: -3 }}
+                                    href={social.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-3 bg-gray-300 dark:bg-gray-800 rounded-lg hover:bg-gray-400 transition-all text-gray-700 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-400"
+                                    whileHover={{ y: -5, scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
-                                    aria-label={link.label}
                                 >
-                                    {link.icon}
+                                    {social.icon}
                                 </motion.a>
                             ))}
                         </motion.div>
+                    </div>
+
+                    {/* Avatar Section */}
+                    <motion.div
+                        className="lg:w-1/2 flex justify-center relative order-1 lg:order-2"
+                        ref={avatarRef}
+                        variants={avatarVariants}
+                    >
+                        <motion.div
+                            className="w-80 h-80 rounded-full bg-gradient-to-r from-blue-600 to-purple-400 dark:from-blue-400 dark:to-purple-300"
+                            variants={itemVariants}
+                        >
+                            <motion.img
+                                src="/avatar.jpg"
+                                alt="Avatar"
+                                className="w-80 h-80 rounded-full"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.5 }}
+                                loading="lazy"
+                                referrerPolicy="no-referrer"
+                            />
+                        </motion.div>
+
+                        <motion.div
+                            className="absolute top-0 right-0 w-24 h-24 rounded-full bg-gradient-to-r from-blue-600 to-purple-400 dark:from-blue-400 dark:to-purple-300"
+                            variants={itemVariants}
+                        />
+
+                        <motion.div
+                            className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-gradient-to-r from-blue-600 to-purple-400 dark:from-blue-400 dark:to-purple-300"
+                            variants={itemVariants}
+                        />
                     </motion.div>
-                </div>
-                <AnimatedBackground />
-            </motion.header>
+                </motion.div>
+            </div>
         </section>
     );
 };

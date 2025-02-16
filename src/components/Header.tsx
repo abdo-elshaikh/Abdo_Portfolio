@@ -16,7 +16,6 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
@@ -25,51 +24,79 @@ export default function Header() {
     { path: "/contact", label: "Contact" },
   ];
 
+  const menuVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: -20 },
+  };
+
+  const linkVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
+  };
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? "bg-white/90 dark:bg-gray-900/80 backdrop-blur-lg shadow-md"
-        : "bg-transparent"
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ?
+        "bg-white dark:bg-gray-900 shadow-md"
+        : "bg-transparent dark:bg-transparent"
         }`}
     >
-      <div className="container mx-auto px-6 flex justify-between items-center h-16">
+      <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center h-16">
         {/* Logo */}
-        <NavLink to="/" className="text-2xl font-bold tracking-wide flex items-center space-x-1">
-          Dev<span className="text-indigo-600 dark:text-indigo-400">Book</span>
+        <NavLink
+          to="/"
+          className="text-xl sm:text-2xl font-bold tracking-wide flex items-center"
+        >
+          <span className="text-gray-900 dark:text-white">DEV.</span>
+          <span className="text-indigo-600 dark:text-indigo-400">ABDO</span> MHMD
         </NavLink>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center space-x-4 px-6 py-2">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `relative px-4 py-2 rounded-lg font-medium text-lg transition-all ${isActive
-                  ? "bg-indigo-600 text-white shadow-lg"
-                  : "text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-gray-700"
-                }`}
-            >
-              {item.label}
-            </NavLink>
-          ))}
-        </div>
-
-        {/* Right Section */}
-        <div className="hidden md:flex items-center space-x-4">
-          <ThemeToggle />
+        <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `relative px-3 py-2 rounded-md font-medium transition-all text-sm sm:text-base 
+                ${isActive
+                    ? "text-indigo-600 dark:text-indigo-400"
+                    : "text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400"
+                  }`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    {item.label}
+                    {isActive && (
+                      <motion.div
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-600 dark:bg-indigo-400"
+                        layoutId="active-nav"
+                        transition={{ type: "spring", stiffness: 500 }}
+                      />
+                    )}
+                  </>
+                )}
+              </NavLink>
+            ))}
+          </div>
+          <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2" />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="md:hidden flex items-center space-x-4">
+        <div className="md:hidden flex items-center gap-4">
           <ThemeToggle />
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="p-2 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label="Toggle menu"
-            className="text-gray-600 dark:text-gray-300"
           >
-            {isMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
@@ -78,37 +105,55 @@ export default function Header() {
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden py-4 px-6 bg-white dark:bg-gray-900 shadow-lg overflow-hidden"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={menuVariants}
+            className="md:hidden absolute w-full bg-white dark:bg-gray-900 shadow-lg"
+            transition={{ duration: 0.2 }}
           >
-            <div className="flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  className={({ isActive }) =>
-                    `block px-4 py-2 rounded-lg transition-all ${isActive
-                      ? "bg-indigo-500 text-white"
-                      : "text-gray-600 dark:text-gray-300 hover:bg-indigo-100 dark:hover:bg-gray-800"
-                    }`
-                  }
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-              <hr className="border-gray-200 dark:border-gray-700" />
-              <button
-                onClick={async () => {
-                  await supabase.auth.signOut();
-                  navigate("/");
-                }}
-                className="block px-4 py-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            <div className="container mx-auto px-4 sm:px-6 py-4">
+              <motion.div
+                className="flex flex-col gap-2"
+                initial="hidden"
+                animate="visible"
               >
-                <LogOut size={24} className="mr-2" /> Logout
-              </button>
+                {navItems.map((item) => (
+                  <motion.div
+                    key={item.path}
+                    variants={linkVariants}
+                    transition={{ duration: 0.1 }}
+                  >
+                    <NavLink
+                      to={item.path}
+                      className={({ isActive }) =>
+                        `block px-4 py-3 rounded-lg text-sm font-medium ${isActive
+                          ? "bg-indigo-50 dark:bg-gray-800 text-indigo-600 dark:text-indigo-400"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        }`
+                      }
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </NavLink>
+                  </motion.div>
+                ))}
+                <motion.div
+                  variants={linkVariants}
+                  transition={{ duration: 0.1 }}
+                >
+                  <button
+                    onClick={async () => {
+                      await supabase.auth.signOut();
+                      navigate("/");
+                    }}
+                    className="w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2"
+                  >
+                    <LogOut size={18} />
+                    <span>Sign Out</span>
+                  </button>
+                </motion.div>
+              </motion.div>
             </div>
           </motion.div>
         )}
