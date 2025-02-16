@@ -36,17 +36,12 @@ export default function Header() {
   };
 
   return (
-    <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ?
-        "bg-white dark:bg-gray-900 shadow-md"
-        : "bg-transparent dark:bg-transparent"
-        }`}
-    >
-      <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center h-16">
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white dark:bg-gray-900 shadow-md" : "bg-transparent dark:bg-transparent"}`}>
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-xl sm:text-2xl font-bold tracking-wide flex items-center"
+          className="text-xl sm:text-2xl font-bold tracking-wide flex items-center gap-1"
         >
           <span className="text-gray-900 dark:text-white">DEV.</span>
           <span className="text-indigo-600 dark:text-indigo-400">ABDO</span> MHMD

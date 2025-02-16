@@ -44,7 +44,7 @@ export default function FeaturedWork() {
 
     return (
         <motion.section
-            className="py-20 bg-gray-50 dark:bg-gray-900"
+            className="py-20 px-4 bg-gray-50 dark:bg-gray-900"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
