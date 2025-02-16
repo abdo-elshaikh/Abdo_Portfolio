@@ -118,7 +118,7 @@ export default function ProfileSection() {
                     >
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
                             <GraduationCap className="inline-block mr-3 w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-                            Education
+                            Education & Learning
                         </h2>
 
                         <div className="relative">
