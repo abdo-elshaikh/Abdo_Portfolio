@@ -78,6 +78,16 @@ export const personalInfoApi = {
       .single();
     if (error) throw error;
     return data as PersonalInfo;
+  },
+
+  create: async (info: Omit<PersonalInfo, 'id' | 'created_at' | 'user_id'>) => {
+    const { data, error } = await supabase
+      .from('personal_info')
+      .insert([info])
+      .select()
+      .single();
+    if (error) throw error;
+    return data as PersonalInfo;
   }
 };
 
@@ -137,6 +147,17 @@ export const contactsApi = {
     const { data, error } = await supabase
       .from('contacts')
       .insert([contact])
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Contact;
+  },
+
+  update: async (id: string, contact: Partial<Contact>) => {
+    const { data, error } = await supabase
+      .from('contacts')
+      .update(contact)
+      .eq('id', id)
       .select()
       .single();
     if (error) throw error;

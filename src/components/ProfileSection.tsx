@@ -47,7 +47,7 @@ export default function ProfileSection() {
                 >
                     {/* Personal Information Card */}
                     <motion.div
-                        className="relative bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl shadow-lg"
+                        className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl shadow-lg"
                         variants={fadeIn}
                     >
                         <div className="absolute inset-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl" />
@@ -79,7 +79,7 @@ export default function ProfileSection() {
                                     className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
                                     variants={fadeIn}
                                 >
-                                    <Mail className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                    <Mail className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
                                         <p className="text-gray-900 dark:text-white">{personalInfo.email}</p>
@@ -90,7 +90,7 @@ export default function ProfileSection() {
                                     className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
                                     variants={fadeIn}
                                 >
-                                    <Phone className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                    <Phone className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
                                         <p className="text-gray-900 dark:text-white">{personalInfo.phone}</p>
@@ -101,7 +101,7 @@ export default function ProfileSection() {
                                     className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm"
                                     variants={fadeIn}
                                 >
-                                    <MapPin className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+                                    <MapPin className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
                                         <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
                                         <p className="text-gray-900 dark:text-white">{personalInfo.location}</p>
@@ -117,7 +117,7 @@ export default function ProfileSection() {
                         variants={fadeIn}
                     >
                         <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                            <GraduationCap className="inline-block mr-3 w-8 h-8 text-indigo-600 dark:text-indigo-400" />
+                            <GraduationCap className="inline-block mr-3 w-8 h-8 text-cyan-600 dark:text-cyan-400" />
                             Education & Learning
                         </h2>
 
@@ -130,14 +130,14 @@ export default function ProfileSection() {
                                     className="relative pl-12 mb-8 last:mb-0 group"
                                     variants={fadeIn}
                                 >
-                                    <div className="absolute left-0 top-2 flex items-center justify-center w-12 h-12 bg-indigo-600 dark:bg-indigo-700 rounded-full shadow-lg">
+                                    <div className="absolute left-0 top-2 flex items-center justify-center w-12 h-12 bg-cyan-600 dark:bg-cyan-700 rounded-full shadow-lg">
                                         <GraduationCap className="w-6 h-6 text-white" />
                                     </div>
                                     <div className="ml-4 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm transition-all duration-300 group-hover:shadow-md">
                                         <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                                             {edu.degree}
                                         </h3>
-                                        <p className="text-indigo-600 dark:text-indigo-400 font-medium mb-2">
+                                        <p className="text-cyan-600 dark:text-cyan-400 font-medium mb-2">
                                             {edu.institution}
                                         </p>
                                         <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">

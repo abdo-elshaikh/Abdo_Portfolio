@@ -40,7 +40,7 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
                             whileHover={{ scale: 1.1, rotate: 10 }}
                             whileTap={{ scale: 0.9 }}
                         >
-                            <IconComponent className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
+                            <IconComponent className="w-12 h-12 text-cyan-600 dark:text-cyan-400" />
                         </motion.div>
                     )}
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
@@ -55,7 +55,7 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
                         {suffix && <span className="text-gray-600 dark:text-gray-400">{suffix}</span>}
                     </p>
                 </div>
-                
+
             </div>
         </motion.div>
     );
@@ -82,7 +82,7 @@ export default function StatsSection() {
         >
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="max-w-7xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-indigo-600 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-blue-800 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
                         My Stats
                     </h2>
                     <p className="text-gray-600 dark:text-gray-400 text-center text-lg mb-16 max-w-2xl mx-auto">

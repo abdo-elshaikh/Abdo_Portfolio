@@ -22,9 +22,9 @@ function AppContent() {
   const isAuth = location.pathname === '/auth';
 
   return (
-    <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+    <div className="flex flex-col min-h-screen">
       {!isDashboard && !isAuth && <Header />}
-      <main className="flex-grow">
+      <main className="container mx-auto flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />

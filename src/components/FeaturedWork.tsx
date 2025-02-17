@@ -59,7 +59,7 @@ export default function FeaturedWork() {
                         transition={{ duration: 0.6 }}
                     >
                         <h2 className="text-3xl mb-4 sm:text-4xl md:text-5xl font-extrabold leading-tight">
-                            <span className="bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
                                 Software Engineer
                             </span>
                         </h2>
@@ -83,7 +83,7 @@ export default function FeaturedWork() {
                         <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
                             <motion.a
                                 href="/contact"
-                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -120,8 +120,8 @@ export default function FeaturedWork() {
                             <button
                                 onClick={() => setSelectedTag(null)}
                                 className={`px-3 py-1 text-sm font-medium rounded-full ${!selectedTag
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
                                     }`}
                             >
                                 All
@@ -131,8 +131,8 @@ export default function FeaturedWork() {
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
                                     className={`px-3 py-1 text-sm font-medium rounded-full ${selectedTag === tag
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
                                         }`}
                                 >
                                     {tag}
@@ -210,7 +210,7 @@ export default function FeaturedWork() {
                                                     href={project.demo_url || "#"}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
+                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
                                                 >
                                                     View Live
                                                 </a>

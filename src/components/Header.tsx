@@ -10,12 +10,14 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
 
+  // Handle scroll for header background
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Navigation items
   const navItems = [
     { path: "/", label: "Home" },
     { path: "/about", label: "About" },
@@ -24,6 +26,7 @@ export default function Header() {
     { path: "/contact", label: "Contact" },
   ];
 
+  // Animation variants
   const menuVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0 },
@@ -36,29 +39,31 @@ export default function Header() {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white dark:bg-gray-900 shadow-md" : "bg-transparent dark:bg-transparent"}`}>
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
+        ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-sm"
+        : "bg-transparent dark:bg-transparent"
+        }`}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between">
         {/* Logo */}
-        <NavLink
-          to="/"
-          className="text-xl sm:text-2xl font-bold tracking-wide flex items-center gap-1"
-        >
-          <span className="text-gray-900 dark:text-white">DEV.</span>
-          <span className="text-indigo-600 dark:text-indigo-400">ABDO</span> MHMD
+        <NavLink to="/" className="text-2xl font-bold text-cyan-600 dark:text-cyan-400">
+          <strong>Dev.</strong>
+          <span className="text-gray-600 dark:text-gray-300 font-serif"> ABDO MHMD</span>
         </NavLink>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-4">
-          <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
                   `relative px-3 py-2 rounded-md font-medium transition-all text-sm sm:text-base 
-                ${isActive
-                    ? "text-indigo-600 dark:text-indigo-400"
-                    : "text-gray-600 dark:text-gray-300 hover:text-indigo-500 dark:hover:text-indigo-400"
+                  ${isActive
+                    ? "text-cyan-600 dark:text-cyan-400"
+                    : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400"
                   }`
                 }
               >
@@ -67,7 +72,7 @@ export default function Header() {
                     {item.label}
                     {isActive && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-indigo-600 dark:bg-indigo-400"
+                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-600 dark:bg-cyan-400"
                         layoutId="active-nav"
                         transition={{ type: "spring", stiffness: 500 }}
                       />
@@ -77,7 +82,11 @@ export default function Header() {
               </NavLink>
             ))}
           </div>
+
+          {/* Divider */}
           <div className="h-6 w-px bg-gray-200 dark:bg-gray-700 mx-2" />
+
+          {/* Theme Toggle */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
           </div>
@@ -88,7 +97,7 @@ export default function Header() {
           <ThemeToggle />
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            className="p-2 text-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
             aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -104,7 +113,7 @@ export default function Header() {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className="md:hidden absolute w-full bg-white dark:bg-gray-900 shadow-lg"
+            className="md:hidden absolute w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg"
             transition={{ duration: 0.2 }}
           >
             <div className="container mx-auto px-4 sm:px-6 py-4">
@@ -113,17 +122,17 @@ export default function Header() {
                 initial="hidden"
                 animate="visible"
               >
-                {navItems.map((item) => (
+                {navItems.map((item, index) => (
                   <motion.div
                     key={item.path}
                     variants={linkVariants}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.1, delay: index * 0.05 }}
                   >
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-sm font-medium ${isActive
-                          ? "bg-indigo-50 dark:bg-gray-800 text-indigo-600 dark:text-indigo-400"
+                        `block px-4 py-3 rounded-lg text-sm font-medium transition-all ${isActive
+                          ? "bg-cyan-50 dark:bg-gray-800 text-cyan-600 dark:text-cyan-400"
                           : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         }`
                       }
@@ -133,16 +142,18 @@ export default function Header() {
                     </NavLink>
                   </motion.div>
                 ))}
+
+                {/* Sign Out Button */}
                 <motion.div
                   variants={linkVariants}
-                  transition={{ duration: 0.1 }}
+                  transition={{ duration: 0.1, delay: navItems.length * 0.05 }}
                 >
                   <button
                     onClick={async () => {
                       await supabase.auth.signOut();
                       navigate("/");
                     }}
-                    className="w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2"
+                    className="w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2 transition-all"
                   >
                     <LogOut size={18} />
                     <span>Sign Out</span>
