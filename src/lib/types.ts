@@ -79,3 +79,10 @@ export interface User {
   avatar_url: string;
   created_at: string;
 }
+
+export interface AlertProps {
+  type: 'success' | 'error' | 'warning' | 'info';
+  message: string;
+  onClose?: () => void;
+  isVisible?: boolean;
+}

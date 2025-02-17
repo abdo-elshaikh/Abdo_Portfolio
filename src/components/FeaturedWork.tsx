@@ -92,7 +92,7 @@ export default function FeaturedWork() {
 
                             <motion.a
                                 href="/projects"
-                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-900 dark:bg-gray-700 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-600 dark:bg-gray-400 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -109,14 +109,13 @@ export default function FeaturedWork() {
                         transition={{ duration: 0.6 }}
                     >
                         <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
-                            Featured Projects 🚀 <span className="text-2xl"></span>
+                            Featured Projects
                         </h3>
                         <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-300">
-                            Here are a few projects I've worked on recently.
+                            Check out some of my recent work below.
                         </p>
-
                         {/* Tag Filters */}
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        <div className="mt-4 flex flex-wrap gap-2 border border-gray-300 dark:border-gray-700 p-4 rounded-xl">
                             <button
                                 onClick={() => setSelectedTag(null)}
                                 className={`px-3 py-1 text-sm font-medium rounded-full ${!selectedTag
@@ -186,18 +185,18 @@ export default function FeaturedWork() {
                                             className="w-full h-48 sm:h-56 md:h-64 object-cover object-center"
                                         />
                                         <div className="p-4 md:p-6">
-                                            <h4 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
+                                            <h4 className="text-lg md:text-xl font-semibold line-clamp-2 text-gray-900 dark:text-white">
                                                 {project.title}
                                             </h4>
                                             <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3">
                                                 {project.description}
                                             </p>
                                             {/* Tags */}
-                                            <div className="mt-4 flex flex-wrap gap-2">
+                                            <div className="mt-4 flex flex-wrap gap-1 md:gap-2 justify-start items-center">
                                                 {project.tags.map((tag) => (
                                                     <span
                                                         key={tag}
-                                                        className="px-2 py-1 bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-300 rounded-lg text-xs md:text-sm"
+                                                        className="px-2 py-1 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 text-xs md:text-sm rounded-full"
                                                     >
                                                         {tag}
                                                     </span>
@@ -218,7 +217,7 @@ export default function FeaturedWork() {
                                                     href={project.link || "#"}
                                                     target="_blank"
                                                     rel="noreferrer"
-                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-900 dark:bg-gray-700 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
+                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-600 dark:bg-gray-400 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
                                                 >
                                                     View Details
                                                 </a>

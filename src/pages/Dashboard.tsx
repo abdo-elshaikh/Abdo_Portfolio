@@ -8,12 +8,18 @@ import DashboardContent from '../components/dashboard/DashboardContent';
 import DashboardModal from '../components/dashboard/DashboardModal';
 import DashboardDeleteModal from '../components/dashboard/DashboardDeleteModal';
 import { projectsApi, personalInfoApi, educationApi, skillsApi, experiencesApi, statsApi, contactsApi } from '../lib/api';
-import { Project, Education, Contact, Experience, PersonalInfo, Skill, Stat, User } from '../lib/types';
+import { Project, Education, Contact, Experience, PersonalInfo, Skill, Stat } from '../lib/types';
+import Alert from '../components/Alert';
 
 type EntityType = 'projects' | 'personal_info' | 'education' | 'contacts' | 'skills' | 'stats' | 'experiences';
 
+type AlertType = {
+  message: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+};
+
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState('projects');
+  const [activeTab, setActiveTab] = useState<EntityType>('projects');
   const [data, setData] = useState<any[]>([]);
   const [isEditing, setIsEditing] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>({});
@@ -21,36 +27,74 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [alert, setAlert] = useState<AlertType | null>(null);
   const navigate = useNavigate();
 
+  // Fetch data when activeTab changes
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let response = [];
-        switch (activeTab) {
-          case 'projects': response = await projectsApi.getAll(); break;
-          case 'personal_info':
-            const data = await personalInfoApi.get();
-            response = data ? [data] : [];
-            break;
-          case 'education': response = await educationApi.getAll(); break;
-          case 'contacts': response = await contactsApi.getAll(); break;
-          case 'skills': response = await skillsApi.getAll(); break;
-          case 'stats': response = await statsApi.getAll(); break;
-          case 'experiences': response = await experiencesApi.getAll(); break;
-          default: response = [];
-        }
-        setData(response || []);
-      } catch (error) {
-        console.error('Fetch error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, [activeTab]);
 
+  // Fetch data based on activeTab
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      switch (activeTab) {
+        case 'projects': {
+          const projects = await projectsApi.getAll();
+          setData(projects);
+          break;
+        }
+        case 'personal_info': {
+          const info = await personalInfoApi.get();
+          console.log('info:', info);
+          setData(info ? [info] : []);
+          break;
+        }
+        case 'education': {
+          const education = await educationApi.getAll();
+          setData(education);
+          break;
+        }
+        case 'contacts': {
+          const contacts = await contactsApi.getAll();
+          setData(contacts);
+          break;
+        }
+        case 'skills': {
+          const skills = await skillsApi.getAll();
+          setData(skills);
+          break;
+        }
+        case 'stats': {
+          const stats = await statsApi.getAll();
+          setData(stats);
+          break;
+        }
+        case 'experiences': {
+          const experiences = await experiencesApi.getAll();
+          setData(experiences);
+          break;
+        }
+        default: break;
+      }
+    } catch (error) {
+      setAlert({ type: 'error', message: 'Failed to fetch data. Please try again.' });
+      console.error('Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Auto-dismiss alert after 5 seconds
+  useEffect(() => {
+    if (alert) {
+      const timer = setTimeout(() => setAlert(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [alert]);
+
+  // Handle create/update operations
   const handleCreateUpdate = async (formData: any) => {
     try {
       if (isEditing) {
@@ -59,15 +103,17 @@ export default function Dashboard() {
         await handleCreate(formData);
       }
     } catch (error) {
+      setAlert({ type: 'error', message: 'Operation failed. Please try again.' });
       console.error('Operation error:', error);
     }
   };
 
+  // Handle create operations
   const handleCreate = async (formData: any) => {
     try {
       switch (activeTab) {
         case 'projects': await projectsApi.create(formData); break;
-        case 'personal_info': await personalInfoApi.create(formData); break;
+        case 'personal_info': await personalInfoApi.update(formData); break;
         case 'education': await educationApi.create(formData); break;
         case 'contacts': await contactsApi.create(formData); break;
         case 'skills': await skillsApi.create(formData); break;
@@ -75,14 +121,17 @@ export default function Dashboard() {
         case 'experiences': await experiencesApi.create(formData); break;
         default: break;
       }
+      setAlert({ type: 'success', message: 'Item created successfully.' });
       setIsModalOpen(false);
       setEditForm({});
       setIsEditing(null);
+      fetchData();
     } catch (error) {
-      console.error('Create error:', error);
+      throw error;
     }
   };
 
+  // Handle update operations
   const handleUpdate = async (id: string, formData: any) => {
     try {
       switch (activeTab) {
@@ -95,14 +144,17 @@ export default function Dashboard() {
         case 'experiences': await experiencesApi.update(id, formData); break;
         default: break;
       }
+      setAlert({ type: 'success', message: 'Item updated successfully.' });
       setIsModalOpen(false);
       setEditForm({});
       setIsEditing(null);
+      fetchData();
     } catch (error) {
-      console.error('Update error:', error);
+      throw error;
     }
   };
 
+  // Handle delete operations
   const handleDelete = async (id: string) => {
     try {
       switch (activeTab) {
@@ -114,13 +166,26 @@ export default function Dashboard() {
         case 'experiences': await experiencesApi.delete(id); break;
         default: break;
       }
+      setAlert({ type: 'success', message: 'Item deleted successfully.' });
+      setItemToDelete(null);
+      fetchData();
     } catch (error) {
+      setAlert({ type: 'error', message: 'Failed to delete item. Please try again.' });
       console.error('Delete error:', error);
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      {/* Alert Component */}
+      {alert && (
+        <Alert
+          message={alert.message}
+          type={alert.type}
+          onClose={() => setAlert(null)}
+        />
+      )}
+
       <DashboardHeader
         onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         onLogout={async () => {
@@ -177,10 +242,8 @@ export default function Dashboard() {
         onConfirm={async () => {
           if (itemToDelete) {
             await handleDelete(itemToDelete);
-            setItemToDelete(null);
           }
-        }
-        }
+        }}
       />
     </div>
   );

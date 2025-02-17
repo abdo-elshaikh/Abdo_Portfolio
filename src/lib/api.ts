@@ -1,7 +1,7 @@
 import { supabase } from './supabase';
 import type { Project, PersonalInfo, Contact, Skill, Stat, Experience, Education } from './types';
 
-// Projects
+// Projects API
 export const projectsApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -12,20 +12,13 @@ export const projectsApi = {
     return data as Project[];
   },
 
-  getById: async (id: string) => {
-    const { data, error } = await supabase
-      .from('projects')
-      .select('*')
-      .eq('id', id)
-      .single();
-    if (error) throw error;
-    return data as Project;
-  },
-
   create: async (project: Omit<Project, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('projects')
-      .insert([project])
+      .insert([{ ...project, user_id: user.id }])
       .select()
       .single();
     if (error) throw error;
@@ -52,36 +45,7 @@ export const projectsApi = {
   }
 };
 
-// Personal Info
-export const personalInfoApi = {
-  get: async () => {
-    try {
-      const { data, error } = await supabase
-        .from('personal_info')
-        .select('*')
-        .limit(1)
-        .maybeSingle();
-      
-      if (error) throw error;
-      return data as PersonalInfo;
-    } catch (error) {
-      console.error('Error fetching personal info:', error);
-      return null;
-    }
-  },
-
-  update: async (info: Partial<PersonalInfo>) => {
-    const { data, error } = await supabase
-      .from('personal_info')
-      .upsert(info)
-      .select()
-      .single();
-    if (error) throw error;
-    return data as PersonalInfo;
-  }
-};
-
-// Education 
+// Education API
 export const educationApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -93,9 +57,12 @@ export const educationApi = {
   },
 
   create: async (education: Omit<Education, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('education')
-      .insert([education])
+      .insert([{ ...education, user_id: user.id }])
       .select()
       .single();
     if (error) throw error;
@@ -122,7 +89,7 @@ export const educationApi = {
   }
 };
 
-// Contacts
+// Contacts API
 export const contactsApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -134,9 +101,23 @@ export const contactsApi = {
   },
 
   create: async (contact: Omit<Contact, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('contacts')
-      .insert([contact])
+      .insert([{ ...contact, user_id: user.id }])
+      .select()
+      .single();
+    if (error) throw error;
+    return data as Contact;
+  },
+
+  update: async (id: string, contact: Partial<Contact>) => {
+    const { data, error } = await supabase
+      .from('contacts')
+      .update(contact)
+      .eq('id', id)
       .select()
       .single();
     if (error) throw error;
@@ -152,7 +133,7 @@ export const contactsApi = {
   }
 };
 
-// Skills
+// Skills API
 export const skillsApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -164,9 +145,12 @@ export const skillsApi = {
   },
 
   create: async (skill: Omit<Skill, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('skills')
-      .insert([skill])
+      .insert([{ ...skill, user_id: user.id }])
       .select()
       .single();
     if (error) throw error;
@@ -193,7 +177,7 @@ export const skillsApi = {
   }
 };
 
-// Stats
+// Stats API
 export const statsApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -205,9 +189,12 @@ export const statsApi = {
   },
 
   create: async (stat: Omit<Stat, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('stats')
-      .insert([stat])
+      .insert([{ ...stat, user_id: user.id }])
       .select()
       .single();
     if (error) throw error;
@@ -234,7 +221,7 @@ export const statsApi = {
   }
 };
 
-// Experiences
+// Experiences API
 export const experiencesApi = {
   getAll: async () => {
     const { data, error } = await supabase
@@ -246,9 +233,12 @@ export const experiencesApi = {
   },
 
   create: async (experience: Omit<Experience, 'id' | 'created_at' | 'user_id'>) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error('User not authenticated');
+
     const { data, error } = await supabase
       .from('experiences')
-      .insert([experience])
+      .insert([{ ...experience, user_id: user.id }])
       .select()
       .single();
     if (error) throw error;
@@ -272,5 +262,39 @@ export const experiencesApi = {
       .delete()
       .eq('id', id);
     if (error) throw error;
+  }
+};
+
+// User API
+export const userApi = {
+  get: async () => {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .single();
+    if (error) throw error;
+    return data;
+  }
+};
+
+// Personal Info API
+export const personalInfoApi = {
+  get: async () => {
+    const { data, error } = await supabase
+      .from('personal_info')
+      .select('*')
+      .single();
+    if (error) throw error;
+    return data as PersonalInfo;
+  },
+
+  update: async (personalInfo: Partial<PersonalInfo>) => {
+    const { data, error } = await supabase
+      .from('personal_info')
+      .upsert(personalInfo)
+      .select()
+      .single();
+    if (error) throw error;
+    return data as PersonalInfo;
   }
 };

@@ -119,8 +119,7 @@ export default function ProfileSection() {
                         variants={fadeIn}
                     >
                         <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8">
-                            <GraduationCap className="inline-block mr-3 w-6 h-6 sm:w-8 sm:h-8 text-cyan-600 dark:text-cyan-400" />
-                            Education & Learning
+                            Education Timeline
                         </h2>
 
                         <div className="relative">
