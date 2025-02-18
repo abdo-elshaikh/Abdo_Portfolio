@@ -40,7 +40,7 @@ export default function Projects() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <motion.h2 
+          <motion.h2
             className="text-4xl font-bold mb-12 text-center flex items-center justify-center gap-2 text-gray-900 dark:text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -48,7 +48,7 @@ export default function Projects() {
             <Code2 className="text-primary-600" />
             Featured Projects
           </motion.h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 xl:gap-10">
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
@@ -58,7 +58,7 @@ export default function Projects() {
                 className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="relative h-48 overflow-hidden">
-                  <img 
+                  <img
                     src={project.image_url}
                     alt={project.title}
                     className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-300"
@@ -68,8 +68,8 @@ export default function Projects() {
                       <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
                       <div className="flex flex-wrap gap-2">
                         {project.tags.map((tag, tagIndex) => (
-                          <span 
-                            key={tagIndex} 
+                          <span
+                            key={tagIndex}
                             className="px-2 py-1 bg-white/20 text-white rounded-full text-sm backdrop-blur-sm"
                           >
                             {tag}
@@ -86,7 +86,7 @@ export default function Projects() {
                   <div className="flex justify-between items-center">
                     <div className="space-x-4">
                       {project.link && (
-                        <a 
+                        <a
                           href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"

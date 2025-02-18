@@ -30,7 +30,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100">
+    <footer className="relative bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100 border-t border-gray-800 dark:from-gray-800 dark:to-gray-900 dark:text-gray-300">
       {/* Wave Animation */}
       <div className="relative overflow-hidden">
         <svg

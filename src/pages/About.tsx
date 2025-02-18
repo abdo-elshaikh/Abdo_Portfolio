@@ -64,7 +64,7 @@ export default function About() {
       id="about"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-top">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
           {/* Avatar Section */}
           <motion.div
             variants={itemVariants}

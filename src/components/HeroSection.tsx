@@ -122,7 +122,9 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="relative pt-10 min-h-screen flex items-center dark:bg-[#0a192f] bg-gray-50 overflow-hidden">
+        <section className="relative pt-10 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+            <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
             <div ref={containerRef} className="absolute inset-0 z-0 opacity-40" />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">

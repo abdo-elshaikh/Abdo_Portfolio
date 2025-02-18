@@ -40,7 +40,7 @@ export default function ProfileSection() {
             <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
                 <motion.div
                     className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12"
-                 //Continuing the ProfileSection.tsx file content exactly where it left off:
+                    //Continuing the ProfileSection.tsx file content exactly where it left off:
 
                     initial="initial"
                     whileInView="animate"
@@ -49,7 +49,7 @@ export default function ProfileSection() {
                 >
                     {/* Personal Information Card */}
                     <motion.div
-                        className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 p-6 sm:p-8 rounded-2xl shadow-lg"
+                        className="relative bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 p-4 sm:p-6 rounded-2xl shadow-lg"
                         variants={fadeIn}
                     >
                         <div className="absolute inset-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl" />

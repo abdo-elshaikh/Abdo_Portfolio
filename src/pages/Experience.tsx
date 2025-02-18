@@ -49,7 +49,7 @@ export default function Experience() {
             Work Experience
           </motion.h2>
 
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="relative border-l-2 border-primary-600 dark:border-primary-400 ml-3">
               {experiences.map((experience, index) => (
                 <motion.div

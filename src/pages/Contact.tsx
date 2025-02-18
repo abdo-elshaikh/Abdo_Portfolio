@@ -3,7 +3,7 @@ import { Coffee, Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Contact() {
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 pt-16">
       <section className="py-20">
         <div className="container mx-auto px-6">
           <div className="max-w-4xl mx-auto">
@@ -11,7 +11,7 @@ export default function Contact() {
               <Coffee className="text-blue-600" />
               Let's Work Together
             </h2>
-            
+
             <div className="grid md:grid-cols-2 gap-12">
               <div>
                 <h3 className="text-xl font-semibold mb-6">Contact Information</h3>

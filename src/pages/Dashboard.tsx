@@ -47,7 +47,6 @@ export default function Dashboard() {
         }
         case 'personal_info': {
           const info = await personalInfoApi.get();
-          console.log('info:', info);
           setData(info ? [info] : []);
           break;
         }
@@ -78,9 +77,21 @@ export default function Dashboard() {
         }
         default: break;
       }
-    } catch (error) {
-      setAlert({ type: 'error', message: 'Failed to fetch data. Please try again.' });
-      console.error('Fetch error:', error);
+      setAlert(null);
+    } catch (error: any) {
+      const errorMessage = error.message || 'Failed to fetch data. Please try again.';
+      setAlert({
+        type: 'error',
+        message: errorMessage.includes('authentication') ?
+          'Please sign in again to continue.' :
+          `Failed to fetch ${activeTab.replace(/_/g, ' ')}: ${errorMessage}`
+      });
+      setData([]);
+      if (error.message?.includes('authentication')) {
+        await supabase.auth.signOut();
+        navigate('/auth');
+      }
+      console.error(`Fetch error for ${activeTab}:`, error);
     } finally {
       setLoading(false);
     }
