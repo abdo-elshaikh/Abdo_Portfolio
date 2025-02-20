@@ -4,6 +4,7 @@ import { Menu, X, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { supabase } from "../lib/supabase";
+import logo from "/logo.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -41,27 +42,28 @@ export default function Header() {
   return (
     <nav
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-          ? "bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
-          : "bg-transparent dark:bg-transparent"
+        ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
+        : "bg-transparent dark:bg-transparent"
         }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-auto flex items-center justify-between">
         {/* Logo */}
-        <NavLink to="/" className="text-xl sm:text-2xl font-bold text-cyan-600 dark:text-cyan-400">
-          <strong>Dev.</strong>
-          <span className="text-gray-600 dark:text-gray-300 font-serif"> ABDO MHMD</span>
+        <NavLink
+          to="/"
+          className="text-xl sm:text-2xl font-bold text-cyan-600 dark:text-cyan-400 hover:opacity-80 transition-opacity"
+        >
+          <img src={logo} alt="Logo" className="w-50 h-20" />
         </NavLink>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
-          <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-8">
+          <div className="flex items-center gap-6">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `relative px-3 py-2 rounded-md font-medium transition-all text-sm sm:text-base 
-                  ${isActive
+                  `relative px-3 py-2 rounded-md font-medium transition-all text-sm sm:text-base ${isActive
                     ? "text-cyan-600 dark:text-cyan-400"
                     : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400"
                   }`
@@ -113,7 +115,7 @@ export default function Header() {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className="md:hidden fixed inset-0 top-[72px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-40"
+            className="md:hidden fixed top-[72px] bg-white/95 w-full dark:bg-gray-900/95 backdrop-blur-md z-40"
             transition={{ duration: 0.2 }}
           >
             <div className="container mx-auto px-4 sm:px-6 py-4">
@@ -157,7 +159,9 @@ export default function Header() {
                     className="w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2 transition-all"
                   >
                     <LogOut size={18} />
-                    <span>Sign Out</span>
+                    <span className="font-medium text-sm sm:text-base">
+                      Sign Out
+                    </span>
                   </button>
                 </motion.div>
               </motion.div>

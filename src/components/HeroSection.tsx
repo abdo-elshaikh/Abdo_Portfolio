@@ -151,27 +151,26 @@ const HeroSection = () => {
                         </motion.div>
 
                         <motion.h1
-                            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold mb-4 lg:mb-6 text-gray-800 dark:text-gray-100"
+                            className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight"
                             variants={itemVariants}
                         >
-                            <span className="bg-gradient-to-r from-blue-800 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
-                                Abdulrahman Mohammed.
+                            <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
+                                Abdulrahman Mohamed
+                            </span>
+                            <span className="block mt-4 text-4xl sm:text-5xl md:text-6xl font-medium text-gray-600 dark:text-gray-300">
+                                Full-stack Developer
                             </span>
                         </motion.h1>
 
-                        <motion.h2
-                            className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-600 dark:text-gray-300 mb-6 lg:mb-8"
-                            variants={itemVariants}
-                        >
-                            Software Engineer & Web Developer
-                        </motion.h2>
+                        <hr className="w-18 border-b-2 border-cyan-500 dark:border-cyan-400 mx-auto lg:mx-0" />
 
                         <motion.p
-                            className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
+                            className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
                             variants={itemVariants}
                         >
-                            I'm a passionate software engineer and web developer with experience in building web applications and software solutions.
-                            I specialize in building responsive, performant, and user-friendly web applications using modern technologies.
+                            Full-stack developer specializing in crafting high-performance web applications
+                            with modern technologies. Focused on creating intuitive user experiences
+                            backed by robust architectures.
                         </motion.p>
 
                         {/* CTAs */}
@@ -181,53 +180,63 @@ const HeroSection = () => {
                         >
                             <motion.a
                                 href="#contact"
-                                className="px-6 sm:px-8 py-3 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg font-medium flex items-center justify-center gap-2 transition-all shadow-lg hover:shadow-cyan-500/20"
-                                whileHover={{ y: -2 }}
+                                className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                                whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <Mail size={20} />
-                                Contact Me
+                                <Mail size={24} className="shrink-0" />
+                                <span>Start a Conversation</span>
                             </motion.a>
                             <motion.a
                                 href="#cv"
-                                className="px-6 sm:px-8 py-3 border-2 border-cyan-500 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/10 rounded-lg font-medium flex items-center justify-center gap-2 transition-all"
-                                whileHover={{ y: -2 }}
+                                className="px-8 py-4 border-2 border-cyan-500/30 hover:border-cyan-500/50 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
+                                whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <Download size={20} />
-                                View Resume
+                                <Download size={24} className="shrink-0" />
+                                <span>Download CV</span>
                             </motion.a>
                         </motion.div>
 
                         {/* Social Links */}
                         <motion.div
-                            className="flex justify-center lg:justify-start gap-4 mt-6 lg:mt-8"
+                            className="flex justify-center lg:justify-start gap-3 mt-8 lg:mt-12"
                             variants={itemVariants}
                         >
-                            {[Github, Linkedin, Twitter].map((Icon, index) => (
-                                <motion.div
+                            {[
+                                { Icon: Github, label: "GitHub" },
+                                { Icon: Linkedin, label: "LinkedIn" },
+                                { Icon: Twitter, label: "Twitter" }
+                            ].map(({ Icon, label }, index) => (
+                                <motion.a
                                     key={index}
-                                    className="p-3 bg-gray-200 dark:bg-gray-800 rounded-full"
-                                    whileHover={{ scale: 1.1 }}
+                                    href="#"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                                    whileHover={{ y: -2 }}
                                 >
-                                    <a href="#" target="_blank" rel="noreferrer">
-                                        <Icon size={24} />
-                                    </a>
-                                </motion.div>
+                                    <Icon size={20} className="text-gray-700 dark:text-gray-300" />
+                                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                        {label}
+                                    </span>
+                                </motion.a>
                             ))}
                         </motion.div>
+
+
                     </div>
 
                     {/* Avatar Section */}
                     <motion.div
-                        className="lg:w-1/2 flex justify-center relative group"
+                        className="lg:w-1/2 flex justify-center relative group md:pt-4"
                         variants={avatarVariants}
                     >
                         <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
                             <motion.div
                                 className="relative w-full h-full rounded-full border-8 border-white dark:border-gray-900 overflow-hidden shadow-2xl hover:shadow-cyan-500/20 transition-shadow"
-                                whileHover={{ scale: 1.02 }}
+                                whileHover={{ scale: 1.01 }}
                             >
                                 <img
                                     src="/avatar.jpg"
