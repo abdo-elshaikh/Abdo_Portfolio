@@ -1,5 +1,5 @@
 import { motion, useAnimation, useInView } from "framer-motion";
-import { Github, Linkedin, Twitter, Mail, Download } from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Download, Facebook } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { useTheme } from "../contexts/ThemeContext";
@@ -209,6 +209,7 @@ const HeroSection = () => {
                             {[
                                 { Icon: Github, label: "GitHub" },
                                 { Icon: Linkedin, label: "LinkedIn" },
+                                { Icon: Facebook, label: "Facebook" },
                                 { Icon: Twitter, label: "Twitter" }
                             ].map(({ Icon, label }, index) => (
                                 <motion.a
@@ -219,8 +220,8 @@ const HeroSection = () => {
                                     className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                                     whileHover={{ y: -2 }}
                                 >
-                                    <Icon size={20} className="text-gray-700 dark:text-gray-300" />
-                                    <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                                    <Icon className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                                    <span className="hidden md:block text-sm font-medium text-gray-600 dark:text-gray-400">
                                         {label}
                                     </span>
                                 </motion.a>

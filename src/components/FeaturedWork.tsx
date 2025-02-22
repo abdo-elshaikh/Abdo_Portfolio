@@ -30,12 +30,8 @@ export default function FeaturedWork() {
         }
     };
 
-    // Extract unique tags from all projects
-    const allTags = Array.from(
-        new Set(featuredProjects.flatMap((project) => project.tags))
-    );
+    const allTags = Array.from(new Set(featuredProjects.flatMap((project) => project.tags)));
 
-    // Filter projects based on selected tag
     const filteredProjects = selectedTag
         ? featuredProjects.filter((project) => project.tags.includes(selectedTag))
         : featuredProjects;
@@ -44,46 +40,47 @@ export default function FeaturedWork() {
 
     return (
         <motion.section
-            className="py-20 px-4 bg-gray-50 dark:bg-gray-900"
+            className="py-12 px-4 bg-gray-50 dark:bg-gray-900"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
         >
             <div className="container max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-top">
+                <div className="flex flex-col lg:flex-row gap-12 items-start">
                     {/* About Section */}
                     <motion.div
-                        className="max-w-lg mx-auto lg:mx-0"
+                        className="w-full lg:w-1/2"
                         initial={{ opacity: 0, x: -40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="text-3xl mb-4 sm:text-4xl md:text-5xl font-extrabold leading-tight">
+                        <h2 className="text-3xl md:text-4xl font-extrabold leading-tight mb-6">
                             <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
                                 Software Engineer
                             </span>
                         </h2>
-                        <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                            Passionate about building scalable, high-performance applications
-                            using modern technologies.
+                        <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                            Passionate about building scalable, high-performance applications.
                         </p>
 
-                        <hr className="my-4 border-gray-300 dark:border-gray-700" />
-                        <ul className="mt-4 md:mt-6 space-y-2 md:space-y-3 text-sm md:text-base text-gray-600 dark:text-gray-300">
+                        <hr className="my-6 border-gray-300 dark:border-gray-700" />
+
+                        <ul className="space-y-3 text-base text-gray-600 dark:text-gray-300">
                             <li>🚀 Specializing in React, Node.js, MongoDB, and MySQL.</li>
                             <li>🎨 Creating seamless and responsive user experiences.</li>
                             <li>🔧 Expertise in API development and cloud deployment.</li>
                             <li>🌱 Continuously learning to stay ahead in tech.</li>
                         </ul>
-                        <p className="mt-4 md:mt-6 text-base md:text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+
+                        <p className="mt-6 text-lg text-gray-700 dark:text-gray-300">
                             Let's collaborate and bring your ideas to life!
                         </p>
 
                         {/* CTA Buttons */}
-                        <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
+                        <div className="mt-8 flex flex-col sm:flex-row gap-3">
                             <motion.a
                                 href="/contact"
-                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                                className="px-6 py-3 w-full sm:w-auto bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -92,7 +89,7 @@ export default function FeaturedWork() {
 
                             <motion.a
                                 href="/projects"
-                                className="px-4 py-2 sm:px-6 sm:py-3 bg-gray-600 dark:bg-gray-400 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
+                                className="px-6 py-3 w-full sm:w-auto bg-gray-600 dark:bg-gray-400 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 text-center"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
@@ -103,22 +100,23 @@ export default function FeaturedWork() {
 
                     {/* Featured Projects Section */}
                     <motion.div
-                        className="max-w-2xl mx-auto w-full lg:w-auto"
+                        className="w-full lg:w-1/2"
                         initial={{ opacity: 0, x: 40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">
+                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
                             Featured Projects
                         </h3>
-                        <p className="mt-2 text-base md:text-lg text-gray-600 dark:text-gray-300">
+                        <p className="text-lg text-gray-600 dark:text-gray-300 mb-6">
                             Check out some of my recent work below.
                         </p>
+
                         {/* Tag Filters */}
-                        <div className="mt-4 flex flex-wrap gap-2 border border-gray-300 dark:border-gray-700 p-4 rounded-xl">
+                        <div className="mb-6 flex flex-wrap gap-2">
                             <button
                                 onClick={() => setSelectedTag(null)}
-                                className={`px-3 py-1 text-sm font-medium rounded-full ${!selectedTag
+                                className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${!selectedTag
                                     ? "bg-blue-600 text-white"
                                     : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
                                     }`}
@@ -129,7 +127,7 @@ export default function FeaturedWork() {
                                 <button
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`px-3 py-1 text-sm font-medium rounded-full ${selectedTag === tag
+                                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${selectedTag === tag
                                         ? "bg-blue-600 text-white"
                                         : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
                                         }`}
@@ -144,38 +142,20 @@ export default function FeaturedWork() {
                             modules={[Navigation, Pagination, Autoplay]}
                             spaceBetween={16}
                             slidesPerView={1}
-                            slidesPerGroup={1}
                             loop={true}
-                            pagination={{
-                                clickable: true,
-                                dynamicBullets: true,
-                            }}
-                            autoplay={{
-                                delay: 5000,
-                                disableOnInteraction: false,
-                                pauseOnMouseEnter: true,
-                            }}
+                            pagination={{ clickable: true, dynamicBullets: true }}
+                            autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
                             breakpoints={{
-                                640: {
-                                    slidesPerView: 1,
-                                    spaceBetween: 20,
-                                },
-                                768: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 24,
-                                },
-                                1024: {
-                                    slidesPerView: 2,
-                                    spaceBetween: 32,
-                                },
+                                640: { slidesPerView: 1 },
+                                768: { slidesPerView: 2 },
+                                1024: { slidesPerView: 2 },
                             }}
-                            className="mt-6 pb-10"
+                            className="pb-12"
                         >
                             {filteredProjects?.map((project) => (
                                 <SwiperSlide key={project.id}>
                                     <motion.div
-                                        className="relative bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow border border-gray-300 dark:border-gray-700"
-                                        onClick={() => navigate(`/projects/${project.id}`)}
+                                        className="bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow border border-gray-300 dark:border-gray-700"
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                     >
@@ -191,37 +171,22 @@ export default function FeaturedWork() {
                                             <p className="mt-2 text-sm md:text-base text-gray-600 dark:text-gray-300 line-clamp-3">
                                                 {project.description}
                                             </p>
-                                            {/* Tags */}
-                                            <div className="mt-4 flex flex-wrap gap-1 md:gap-2 justify-start items-center">
-                                                {project.tags.map((tag) => (
-                                                    <span
-                                                        key={tag}
-                                                        className="px-2 py-1 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 text-xs md:text-sm rounded-full"
-                                                    >
-                                                        {tag}
-                                                    </span>
-                                                ))}
-                                            </div>
-                                            <hr className="my-4 border-gray-300 dark:border-gray-700" />
-                                            {/* Buttons */}
-                                            <div className="mt-4 flex flex-col sm:flex-row gap-2 justify-center">
-                                                <a
-                                                    href={project.demo_url || "#"}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
+                                        </div>
+                                        <div className="p-4 md:p-6 flex flex-wrap gap-2 bg-gray-100 dark:bg-gray-700">
+                                            {project.tags.map((tag) => (
+                                                <span
+                                                    key={tag}
+                                                    className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 rounded-full text-sm"
                                                 >
-                                                    View Live
-                                                </a>
-                                                <a
-                                                    href={project.link || "#"}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="px-3 py-2 sm:px-4 sm:py-2 bg-gray-600 dark:bg-gray-400 text-white rounded-lg font-medium text-sm md:text-base shadow hover:shadow-md transition-all duration-300 text-center"
-                                                >
-                                                    View Details
-                                                </a>
-                                            </div>
+                                                    {tag}
+                                                </span>
+                                            ))}
+                                        </div>
+                                        <div
+                                            className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center gap-3 opacity-0 hover:opacity-100 transition-opacity"
+                                            onClick={() => navigate(`/projects/${project.id}`)}
+                                        >
+                                            <p className="text-white font-semibold text-lg">View Details</p>
                                         </div>
                                     </motion.div>
                                 </SwiperSlide>
