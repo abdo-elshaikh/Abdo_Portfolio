@@ -19,17 +19,21 @@ import Contact from "./pages/Contact";
 import ProjectDetails from "./pages/ProjectDetails";
 import Auth from "./pages/Auth";
 import Alert from "./components/Alert";
-import NotFound from './pages/NotFound';
-import Unauthorized from './pages/Unauthorized';
+import NotFound from "./pages/NotFound";
+import Unauthorized from "./pages/Unauthorized";
 
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname === "/dashboard";
-  const isAuth = location.pathname === "/auth";
+
+  const fullScreen = ["dasboard", "auth", "not-found", "unauthorized"];
+
+  function isFullScreen(path: string) {
+    return fullScreen.includes(path);
+  }
 
   return (
     <div>
-      {!isDashboard && !isAuth && <Header />}
+      {!isFullScreen(location.pathname.split("/")[1]) && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,7 +50,7 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isDashboard && !isAuth && <Footer />}
+      {!isFullScreen(location.pathname.split("/")[1]) && <Footer />}
     </div>
   );
 }
