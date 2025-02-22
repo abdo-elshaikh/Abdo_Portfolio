@@ -40,7 +40,7 @@ export default function Experience() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
       <section className="py-20">
         <div className="container mx-auto px-6">
-          <motion.h2 
+          <motion.h2
             className="text-4xl font-bold mb-12 text-center flex items-center justify-center gap-2 text-gray-900 dark:text-white"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,11 +57,11 @@ export default function Experience() {
                   className="mb-12 ml-6"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
                 >
                   <div className="absolute -left-9 mt-2">
                     <div className="bg-primary-600 dark:bg-primary-400 rounded-full p-2 shadow-lg">
-                      <Building2 className="w-6 h-6 text-white" />
+                      <Building2 className="w-6 h-6 text-white"/>
                     </div>
                   </div>
 

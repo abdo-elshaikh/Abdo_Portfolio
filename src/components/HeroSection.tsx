@@ -11,6 +11,7 @@ const HeroSection = () => {
     const [mounted, setMounted] = useState(false);
     const controls = useAnimation();
     const isInView = useInView(textRef, { once: true, threshold: 0.5 });
+    const resumeUrl = "https://drive.google.com/file/d/11V2uNnNSCYHNU3d4Gcj8hutxR52uwriM/view?usp=drive_link";
 
     useEffect(() => setMounted(true), []);
 
@@ -122,7 +123,7 @@ const HeroSection = () => {
     };
 
     return (
-        <section className="relative pt-10 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+        <section className="relative pt-6 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
             <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
             <div ref={containerRef} className="absolute inset-0 z-0 opacity-40" />
@@ -157,8 +158,8 @@ const HeroSection = () => {
                             <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
                                 Abdulrahman Mohamed
                             </span>
-                            <span className="block mt-4 text-4xl sm:text-5xl md:text-6xl font-medium text-gray-600 dark:text-gray-300">
-                                Full-stack Developer
+                            <span className="block mt-4 text-4xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
+                                Software Engineer - Full Stack Developer
                             </span>
                         </motion.h1>
 
@@ -188,7 +189,9 @@ const HeroSection = () => {
                                 <span>Start a Conversation</span>
                             </motion.a>
                             <motion.a
-                                href="#cv"
+                                href={resumeUrl}
+                                target="_blank"
+                                rel="noreferrer"
                                 className="px-8 py-4 border-2 border-cyan-500/30 hover:border-cyan-500/50 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}

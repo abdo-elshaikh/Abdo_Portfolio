@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Coffee, Users, Award, CheckCircle, Calendar, User } from "lucide-react";
+import { Coffee, Users, Award, CheckCircle, Calendar, User, CalendarCheck, Code2 } from "lucide-react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
 import { Stat } from "../lib/types";
@@ -20,9 +20,11 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
         coffee: Coffee,
         users: Users,
         award: Award,
-        "check-circle": CheckCircle,
         calendar: Calendar,
-        user: User
+        user: User,
+        "check-circle": CheckCircle,
+        "calendar-check": CalendarCheck,
+        code: Code2
     }[icon];
 
     return (
@@ -42,10 +44,9 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
                     )}
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h3>
                 </div>
-                <p className="text-4xl font-bold text-gray-900 dark:text-white">
-                    <CountUp end={value} duration={2} separator="," />
-                    {suffix && <span className="text-gray-600 dark:text-gray-400">{suffix}</span>}
-                </p>
+                <div className="text-4xl font-bold text-gray-900 dark:text-white">
+                    <CountUp end={value} duration={2} suffix={suffix} separator="," />
+                </div>
             </div>
         </motion.div>
     );
@@ -74,7 +75,7 @@ export default function StatsSection() {
                     <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 bg-gradient-to-r from-white to-gray-300 dark:from-cyan-300 dark:to-blue-500 bg-clip-text text-transparent">
                         My Stats
                     </h2>
-                    <p className="text-gray-700 dark:text-gray-300 text-center text-lg mb-16 max-w-2xl mx-auto">
+                    <p className="text-gray-200 dark:text-gray-300 text-center text-lg mb-16 max-w-2xl mx-auto">
                         Here are some of my achievements and milestones that showcase my journey and expertise.
                     </p>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
