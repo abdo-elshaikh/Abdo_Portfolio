@@ -1,16 +1,20 @@
 import { motion } from "framer-motion";
 import { User, Mail, Phone, MapPin, GraduationCap } from "lucide-react";
-import { educationApi, personalInfoApi } from '../lib/api';
+import { educationApi, personalInfoApi } from "../lib/api";
 import { useEffect, useState } from "react";
 import { PersonalInfo, Education } from "../lib/types";
 
 const fadeIn = {
     initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: "easeOut" },
+    },
 };
 
 const staggerItems = {
-    animate: { transition: { staggerChildren: 0.1 } }
+    animate: { transition: { staggerChildren: 0.1 } },
 };
 
 export default function ProfileSection() {
@@ -22,12 +26,12 @@ export default function ProfileSection() {
             try {
                 const [personalData, educationData] = await Promise.all([
                     personalInfoApi.get(),
-                    educationApi.getAll()
+                    educationApi.getAll(),
                 ]);
                 setPersonalInfo(personalData);
                 setEducation(educationData);
             } catch (error) {
-                console.error('Error fetching profile data:', error);
+                console.error("Error fetching profile data:", error);
             }
         }
         fetchData();
@@ -55,11 +59,7 @@ export default function ProfileSection() {
                         <div className="absolute inset-0 bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm rounded-2xl" />
                         <div className="relative z-10">
                             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mb-6 sm:mb-8">
-                                <img
-                                    src={personalInfo.avatar_url || '/avatar.png'}
-                                    alt={personalInfo.name}
-                                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-4 border-white dark:border-gray-800 shadow-md"
-                                />
+                                <User className="w-12 h-12 text-blue-500 dark:text-cyan-500" />
                                 <div className="text-center sm:text-left">
                                     <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
                                         {personalInfo.name}
@@ -83,8 +83,12 @@ export default function ProfileSection() {
                                 >
                                     <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
-                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Email</p>
-                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">{personalInfo.email}</p>
+                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                            Email
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">
+                                            {personalInfo.email}
+                                        </p>
                                     </div>
                                 </motion.div>
 
@@ -94,8 +98,12 @@ export default function ProfileSection() {
                                 >
                                     <Phone className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
-                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Phone</p>
-                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">{personalInfo.phone}</p>
+                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                            Phone
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">
+                                            {personalInfo.phone}
+                                        </p>
                                     </div>
                                 </motion.div>
 
@@ -105,8 +113,12 @@ export default function ProfileSection() {
                                 >
                                     <MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-cyan-600 dark:text-cyan-400" />
                                     <div>
-                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Location</p>
-                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">{personalInfo.location}</p>
+                                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+                                            Location
+                                        </p>
+                                        <p className="text-sm sm:text-base text-gray-900 dark:text-white">
+                                            {personalInfo.location}
+                                        </p>
                                     </div>
                                 </motion.div>
                             </div>

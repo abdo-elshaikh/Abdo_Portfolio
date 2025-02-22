@@ -25,10 +25,10 @@ import Unauthorized from "./pages/Unauthorized";
 function AppContent() {
   const location = useLocation();
 
-  const fullScreen = ["dasboard", "auth", "not-found", "unauthorized"];
+  const fullScreenPages = ["dashboard", "auth", "not-found", "unauthorized"];
 
   function isFullScreen(path: string) {
-    return fullScreen.includes(path);
+    return fullScreenPages.includes(path);
   }
 
   return (

@@ -1,7 +1,12 @@
-
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import { CodeIcon, Server, PenTool, ArrowRight, ContainerIcon } from "lucide-react";
+import {
+    CodeIcon,
+    Server,
+    PenTool,
+    ArrowRight,
+    ContainerIcon,
+} from "lucide-react";
 import { Skill } from "../lib/types";
 import { skillsApi } from "../lib/api";
 
@@ -46,8 +51,12 @@ function SkillCard({ skill }: { skill: Skill }) {
                 </motion.div>
 
                 <div className="flex-1">
-                    <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">{skill.title}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">{skill.description}</p>
+                    <h3 className="text-lg font-bold mb-2 text-gray-900 dark:text-white">
+                        {skill.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
+                        {skill.description}
+                    </p>
                     <div className="flex flex-wrap gap-2">
                         {skill.technologies.map((tech, idx) => (
                             <span
@@ -111,12 +120,17 @@ export default function SkillsSection() {
                             variants={staggerContainer}
                             className="flex flex-col gap-8 lg:gap-12"
                         >
-                            <motion.div className="space-y-4" variants={cardVariants}>
+                            <motion.div
+                                className="space-y-4"
+                                variants={cardVariants}
+                            >
                                 <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
                                     Crafting Digital Excellence
                                 </h2>
                                 <p className="text-lg text-gray-600 dark:text-gray-300">
-                                    Merging technical precision with creative vision to build transformative digital experiences.
+                                    Merging technical precision with creative
+                                    vision to build transformative digital
+                                    experiences.
                                 </p>
                             </motion.div>
 
@@ -130,7 +144,7 @@ export default function SkillsSection() {
                                 <motion.a
                                     href="/contact"
                                     className="group inline-flex items-center gap-3 bg-gradient-to-r from-cyan-600 to-blue-400 text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
-                                    whileHover={{ scale: 1.05 }}
+                                    whileHover={{ scale: 1.01 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <span>Start Your Project</span>

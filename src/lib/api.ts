@@ -36,6 +36,16 @@ export const projectsApi = {
     return data as Project;
   },
 
+  getById: async (id: string) => {
+    const { data, error } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (error) throw error;
+    return data as Project;
+  },
+
   delete: async (id: string) => {
     const { error } = await supabase
       .from('projects')
