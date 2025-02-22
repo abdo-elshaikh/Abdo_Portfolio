@@ -19,7 +19,8 @@ import Contact from "./pages/Contact";
 import ProjectDetails from "./pages/ProjectDetails";
 import Auth from "./pages/Auth";
 import Alert from "./components/Alert";
-// import NotFound from './pages/NotFound';
+import NotFound from './pages/NotFound';
+import Unauthorized from './pages/Unauthorized';
 
 function AppContent() {
   const location = useLocation();
@@ -41,6 +42,8 @@ function AppContent() {
           <Route element={<PrivateRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       {!isDashboard && !isAuth && <Footer />}
