@@ -1,30 +1,35 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { AlertProvider } from './contexts/AlertContext';
-import { useAlert } from './contexts/AlertContext';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Dashboard from './pages/Dashboard';
-import PrivateRoute from './components/PrivateRoute';
-import About from './pages/About';
-import Projects from './pages/Projects';
-import Experience from './pages/Experience';
-import Contact from './pages/Contact';
-import ProjectDetails from './pages/ProjectDetails';
-import Auth from './pages/Auth';
-import Alert from './components/Alert';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { AlertProvider } from "./contexts/AlertContext";
+import { useAlert } from "./contexts/AlertContext";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/PrivateRoute";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
+import Experience from "./pages/Experience";
+import Contact from "./pages/Contact";
+import ProjectDetails from "./pages/ProjectDetails";
+import Auth from "./pages/Auth";
+import Alert from "./components/Alert";
 // import NotFound from './pages/NotFound';
 
 function AppContent() {
   const location = useLocation();
-  const isDashboard = location.pathname === '/dashboard';
-  const isAuth = location.pathname === '/auth';
+  const isDashboard = location.pathname === "/dashboard";
+  const isAuth = location.pathname === "/auth";
 
   return (
     <div>
       {!isDashboard && !isAuth && <Header />}
-      <main className="min-h-screen w-full px-4 sm:px-6 lg:px-8">
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -48,7 +53,7 @@ function AlertContainer() {
 
   return (
     <>
-      {alerts.map(alert => (
+      {alerts.map((alert) => (
         <Alert
           key={alert.id}
           type={alert.type}
