@@ -4,7 +4,7 @@ import { Menu, X, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { supabase } from "../lib/supabase";
-import logo from "/logo.png";
+import logo from "/logo_3.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -76,7 +76,7 @@ export default function Header() {
                     {item.label}
                     {isActive && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-600 dark:bg-cyan-400"
+                        className="absolute bottom-0 left-0 right-0 h-[3px] bg-purple-500 dark:bg-purple-400"
                         layoutId="active-nav"
                         transition={{ type: "spring", stiffness: 500 }}
                       />

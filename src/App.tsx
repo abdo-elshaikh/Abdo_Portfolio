@@ -22,6 +22,7 @@ import Alert from "./components/Alert";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 
+
 function AppContent() {
   const location = useLocation();
 
@@ -32,7 +33,7 @@ function AppContent() {
   }
 
   return (
-    <div>
+    <>
       {!isFullScreen(location.pathname.split("/")[1]) && <Header />}
       <main>
         <Routes>
@@ -51,7 +52,7 @@ function AppContent() {
         </Routes>
       </main>
       {!isFullScreen(location.pathname.split("/")[1]) && <Footer />}
-    </div>
+    </>
   );
 }
 

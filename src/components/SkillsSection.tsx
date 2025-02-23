@@ -104,7 +104,7 @@ export default function SkillsSection() {
                         >
                             <div className="aspect-square rounded-2xl overflow-hidden">
                                 <img
-                                    src="/abdo.jpg"
+                                    src="/main_2.jpg"
                                     alt="Professional"
                                     className="w-full h-full object-cover"
                                 />

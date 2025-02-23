@@ -6,11 +6,17 @@ import { personalInfoApi, skillsApi } from "../lib/api";
 
 const fadeIn = {
     initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
+    animate: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+    },
 };
 
 export default function AboutSection() {
-    const [aboutInfo, setAboutInfo] = useState<PersonalInfo>({} as PersonalInfo);
+    const [aboutInfo, setAboutInfo] = useState<PersonalInfo>(
+        {} as PersonalInfo,
+    );
     const [skills, setSkills] = useState<Skill[]>([]);
 
     useEffect(() => {
@@ -36,7 +42,9 @@ export default function AboutSection() {
                     initial="initial"
                     whileInView="animate"
                     viewport={{ once: true, margin: "-100px" }}
-                    variants={{ animate: { transition: { staggerChildren: 0.15 } } }}
+                    variants={{
+                        animate: { transition: { staggerChildren: 0.15 } },
+                    }}
                 >
                     {/* Profile Card */}
                     <motion.div
@@ -53,7 +61,9 @@ export default function AboutSection() {
                                     className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow-lg flex items-center gap-1 pr-3"
                                 >
                                     <Download className="h-5 w-5" />
-                                    <span className="text-sm font-medium">CV</span>
+                                    <span className="text-sm font-medium">
+                                        CV
+                                    </span>
                                 </motion.button>
                             </div>
                             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
@@ -76,7 +86,9 @@ export default function AboutSection() {
                                             <p className="text-gray-900 dark:text-white font-medium">
                                                 {aboutInfo.location}
                                             </p>
-                                            <p className="text-sm text-gray-500 dark:text-gray-400">Location</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                                                Location
+                                            </p>
                                         </div>
                                     </div>
                                     {/* Add other contact blocks similarly */}
@@ -102,14 +114,11 @@ export default function AboutSection() {
                     </motion.div>
 
                     {/* Skills Section */}
-                    <motion.div
-                        className="space-y-8"
-                        variants={fadeIn}
-                    >
+                    <motion.div className="space-y-8" variants={fadeIn}>
                         <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
                             Technical Expertise
                         </h2>
-                        
+
                         <div className="grid gap-6">
                             {skills.map((skill, index) => (
                                 <motion.div
@@ -120,8 +129,13 @@ export default function AboutSection() {
                                 >
                                     <div className="flex gap-5">
                                         <div className="w-14 h-14 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                            {skill.icon === 'cloud' ? <Cloud /> : 
-                                             skill.icon === 'cpu' ? <Cpu /> : <Code />}
+                                            {skill.icon === "cloud" ? (
+                                                <Cloud />
+                                            ) : skill.icon === "cpu" ? (
+                                                <Cpu />
+                                            ) : (
+                                                <Code />
+                                            )}
                                         </div>
                                         <div className="flex-1">
                                             <div className="flex items-center justify-between mb-3">
@@ -137,13 +151,16 @@ export default function AboutSection() {
                                             </p>
                                             <div className="flex items-center gap-3">
                                                 <div className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-full h-2">
-                                                    <div 
+                                                    <div
                                                         className="h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-500"
-                                                        style={{ width: `${skill.proficiency}%` }}
+                                                        style={{
+                                                            width: `${skill.proficiency}%`,
+                                                        }}
                                                     />
                                                 </div>
                                                 <span className="text-sm text-blue-600 dark:text-blue-400">
-                                                    {skill.proficiency}% Proficiency
+                                                    {skill.proficiency}%
+                                                    Proficiency
                                                 </span>
                                             </div>
                                         </div>

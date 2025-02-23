@@ -28,6 +28,8 @@ export interface Contact {
   name: string;
   email: string;
   message: string;
+  subject: string;
+  phone: string;
   created_at: string;
 }
 
@@ -81,8 +83,15 @@ export interface User {
 }
 
 export interface AlertProps {
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   message: string;
   onClose?: () => void;
   isVisible?: boolean;
+}
+
+export interface ContactFormProps {
+  name: string;
+  email: string;
+  subjet: string;
+  message: string;
 }

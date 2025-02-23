@@ -1,12 +1,100 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { contactsApi, personalInfoApi } from "../lib/api";
+import type { Contact, PersonalInfo } from "../lib/types";
+import Alert from "./Alert";
+
+type AlertType = {
+    message: string;
+    type: "success" | "error" | "warning" | "info";
+};
 
 export default function ContactSection() {
+    const [contactForm, setContactForm] = useState<Contact>({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+    });
+    const [isLoading, setIsLoading] = useState(false);
+    const [alert, setAlert] = useState<AlertType | null>(null);
+    const [contactInfo, setContactInfo] = useState<PersonalInfo | null>(null);
+
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (
+            !contactForm.name ||
+            !contactForm.email ||
+            !contactForm.phone ||
+            !contactForm.message
+        ) {
+            setAlert({
+                type: "info",
+                message: "Please fill in all fields",
+            });
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const data = await contactsApi.create(contactForm);
+            if (data) {
+                setAlert({
+                    type: "success",
+                    message:
+                        "Your message has been sent successfully. We will contact you soon!",
+                });
+                setContactForm({
+                    name: "",
+                    email: "",
+                    subject: "",
+                    phone: "",
+                    message: "",
+                } as Contact);
+            }
+        } catch (error) {
+            console.error(error);
+            setAlert({
+                type: "error",
+                message: "Something went wrong. Please try again later!",
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        const { name, value } = e.target;
+        setContactForm((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    useEffect(() => {
+        const fetchContactInfo = async () => {
+            const data = await personalInfoApi.get();
+            setContactInfo(data);
+        };
+
+        fetchContactInfo();
+    }, []);
+
     return (
         <section
             id="contact"
             className="py-16 px-4 sm:px-8 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800"
         >
+            {alert && (
+                <Alert
+                    type={alert.type}
+                    message={alert.message}
+                    onClose={() => setAlert(null)}
+                />
+            )}
             <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
                 {/* Contact Information */}
                 <motion.div
@@ -31,20 +119,20 @@ export default function ContactSection() {
                         <ContactItem
                             icon={Mail}
                             title="Email"
-                            value="contact@example.com"
+                            value={contactInfo?.email}
                             link="mailto:contact@example.com"
                         />
                         <ContactItem
                             icon={Phone}
                             title="Phone"
-                            value="+20 123 456 789"
-                            link="tel:+20123456789"
+                            value={contactInfo?.phone}
+                            link={`tel:${contactInfo?.phone}`}
                         />
                         <ContactItem
                             icon={MapPin}
                             title="Location"
-                            value="Cairo, Egypt"
-                            link="https://maps.google.com"
+                            value={contactInfo?.location}
+                            link={`https://www.google.com/maps/search/${contactInfo?.location}`}
                         />
                     </div>
                 </motion.div>
@@ -55,17 +143,29 @@ export default function ContactSection() {
                     initial={{ opacity: 0, x: 30 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
+                    onSubmit={handleSubmit}
                 >
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <InputField
                             type="text"
                             placeholder="Full Name"
                             name="name"
+                            value={contactForm.name}
+                            onChange={handleChange}
+                        />
+                        <InputField
+                            type="text"
+                            placeholder="Phone Number"
+                            name="phone"
+                            value={contactForm.phone}
+                            onChange={handleChange}
                         />
                         <InputField
                             type="email"
                             placeholder="Email Address"
                             name="email"
+                            value={contactForm.email}
+                            onChange={handleChange}
                         />
                     </div>
 
@@ -73,22 +173,39 @@ export default function ContactSection() {
                         type="text"
                         placeholder="Subject"
                         name="subject"
+                        value={contactForm.subject}
+                        onChange={handleChange}
                     />
 
                     <textarea
                         placeholder="Your Message..."
                         rows={5}
+                        name="message"
+                        value={contactForm.message}
+                        onChange={handleChange}
                         className="w-full p-4 bg-gray-50/50 dark:bg-gray-700/30 text-gray-900 dark:text-white rounded-xl border border-gray-200/50 dark:border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all"
                     />
 
-                    <motion.button
-                        type="submit"
-                        className="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
-                        whileTap={{ scale: 0.98 }}
-                    >
-                        <Send className="w-5 h-5" />
-                        Send Message
-                    </motion.button>
+                    {isLoading ? (
+                        <motion.button
+                            type="submit"
+                            className="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gray-400 text-white rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                            whileTap={{ scale: 0.98 }}
+                            disabled
+                        >
+                            <Send className="w-5 h-5" />
+                            Sending...
+                        </motion.button>
+                    ) : (
+                        <motion.button
+                            type="submit"
+                            className="w-full sm:w-auto px-8 py-4 text-lg font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl shadow-lg hover:shadow-xl flex items-center justify-center gap-2 transition-all hover:scale-[1.02]"
+                            whileTap={{ scale: 0.98 }}
+                        >
+                            <Send className="w-5 h-5" />
+                            Send Message
+                        </motion.button>
+                    )}
                 </motion.form>
             </div>
         </section>
@@ -119,13 +236,22 @@ function ContactItem({ icon: Icon, title, value, link }) {
     );
 }
 
-function InputField({ type, placeholder, name, className = "" }) {
+function InputField({
+    type,
+    placeholder,
+    name,
+    value,
+    onChange,
+    className = "",
+}) {
     return (
         <input
             type={type}
             id={name}
             name={name}
             placeholder={placeholder}
+            value={value}
+            onChange={onChange}
             className={`w-full p-4 bg-gray-50/50 dark:bg-gray-700/30 text-gray-900 dark:text-white rounded-xl border border-gray-200/50 dark:border-gray-600 focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all ${className}`}
         />
     );

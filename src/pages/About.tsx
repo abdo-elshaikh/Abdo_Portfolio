@@ -70,6 +70,18 @@ export default function About() {
       className="py-24 bg-gray-50 dark:bg-gray-900"
       id="about"
     >
+      <motion.div
+        variants={itemVariants}
+        className="container mx-auto px-4"
+      >
+        <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
+          About Me
+        <span className="text-cyan-500">
+            <Mail />
+        <span className="sr-only">Email</span>
+          </span>
+        </h1>
+      </motion.div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Avatar Section */}
