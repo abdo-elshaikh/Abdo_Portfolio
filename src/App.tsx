@@ -22,20 +22,22 @@ import Alert from "./components/Alert";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized";
 
-
 function AppContent() {
   const location = useLocation();
 
-  const fullScreenPages = ["dashboard", "auth", "not-found", "unauthorized"];
+  // List of routes that should have full-screen layout (no header/footer)
+  const fullScreenRoutes = ["/dashboard", "/auth", "/not-found", "/unauthorized"];
 
-  function isFullScreen(path: string) {
-    return fullScreenPages.includes(path);
-  }
+  // Check if the current route is a full-screen route
+  const isFullScreen = fullScreenRoutes.includes(location.pathname);
 
   return (
-    <>
-      {!isFullScreen(location.pathname.split("/")[1]) && <Header />}
-      <main>
+    <div className="flex flex-col min-h-screen">
+      {/* Conditionally render Header */}
+      {!isFullScreen && <Header />}
+
+      {/* Main content */}
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
@@ -51,8 +53,10 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isFullScreen(location.pathname.split("/")[1]) && <Footer />}
-    </>
+
+      {/* Conditionally render Footer */}
+      {!isFullScreen && <Footer />}
+    </div>
   );
 }
 
@@ -60,7 +64,7 @@ function AlertContainer() {
   const { alerts, hideAlert } = useAlert();
 
   return (
-    <>
+    <div className="fixed bottom-4 right-4 space-y-2 z-50">
       {alerts.map((alert) => (
         <Alert
           key={alert.id}
@@ -69,7 +73,7 @@ function AlertContainer() {
           onClose={() => hideAlert(alert.id)}
         />
       ))}
-    </>
+    </div>
   );
 }
 
@@ -77,9 +81,9 @@ function App() {
   return (
     <ThemeProvider>
       <AlertProvider>
-        <AlertContainer />
         <Router>
           <AppContent />
+          <AlertContainer />
         </Router>
       </AlertProvider>
     </ThemeProvider>

@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
+}
+
 @layer base {
   body {
     @apply antialiased text-gray-800 dark:text-gray-200;

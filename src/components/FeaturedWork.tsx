@@ -30,21 +30,20 @@ export default function FeaturedWork() {
         }
     };
 
-    const allTags = Array.from(new Set(featuredProjects.flatMap((project) => project.tags)));
+    const allTags = Array.from(
+        new Set(featuredProjects.flatMap((project) => project.tags)),
+    );
 
     const filteredProjects = selectedTag
-        ? featuredProjects.filter((project) => project.tags.includes(selectedTag))
+        ? featuredProjects.filter((project) =>
+              project.tags.includes(selectedTag),
+          )
         : featuredProjects;
 
     if (isLoading) return null;
 
     return (
-        <motion.section
-            className="py-12 px-4 bg-gray-50 dark:bg-gray-900"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-        >
+        <section className="py-20 md:py-32 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
             <div className="container max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row gap-12 items-start">
                     {/* About Section */}
@@ -54,22 +53,34 @@ export default function FeaturedWork() {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="text-3xl md:text-4xl font-extrabold leading-tight mb-6">
-                            <span className="bg-gradient-to-r from-blue-500 to-cyan-600 bg-clip-text text-transparent">
+                        <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-6">
+                            <span className="bg-gradient-to-r from-blue-800 to-cyan-600 bg-clip-text text-transparent">
                                 Software Engineer
                             </span>
                         </h2>
                         <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
-                            Passionate about building scalable, high-performance applications.
+                            Passionate about building scalable, high-performance
+                            applications.
                         </p>
 
                         <hr className="my-6 border-gray-300 dark:border-gray-700" />
 
                         <ul className="space-y-3 text-base text-gray-600 dark:text-gray-300">
-                            <li>🚀 Specializing in React, Node.js, MongoDB, and MySQL.</li>
-                            <li>🎨 Creating seamless and responsive user experiences.</li>
-                            <li>🔧 Expertise in API development and cloud deployment.</li>
-                            <li>🌱 Continuously learning to stay ahead in tech.</li>
+                            <li>
+                                🚀 Specializing in React, Node.js, MongoDB, and
+                                MySQL.
+                            </li>
+                            <li>
+                                🎨 Creating seamless and responsive user
+                                experiences.
+                            </li>
+                            <li>
+                                🔧 Expertise in API development and cloud
+                                deployment.
+                            </li>
+                            <li>
+                                🌱 Continuously learning to stay ahead in tech.
+                            </li>
                         </ul>
 
                         <p className="mt-6 text-lg text-gray-700 dark:text-gray-300">
@@ -116,10 +127,11 @@ export default function FeaturedWork() {
                         <div className="mb-6 flex flex-wrap gap-2">
                             <button
                                 onClick={() => setSelectedTag(null)}
-                                className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${!selectedTag
-                                    ? "bg-blue-600 text-white"
-                                    : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
-                                    }`}
+                                className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
+                                    !selectedTag
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                }`}
                             >
                                 All
                             </button>
@@ -127,10 +139,11 @@ export default function FeaturedWork() {
                                 <button
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${selectedTag === tag
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
-                                        }`}
+                                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
+                                        selectedTag === tag
+                                            ? "bg-blue-600 text-white"
+                                            : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                    }`}
                                 >
                                     {tag}
                                 </button>
@@ -143,8 +156,15 @@ export default function FeaturedWork() {
                             spaceBetween={16}
                             slidesPerView={1}
                             loop={true}
-                            pagination={{ clickable: true, dynamicBullets: true }}
-                            autoplay={{ delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true }}
+                            pagination={{
+                                clickable: true,
+                                dynamicBullets: true,
+                            }}
+                            autoplay={{
+                                delay: 5000,
+                                disableOnInteraction: false,
+                                pauseOnMouseEnter: true,
+                            }}
                             breakpoints={{
                                 640: { slidesPerView: 1 },
                                 768: { slidesPerView: 2 },
@@ -155,7 +175,7 @@ export default function FeaturedWork() {
                             {filteredProjects?.map((project) => (
                                 <SwiperSlide key={project.id}>
                                     <motion.div
-                                        className="bg-gray-200 dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-shadow border border-gray-300 dark:border-gray-700"
+                                        className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg overflow-hidden cursor-pointer hover:shadow-2xl transition-shadow border border-gray-200 dark:border-gray-700"
                                         whileHover={{ scale: 1.02 }}
                                         whileTap={{ scale: 0.98 }}
                                     >
@@ -172,11 +192,11 @@ export default function FeaturedWork() {
                                                 {project.description}
                                             </p>
                                         </div>
-                                        <div className="p-4 md:p-6 flex flex-wrap gap-2 bg-gray-100 dark:bg-gray-700">
+                                        <div className="p-4 md:p-6 flex flex-wrap gap-2 bg-gray-100 dark:bg-gray-800">
                                             {project.tags.map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 rounded-full text-sm"
+                                                    className="px-3 py-1 bg-gradient-to-r from-cyan-100/50 to-purple-100/50 dark:from-cyan-900/20 dark:to-purple-900/20 text-cyan-600 dark:text-cyan-300 rounded-full text-sm"
                                                 >
                                                     {tag}
                                                 </span>
@@ -184,9 +204,15 @@ export default function FeaturedWork() {
                                         </div>
                                         <div
                                             className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center gap-3 opacity-0 hover:opacity-100 transition-opacity"
-                                            onClick={() => navigate(`/projects/${project.id}`)}
+                                            onClick={() =>
+                                                navigate(
+                                                    `/projects/${project.id}`,
+                                                )
+                                            }
                                         >
-                                            <p className="text-white font-semibold text-lg">View Details</p>
+                                            <p className="text-white font-semibold text-lg">
+                                                View Details
+                                            </p>
                                         </div>
                                     </motion.div>
                                 </SwiperSlide>
@@ -195,6 +221,6 @@ export default function FeaturedWork() {
                     </motion.div>
                 </div>
             </div>
-        </motion.section>
+        </section>
     );
 }
