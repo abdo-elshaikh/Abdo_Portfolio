@@ -81,19 +81,15 @@ function SkillCard({ skill }: { skill: Skill }) {
 export default function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
 
-  const fetchSkills = useCallback(async () => {
-    try {
-      const data = await skillsApi.getAll();
-      if (data) setSkills(data);
-    } catch (error) {
-      console.error("Error fetching skills:", error);
-    }
-  }, []);
 
   useEffect(() => {
     fetchSkills();
   }, []);
 
+  async function fetchSkills() {
+      const data = await skillsApi.getAll();
+      if (data) setSkills(data);
+  }
   return (
     <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
