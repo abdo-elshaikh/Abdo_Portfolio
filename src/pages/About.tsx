@@ -67,22 +67,19 @@ export default function About() {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       variants={containerVariants}
-      className="py-24 bg-gray-50 dark:bg-gray-900"
+      className="py-24 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800"
       id="about"
     >
-      <motion.div
-        variants={itemVariants}
-        className="container mx-auto px-4"
-      >
-        <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">
-          About Me
-        <span className="text-cyan-500">
-            <Mail />
-        <span className="sr-only">Email</span>
-          </span>
-        </h1>
-      </motion.div>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Heading */}
+        <motion.h1
+          variants={itemVariants}
+          className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
+        >
+          About Me
+        </motion.h1>
+
+        {/* Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Avatar Section */}
           <motion.div
@@ -101,7 +98,7 @@ export default function About() {
           </motion.div>
 
           {/* Content Section */}
-          <div className="lg:col-span-7 space-y-12">
+          <div className="lg:col-span-7 p-4 space-y-12 border rounded-3xl bg-white dark:bg-gray-900">
             {/* Header Section */}
             <motion.div variants={itemVariants} className="space-y-6">
               <div className="space-y-2">

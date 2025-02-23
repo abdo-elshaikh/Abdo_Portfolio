@@ -62,7 +62,7 @@ const ExperienceTimeline = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90">
       <section className="py-20 relative container mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           className="text-center mb-16 lg:mb-24"

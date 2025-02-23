@@ -1,23 +1,95 @@
 import { motion } from "framer-motion";
-import { Coffee, Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Coffee } from "lucide-react";
+import { useState } from "react";
+import Alert from "../components/Alert";
+import { contactsApi } from "../lib/api";
+import type { Contact } from "../lib/types";
 
 export default function Contact() {
+  const [contactForm, setContactForm] = useState<Contact>({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [alerts, setAlerts] = useState<{ id: string; type: "success" | "error"; message: string }[]>(
+    []
+  );
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setContactForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const data = await contactsApi.create(contactForm);
+      if (data) {
+        setAlerts([
+          ...alerts,
+          {
+            id: Date.now().toString(),
+            type: "success",
+            message: "Message sent successfully!",
+          },
+        ]);
+        setContactForm({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      setAlerts([
+        ...alerts,
+        {
+          id: Date.now().toString(),
+          type: "error",
+          message: "Something went wrong. Please try again.",
+        },
+      ]);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 pt-20 pb-28 flex items-center justify-center"
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800"
     >
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Alerts */}
+      <div className="fixed top-4 right-4 space-y-2 z-50">
+        {alerts.map((alert) => (
+          <Alert
+            key={alert.id}
+            type={alert.type}
+            message={alert.message}
+            onClose={() =>
+              setAlerts((prev) => prev.filter((a) => a.id !== alert.id))
+            }
+          />
+        ))}
+      </div>
+
+      {/* Contact Section */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-6xl rounded-[2rem] shadow-2xl bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-8 sm:p-12 lg:p-16 border border-gray-200/50 dark:border-gray-700"
+          className="max-w-6xl mx-auto"
         >
+          {/* Heading */}
           <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-16 text-center flex flex-col items-center gap-4"
+            className="text-4xl md:text-5xl font-bold mb-12 text-center flex flex-col items-center gap-4 mt-16"
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.4, delay: 0.4 }}
@@ -30,18 +102,18 @@ export default function Contact() {
             </span>
           </motion.h2>
 
-          <div className="grid md:grid-cols-2 gap-12 lg:gap-16">
-            {/* Contact Information */}
+          {/* Asymmetrical Grid Layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Contact Information Card */}
             <motion.div
-              className="space-y-8"
+              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg p-8 border border-gray-200/50 dark:border-gray-700"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.6 }}
             >
               <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
-                Reach Out Directly
+                Contact Information
               </h3>
-
               <div className="space-y-6">
                 <ContactItem
                   icon={Mail}
@@ -62,40 +134,48 @@ export default function Contact() {
                   link="https://maps.google.com"
                 />
               </div>
-
-              <div className="mt-10 p-6 rounded-xl bg-gray-50 dark:bg-gray-700/30 border border-gray-200/50 dark:border-gray-600">
-                <h4 className="text-lg font-medium text-gray-700 dark:text-gray-200 mb-3">
-                  Office Hours
-                </h4>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Mon-Fri: 9AM - 5PM PST
-                  <br />
-                  Weekends: By appointment
-                </p>
-              </div>
             </motion.div>
 
-            {/* Contact Form */}
+            {/* Contact Form Card */}
             <motion.form
-              className="space-y-6"
+              className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-lg p-8 border border-gray-200/50 dark:border-gray-700 col-span-1 md:col-span-2 lg:col-span-2"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.8 }}
+              onSubmit={handleSubmit}
             >
-              <div className="grid gap-6">
+              <h3 className="text-2xl font-semibold text-gray-800 dark:text-white mb-6">
+                Send Me a Message
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <InputField
                   label="Your Name"
                   id="name"
                   type="text"
-                  icon="user"
+                  name="name"
+                  value={contactForm.name}
+                  onChange={handleChange}
+                  required
                 />
                 <InputField
                   label="Email Address"
                   id="email"
                   type="email"
-                  icon="at-sign"
+                  name="email"
+                  value={contactForm.email}
+                  onChange={handleChange}
+                  required
                 />
-                <div className="relative">
+                <InputField
+                  label="Phone Number"
+                  id="phone"
+                  type="tel"
+                  name="phone"
+                  value={contactForm.phone}
+                  onChange={handleChange}
+                  required
+                />
+                <div className="md:col-span-2">
                   <label
                     htmlFor="message"
                     className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
@@ -104,17 +184,21 @@ export default function Contact() {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     rows={4}
+                    value={contactForm.message}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/30 border border-gray-200/50 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-white transition-all"
                     placeholder="Share your project details or inquiry..."
+                    required
                   />
                 </div>
               </div>
-
               <motion.button
+                type="submit"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mt-6"
               >
                 <Send className="w-5 h-5" />
                 Send Message
@@ -127,6 +211,7 @@ export default function Contact() {
   );
 }
 
+// Reusable ContactItem Component
 function ContactItem({ icon: Icon, title, value, link }) {
   return (
     <motion.a
@@ -151,7 +236,16 @@ function ContactItem({ icon: Icon, title, value, link }) {
   );
 }
 
-function InputField({ label, id, type, icon }) {
+// Reusable InputField Component
+function InputField({
+  label,
+  id,
+  type,
+  name,
+  value,
+  onChange,
+  required = false,
+}) {
   return (
     <div className="relative">
       <label
@@ -163,6 +257,10 @@ function InputField({ label, id, type, icon }) {
       <input
         type={type}
         id={id}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required={required}
         className="w-full px-4 py-3 bg-white/50 dark:bg-gray-700/30 border border-gray-200/50 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent placeholder-gray-400 dark:placeholder-gray-500 text-gray-900 dark:text-white transition-all"
       />
     </div>
