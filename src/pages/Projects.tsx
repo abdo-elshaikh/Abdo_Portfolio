@@ -43,7 +43,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90">
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -51,10 +51,10 @@ export default function Projects() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-primary-600 to-cyan-500 bg-clip-text text-transparent mb-4">
+            <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary-600 via-cyan-500 to-emerald-500 bg-clip-text text-transparent mb-6">
               Featured Creations
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto max-w-7xl">
               Explore my portfolio of innovative solutions and creative implementations
             </p>
           </motion.div>

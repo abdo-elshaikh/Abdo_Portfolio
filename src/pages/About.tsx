@@ -67,18 +67,25 @@ export default function About() {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       variants={containerVariants}
-      className="py-24 bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800"
+      className="min-h-screen py-20 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90"
       id="about"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        {/* Heading */}
-        <motion.h1
-          variants={itemVariants}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent"
-        >
+      {/* Heading */}
+      <motion.div
+        className="text-center mb-20 mt-16"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary-600 via-cyan-500 to-emerald-500 bg-clip-text text-transparent mb-6">
           About Me
-        </motion.h1>
+        </h2>
+        <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
+          Explore my portfolio of innovative solutions and creative
+          implementations
+        </p>
+      </motion.div>
 
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-8xl">
         {/* Grid Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
           {/* Avatar Section */}
@@ -98,13 +105,13 @@ export default function About() {
           </motion.div>
 
           {/* Content Section */}
-          <div className="lg:col-span-7 p-4 space-y-12 border rounded-3xl bg-white dark:bg-gray-900">
+          <div className="lg:col-span-7 p-6 space-y-12 border rounded-3xl bg-white dark:bg-gray-900 shadow-lg">
             {/* Header Section */}
             <motion.div variants={itemVariants} className="space-y-6">
               <div className="space-y-2">
-                <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
                   {personalInfo?.name || "John Doe"}
-                </h2>
+                </h3>
                 <p className="text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-300">
                   {personalInfo?.title || "Full Stack Developer"}
                 </p>

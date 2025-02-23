@@ -12,12 +12,12 @@ export default function Contact() {
     phone: "",
     message: "",
   });
-  const [alerts, setAlerts] = useState<{ id: string; type: "success" | "error"; message: string }[]>(
-    []
-  );
+  const [alerts, setAlerts] = useState<
+    { id: string; type: "success" | "error"; message: string }[]
+  >([]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setContactForm((prev) => ({
@@ -63,7 +63,7 @@ export default function Contact() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800"
+      className="min-h-screen py-16 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90"
     >
       {/* Alerts */}
       <div className="fixed top-4 right-4 space-y-2 z-50">
@@ -88,19 +88,19 @@ export default function Contact() {
           className="max-w-6xl mx-auto"
         >
           {/* Heading */}
-          <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-12 text-center flex flex-col items-center gap-4 mt-16"
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
+          <motion.div
+            className="text-center mb-16 lg:mb-24"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <div className="p-4 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl shadow-lg">
-              <Coffee className="text-white w-8 h-8 md:w-10 md:h-10" />
-            </div>
-            <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              Let's Create Something Amazing
-            </span>
-          </motion.h2>
+            <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary-600 via-cyan-500 to-emerald-500 bg-clip-text text-transparent mb-6">
+              Lets Talk
+            </h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              I'm always open to new opportunities.
+            </p>
+          </motion.div>
 
           {/* Asymmetrical Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
