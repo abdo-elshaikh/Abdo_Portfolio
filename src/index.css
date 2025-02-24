@@ -11,6 +11,7 @@ html {
 @layer base {
   body {
     @apply antialiased text-gray-800 dark:text-gray-200;
+    font-family: "Cairo Play", sans-serif, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans";
   }
 
   h1, h2, h3, h4, h5, h6 {

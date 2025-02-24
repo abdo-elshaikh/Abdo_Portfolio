@@ -19,6 +19,12 @@ export interface PersonalInfo {
   phone?: string;
   location?: string;
   avatar_url?: string;
+  github_url?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  website_url?: string;
+  facebook_url?: string;
+  resume_url?: string;
   created_at: string;
 }
 

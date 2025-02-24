@@ -81,15 +81,15 @@ function SkillCard({ skill }: { skill: Skill }) {
 export default function SkillsSection() {
   const [skills, setSkills] = useState<Skill[]>([]);
 
-
   useEffect(() => {
     fetchSkills();
   }, []);
 
-  async function fetchSkills() {
-      const data = await skillsApi.getAll();
-      if (data) setSkills(data);
-  }
+  const fetchSkills = async () => {
+    const data = await skillsApi.getAll();
+    if (data) setSkills(data);
+  };
+
   return (
     <section className="py-16 md:py-32 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,8 +106,8 @@ export default function SkillsSection() {
               My Expertise
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Combining technical mastery with creative problem-solving to deliver
-              exceptional results.
+              Combining technical mastery with creative problem-solving to
+              deliver exceptional results.
             </p>
           </motion.div>
 

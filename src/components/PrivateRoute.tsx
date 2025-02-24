@@ -36,14 +36,13 @@ const PrivateRoute = () => {
         // Show a loading spinner or placeholder while checking authentication
         return (
             <div className="flex items-center justify-center h-screen">
-                <div className="w-16 h-16 border-4 border-turquoise-500 rounded-full animate-spin"></div>
+                <div className="w-20 h-20 border-4 border-turquoise-500 rounded-full animate-spin"></div>
             </div>
         );
     }
 
     if (!user) {
-        // Redirect to the unauthorized page if the user is not authenticated
-        return <Navigate to="/unauthorized" replace />;
+        return <Navigate to="/auth" replace />;
     }
 
     // Render the child routes if the user is authenticated

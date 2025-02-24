@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -25,8 +26,18 @@ import Unauthorized from "./pages/Unauthorized";
 function AppContent() {
   const location = useLocation();
 
+  // 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   // List of routes that should have full-screen layout (no header/footer)
-  const fullScreenRoutes = ["/dashboard", "/auth", "/not-found", "/unauthorized"];
+  const fullScreenRoutes = [
+    "/dashboard",
+    "/auth",
+    "/not-found",
+    "/unauthorized",
+  ];
 
   // Check if the current route is a full-screen route
   const isFullScreen = fullScreenRoutes.includes(location.pathname);

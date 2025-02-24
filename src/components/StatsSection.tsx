@@ -21,7 +21,7 @@ interface StatCardProps extends Stat {
 
 const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
     const [ref, inView] = useInView({
-        triggerOnce: true,
+        triggerOnce: false, // Allow re-triggering
         threshold: 0.2,
     });
 
@@ -60,12 +60,14 @@ const StatCard = ({ icon, value, suffix, title, delay }: StatCardProps) => {
                     </h3>
                 </div>
                 <div className="text-4xl font-bold text-white dark:text-gray-100">
-                    <CountUp
-                        end={value}
-                        duration={2}
-                        suffix={suffix}
-                        separator=","
-                    />
+                    {inView && (
+                        <CountUp
+                            end={value}
+                            duration={3}
+                            suffix={suffix}
+                            separator=","
+                        />
+                    )}
                 </div>
             </div>
         </motion.div>

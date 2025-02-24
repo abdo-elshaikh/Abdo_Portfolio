@@ -8,8 +8,12 @@ import {
     Facebook,
 } from "lucide-react";
 import React, { useRef, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import * as THREE from "three";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAlert } from "../contexts/AlertContext";
+import { PersonalInfo } from "../lib/types";
+import { personalInfoApi } from "../lib/api";
 
 const HeroSection = () => {
     const containerRef = useRef(null);
@@ -18,10 +22,18 @@ const HeroSection = () => {
     const [mounted, setMounted] = useState(false);
     const controls = useAnimation();
     const isInView = useInView(textRef, { once: true, threshold: 0.5 });
-    const resumeUrl =
-        "https://drive.google.com/file/d/11V2uNnNSCYHNU3d4Gcj8hutxR52uwriM/view?usp=drive_link";
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
+    const { showAlert } = useAlert();
 
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        fetchPersonalInfo();
+    }, []);
+
+    const fetchPersonalInfo = async () => {
+        const data = await personalInfoApi.get();
+        setPersonalInfo(data);
+    };
 
     // Enhanced Three.js Particle System
     useEffect(() => {
@@ -149,6 +161,7 @@ const HeroSection = () => {
         visible: { opacity: 1, x: 0 },
     };
 
+    
     return (
         <section className="relative pt-20 md:pt-5 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
@@ -190,8 +203,8 @@ const HeroSection = () => {
                             <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
                                 Abdulrahman Mohamed
                             </span>
-                            <span className="block mt-4 text-3xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
-                                Senior Software Engineer
+                            <span className="block mt-4 font-['Playwrite IT Moderna', serif] text-3xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
+                                Freelance Software Engineer
                             </span>
                         </motion.h1>
 
@@ -212,7 +225,7 @@ const HeroSection = () => {
                             variants={itemVariants}
                         >
                             <motion.a
-                                href="#"
+                                href="/contact"
                                 className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
@@ -221,7 +234,7 @@ const HeroSection = () => {
                                 <span>Start a Conversation</span>
                             </motion.a>
                             <motion.a
-                                href={resumeUrl}
+                                href={personalInfo?.resume_url}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="px-8 py-4 border-2 border-cyan-500/30 hover:border-cyan-500/50 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
@@ -239,16 +252,32 @@ const HeroSection = () => {
                             variants={itemVariants}
                         >
                             {[
-                                { Icon: Github, label: "GitHub" },
-                                { Icon: Linkedin, label: "LinkedIn" },
-                                { Icon: Facebook, label: "Facebook" },
-                                { Icon: Twitter, label: "Twitter" },
-                            ].map(({ Icon, label }, index) => (
+                                {
+                                    Icon: Github,
+                                    label: "GitHub",
+                                    link: `${personalInfo?.github_url}`,
+                                },
+                                {
+                                    Icon: Linkedin,
+                                    label: "LinkedIn",
+                                    link: `${personalInfo?.linkedin_url}`,
+                                },
+                                {
+                                    Icon: Facebook,
+                                    label: "Facebook",
+                                    link: `${personalInfo?.facebook_url}`,
+                                },
+                                {
+                                    Icon: Twitter,
+                                    label: "Twitter",
+                                    link: `${personalInfo?.twitter_url}`,
+                                },
+                            ].map(({ Icon, label, link }, index) => (
                                 <motion.a
                                     key={index}
-                                    href="#"
+                                    href={link || "#"}
                                     target="_blank"
-                                    rel="noreferrer"
+                                    rel="noreferrer "
                                     className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                                     whileHover={{ y: -2 }}
                                 >

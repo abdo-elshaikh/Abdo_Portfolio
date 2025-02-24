@@ -72,7 +72,7 @@ export default function About() {
     >
       {/* Heading */}
       <motion.div
-        className="text-center mb-20 mt-16"
+        className="text-center mb-20 mt-16 max-w-3xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >

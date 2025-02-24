@@ -10,6 +10,8 @@ interface DashboardModalProps {
   editForm: any;
   onFormSubmit: (formData: any) => void;
   onFormChange: (field: string, value: any) => void;
+  errors?: Record<string, string>; // Validation errors
+  isSubmitting?: boolean; // Loading state
 }
 
 export default function DashboardModal({
@@ -19,7 +21,9 @@ export default function DashboardModal({
   activeTab,
   editForm,
   onFormSubmit,
-  onFormChange
+  onFormChange,
+  errors,
+  isSubmitting,
 }: DashboardModalProps) {
   return (
     <AnimatePresence>
@@ -34,15 +38,16 @@ export default function DashboardModal({
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             exit={{ scale: 0.95 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl"
+            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md md:max-w-2xl mx-2 overflow-y-auto max-h-[90vh]"
           >
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 onFormSubmit(editForm);
               }}
-              className="p-6 space-y-6"
+              className="p-4 md:p-6 space-y-4"
             >
+              {/* Header */}
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-semibold dark:text-white">
                   {isEditing ? 'Edit' : 'Create'} {activeTab.replace(/_/g, ' ')}
@@ -56,12 +61,16 @@ export default function DashboardModal({
                 </button>
               </div>
 
+              {/* Form Content */}
               <DashboardForm
                 activeTab={activeTab}
                 editForm={editForm}
                 onFormChange={onFormChange}
+                errors={errors}
+                isSubmitting={isSubmitting}
               />
 
+              {/* Footer */}
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
@@ -72,9 +81,10 @@ export default function DashboardModal({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+                  disabled={isSubmitting}
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isEditing ? 'Save Changes' : 'Create'}
+                  {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Create'}
                 </button>
               </div>
             </form>
