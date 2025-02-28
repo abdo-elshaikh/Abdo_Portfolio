@@ -128,9 +128,9 @@ const HeroSection = () => {
             <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
             <div ref={containerRef} className="absolute inset-0 z-0 opacity-40" />
 
-            <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
-                    className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-12 lg:gap-24 py-8 lg:py-24"
+                    className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-8 sm:gap-12 lg:gap-24 py-6 sm:py-8 lg:py-24"
                     initial="hidden"
                     animate={controls}
                     variants={containerVariants}
@@ -152,7 +152,7 @@ const HeroSection = () => {
                         </motion.div>
 
                         <motion.h1
-                            className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight"
+                            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight"
                             variants={itemVariants}
                         >
                             <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">

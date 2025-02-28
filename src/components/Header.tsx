@@ -4,7 +4,7 @@ import { Menu, X, LogOut } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { supabase } from "../lib/supabase";
-import logo from "/logo.png";
+import logo from "/logo_3.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -24,7 +24,7 @@ function AppContent() {
   return (
     <div>
       {!isDashboard && !isAuth && <Header />}
-      <main>
+      <main className="min-h-screen w-full">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
