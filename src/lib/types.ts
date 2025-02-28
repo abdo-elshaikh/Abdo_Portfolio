@@ -19,6 +19,12 @@ export interface PersonalInfo {
   phone?: string;
   location?: string;
   avatar_url?: string;
+  github_url?: string;
+  linkedin_url?: string;
+  twitter_url?: string;
+  website_url?: string;
+  facebook_url?: string;
+  resume_url?: string;
   created_at: string;
 }
 
@@ -28,6 +34,8 @@ export interface Contact {
   name: string;
   email: string;
   message: string;
+  subject: string;
+  phone: string;
   created_at: string;
 }
 
@@ -81,8 +89,15 @@ export interface User {
 }
 
 export interface AlertProps {
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   message: string;
   onClose?: () => void;
   isVisible?: boolean;
+}
+
+export interface ContactFormProps {
+  name: string;
+  email: string;
+  subjet: string;
+  message: string;
 }

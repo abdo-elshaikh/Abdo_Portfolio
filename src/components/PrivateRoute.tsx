@@ -9,7 +9,9 @@ const PrivateRoute = () => {
     useEffect(() => {
         // Check the current session when the component mounts
         const checkSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+            const {
+                data: { session },
+            } = await supabase.auth.getSession();
             setUser(session?.user || null);
             setLoading(false);
         };
@@ -17,10 +19,12 @@ const PrivateRoute = () => {
         checkSession();
 
         // Listen for authentication state changes
-        const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-            setUser(session?.user || null);
-            setLoading(false);
-        });
+        const { data: authListener } = supabase.auth.onAuthStateChange(
+            (event, session) => {
+                setUser(session?.user || null);
+                setLoading(false);
+            },
+        );
 
         // Cleanup the listener when the component unmounts
         return () => {
@@ -32,13 +36,12 @@ const PrivateRoute = () => {
         // Show a loading spinner or placeholder while checking authentication
         return (
             <div className="flex items-center justify-center h-screen">
-                <div className="w-16 h-16 border-4 border-turquoise-500 rounded-full animate-spin"></div>
+                <div className="w-20 h-20 border-4 border-turquoise-500 rounded-full animate-spin"></div>
             </div>
-        )
+        );
     }
 
     if (!user) {
-        // Redirect to the auth page if the user is not authenticated
         return <Navigate to="/auth" replace />;
     }
 

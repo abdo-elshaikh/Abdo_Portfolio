@@ -1,15 +1,14 @@
 import { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, LogOut } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { supabase } from "../lib/supabase";
-import logo from "/logo_3.png";
+import logo from "/logo.png";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const navigate = useNavigate();
 
   // Handle scroll for header background
   useEffect(() => {
@@ -41,18 +40,19 @@ export default function Header() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
-        ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200 dark:border-gray-800"
-        : "bg-transparent dark:bg-transparent"
-        }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 dark:bg-gray-900 backdrop-blur-md shadow-lg border-b border-gray-200/10 dark:border-gray-600"
+          : "bg-transparent dark:bg-transparent"
+      }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-12 py-auto flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* Logo */}
         <NavLink
           to="/"
           className="text-xl sm:text-2xl font-bold text-cyan-600 dark:text-cyan-400 hover:opacity-80 transition-opacity"
         >
-          <img src={logo} alt="Logo" className="w-50 h-20" />
+          <img src={logo} alt="Logo" className="w-40 h-16 sm:w-50 sm:h-20" />
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -63,9 +63,10 @@ export default function Header() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `relative px-3 py-2 rounded-md font-medium transition-all text-sm sm:text-base ${isActive
-                    ? "text-cyan-600 dark:text-cyan-400"
-                    : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400"
+                  `relative p-2 rounded-md font-medium transition-all text-sm sm:text-base ${
+                    isActive
+                      ? "text-cyan-600 dark:text-cyan-400"
+                      : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400"
                   }`
                 }
               >
@@ -74,7 +75,7 @@ export default function Header() {
                     {item.label}
                     {isActive && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-[2px] bg-cyan-600 dark:bg-cyan-400"
+                        className="absolute bottom-0 left-0 right-0 h-[3px] bg-cyan-400 dark:bg-cyan-300"
                         layoutId="active-nav"
                         transition={{ type: "spring", stiffness: 500 }}
                       />
@@ -133,9 +134,10 @@ export default function Header() {
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-base font-medium transition-all ${isActive
-                          ? "bg-cyan-50 dark:bg-gray-800 text-cyan-600 dark:text-cyan-400"
-                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        `block px-4 py-3 rounded-lg text-base font-medium transition-all ${
+                          isActive
+                            ? "bg-cyan-50 dark:bg-gray-800 text-cyan-600 dark:text-cyan-400"
+                            : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         }`
                       }
                       onClick={() => setIsMenuOpen(false)}
@@ -144,26 +146,6 @@ export default function Header() {
                     </NavLink>
                   </motion.div>
                 ))}
-
-                {/* Sign Out Button */}
-                <motion.div
-                  variants={linkVariants}
-                  transition={{ duration: 0.1, delay: navItems.length * 0.05 }}
-                >
-                  <button
-                    onClick={async () => {
-                      await supabase.auth.signOut();
-                      navigate("/");
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full px-4 py-3 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center gap-2 transition-all"
-                  >
-                    <LogOut size={18} />
-                    <span className="font-medium text-sm sm:text-base">
-                      Sign Out
-                    </span>
-                  </button>
-                </motion.div>
               </motion.div>
             </div>
           </motion.div>

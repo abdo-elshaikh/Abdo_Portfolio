@@ -1,8 +1,19 @@
 import { motion, useAnimation, useInView } from "framer-motion";
-import { Github, Linkedin, Twitter, Mail, Download, Facebook } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
+import {
+    Github,
+    Linkedin,
+    Twitter,
+    Mail,
+    Download,
+    Facebook,
+} from "lucide-react";
+import React, { useRef, useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import * as THREE from "three";
 import { useTheme } from "../contexts/ThemeContext";
+import { useAlert } from "../contexts/AlertContext";
+import { PersonalInfo } from "../lib/types";
+import { personalInfoApi } from "../lib/api";
 
 const HeroSection = () => {
     const containerRef = useRef(null);
@@ -11,17 +22,34 @@ const HeroSection = () => {
     const [mounted, setMounted] = useState(false);
     const controls = useAnimation();
     const isInView = useInView(textRef, { once: true, threshold: 0.5 });
-    const resumeUrl = "https://drive.google.com/file/d/11V2uNnNSCYHNU3d4Gcj8hutxR52uwriM/view?usp=drive_link";
+    const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
+    const { showAlert } = useAlert();
 
-    useEffect(() => setMounted(true), []);
+    useEffect(() => {
+        setMounted(true);
+        fetchPersonalInfo();
+    }, []);
+
+    const fetchPersonalInfo = async () => {
+        const data = await personalInfoApi.get();
+        setPersonalInfo(data);
+    };
 
     // Enhanced Three.js Particle System
     useEffect(() => {
         if (!containerRef.current) return;
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000,
+        );
+        const renderer = new THREE.WebGLRenderer({
+            alpha: true,
+            antialias: true,
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         containerRef.current.appendChild(renderer.domElement);
 
@@ -38,16 +66,25 @@ const HeroSection = () => {
             sizes[i] = Math.random() * 0.1 + 0.02;
         }
 
-        particlesGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-        particlesGeometry.setAttribute("size", new THREE.BufferAttribute(sizes, 1));
+        particlesGeometry.setAttribute(
+            "position",
+            new THREE.BufferAttribute(positions, 3),
+        );
+        particlesGeometry.setAttribute(
+            "size",
+            new THREE.BufferAttribute(sizes, 1),
+        );
 
         const particlesMaterial = new THREE.PointsMaterial({
             color: theme === "dark" ? 0x4fd1c5 : 0x2d6cdf,
             size: window.innerWidth < 768 ? 0.08 : 0.05, // Larger particles on mobile
-            sizeAttenuation: true
+            sizeAttenuation: true,
         });
 
-        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        const particles = new THREE.Points(
+            particlesGeometry,
+            particlesMaterial,
+        );
         scene.add(particles);
 
         camera.position.z = window.innerWidth < 768 ? 7 : 5; // Adjust camera for mobile
@@ -60,13 +97,13 @@ const HeroSection = () => {
             mouse.y = -(touch.clientY / window.innerHeight) * 2 + 1;
         };
 
-        window.addEventListener('mousemove', (event) => {
+        window.addEventListener("mousemove", (event) => {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         });
 
-        window.addEventListener('touchmove', touchHandler);
-        window.addEventListener('touchstart', touchHandler);
+        window.addEventListener("touchmove", touchHandler);
+        window.addEventListener("touchstart", touchHandler);
 
         const animate = () => {
             requestAnimationFrame(animate);
@@ -74,8 +111,10 @@ const HeroSection = () => {
             particles.rotation.x += 0.0005;
             particles.rotation.y += 0.0005;
 
-            particles.position.x += (mouse.x * 0.5 - particles.position.x) * 0.01;
-            particles.position.y += (mouse.y * 0.5 - particles.position.y) * 0.01;
+            particles.position.x +=
+                (mouse.x * 0.5 - particles.position.x) * 0.01;
+            particles.position.y +=
+                (mouse.y * 0.5 - particles.position.y) * 0.01;
 
             renderer.render(scene, camera);
         };
@@ -91,8 +130,8 @@ const HeroSection = () => {
 
         return () => {
             window.removeEventListener("resize", handleResize);
-            window.removeEventListener('touchmove', touchHandler);
-            window.removeEventListener('touchstart', touchHandler);
+            window.removeEventListener("touchmove", touchHandler);
+            window.removeEventListener("touchstart", touchHandler);
             if (containerRef.current?.contains(renderer.domElement)) {
                 containerRef.current.removeChild(renderer.domElement);
             }
@@ -107,26 +146,30 @@ const HeroSection = () => {
         hidden: {},
         visible: {
             transition: {
-                staggerChildren: 0.1
-            }
-        }
+                staggerChildren: 0.1,
+            },
+        },
     };
 
     const itemVariants = {
         hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0 }
+        visible: { opacity: 1, y: 0 },
     };
 
     const avatarVariants = {
         hidden: { opacity: 0, x: 20 },
-        visible: { opacity: 1, x: 0 }
+        visible: { opacity: 1, x: 0 },
     };
 
+    
     return (
-        <section className="relative pt-6 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
+        <section className="relative pt-20 md:pt-5 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
             <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
-            <div ref={containerRef} className="absolute inset-0 z-0 opacity-40" />
+            <div
+                ref={containerRef}
+                className="absolute inset-0 z-0 opacity-40"
+            />
 
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <motion.div
@@ -142,7 +185,9 @@ const HeroSection = () => {
                         <motion.div variants={itemVariants}>
                             <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded-full backdrop-blur-sm">
                                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                <span className="text-sm font-medium">Available for new projects</span>
+                                <span className="text-sm font-medium">
+                                    Available for new projects
+                                </span>
                             </div>
                         </motion.div>
                         <motion.div variants={itemVariants}>
@@ -158,20 +203,20 @@ const HeroSection = () => {
                             <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
                                 Abdulrahman Mohamed
                             </span>
-                            <span className="block mt-4 text-4xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
-                                Software Engineer - Full Stack Developer
+                            <span className="block mt-4 font-['Playwrite IT Moderna', serif] text-3xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
+                                Freelance Software Engineer
                             </span>
                         </motion.h1>
 
                         <hr className="w-18 border-b-2 border-cyan-500 dark:border-cyan-400 mx-auto lg:mx-0" />
-
                         <motion.p
                             className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
                             variants={itemVariants}
                         >
-                            Full-stack developer specializing in crafting high-performance web applications
-                            with modern technologies. Focused on creating intuitive user experiences
-                            backed by robust architectures.
+                            Full-stack developer specializing in crafting
+                            high-performance web applications with modern
+                            technologies. Focused on creating intuitive user
+                            experiences backed by robust architectures.
                         </motion.p>
 
                         {/* CTAs */}
@@ -180,7 +225,7 @@ const HeroSection = () => {
                             variants={itemVariants}
                         >
                             <motion.a
-                                href="#contact"
+                                href="/contact"
                                 className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
@@ -189,7 +234,7 @@ const HeroSection = () => {
                                 <span>Start a Conversation</span>
                             </motion.a>
                             <motion.a
-                                href={resumeUrl}
+                                href={personalInfo?.resume_url}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="px-8 py-4 border-2 border-cyan-500/30 hover:border-cyan-500/50 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
@@ -207,16 +252,32 @@ const HeroSection = () => {
                             variants={itemVariants}
                         >
                             {[
-                                { Icon: Github, label: "GitHub" },
-                                { Icon: Linkedin, label: "LinkedIn" },
-                                { Icon: Facebook, label: "Facebook" },
-                                { Icon: Twitter, label: "Twitter" }
-                            ].map(({ Icon, label }, index) => (
+                                {
+                                    Icon: Github,
+                                    label: "GitHub",
+                                    link: `${personalInfo?.github_url}`,
+                                },
+                                {
+                                    Icon: Linkedin,
+                                    label: "LinkedIn",
+                                    link: `${personalInfo?.linkedin_url}`,
+                                },
+                                {
+                                    Icon: Facebook,
+                                    label: "Facebook",
+                                    link: `${personalInfo?.facebook_url}`,
+                                },
+                                {
+                                    Icon: Twitter,
+                                    label: "Twitter",
+                                    link: `${personalInfo?.twitter_url}`,
+                                },
+                            ].map(({ Icon, label, link }, index) => (
                                 <motion.a
                                     key={index}
-                                    href="#"
+                                    href={link || "#"}
                                     target="_blank"
-                                    rel="noreferrer"
+                                    rel="noreferrer "
                                     className="p-3 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                                     whileHover={{ y: -2 }}
                                 >
@@ -227,8 +288,6 @@ const HeroSection = () => {
                                 </motion.a>
                             ))}
                         </motion.div>
-
-
                     </div>
 
                     {/* Avatar Section */}
