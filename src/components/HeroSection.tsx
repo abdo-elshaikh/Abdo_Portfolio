@@ -161,7 +161,7 @@ const HeroSection = () => {
         visible: { opacity: 1, x: 0 },
     };
 
-    
+
     return (
         <section className="relative pt-20 md:pt-5 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
@@ -208,7 +208,11 @@ const HeroSection = () => {
                             </span>
                         </motion.h1>
 
-                        <hr className="w-18 border-b-2 border-cyan-500 dark:border-cyan-400 mx-auto lg:mx-0" />
+                        <motion.hr
+                            className="w-18 border-b-2 border-cyan-500 dark:border-cyan-400 mx-auto lg:mx-0"
+                            variants={itemVariants}
+                        />
+
                         <motion.p
                             className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 lg:mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed"
                             variants={itemVariants}

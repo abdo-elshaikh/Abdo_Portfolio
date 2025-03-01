@@ -86,7 +86,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="py-20 md:py-32 px-4 relative overflow-hidden bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-900"
+      className="py-16 md:py-16 px-4 relative overflow-hidden bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-900"
     >
       {alert && (
         <Alert
@@ -95,6 +95,7 @@ export default function ContactSection() {
           onClose={() => setAlert(null)}
         />
       )}
+  
       <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         {/* Contact Information */}
         <motion.div
@@ -104,11 +105,11 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
         >
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+            {/* <h2 className="text-4xl md:text-5xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-blue-800 to-cyan-600 bg-clip-text text-transparent">
                 Let's Connect
               </span>
-            </h2>
+            </h2> */}
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
               Have a project in mind or just want to chat? Drop me a message and
               I'll get back to you within 24 hours.

@@ -26,7 +26,6 @@ import Unauthorized from "./pages/Unauthorized";
 function AppContent() {
   const location = useLocation();
 
-  // 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
@@ -44,7 +43,7 @@ function AppContent() {
 
   return (
     <div>
-      {!isDashboard && !isAuth && <Header />}
+      {!isFullScreen && <Header />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -62,7 +61,6 @@ function AppContent() {
         </Routes>
       </main>
 
-      {/* Conditionally render Footer */}
       {!isFullScreen && <Footer />}
     </div>
   );

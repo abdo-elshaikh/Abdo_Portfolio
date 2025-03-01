@@ -43,7 +43,7 @@ export default function FeaturedWork() {
     if (isLoading) return null;
 
     return (
-        <section className="py-20 md:py-32 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
+        <section className="pt-16 md:py-32 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
             <div className="container max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row gap-12 items-start">
                     {/* About Section */}

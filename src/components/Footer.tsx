@@ -1,11 +1,24 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
+import { PersonalInfo } from "../lib/types";
+import { personalInfoApi } from "../lib/api";
 
 export default function Footer() {
+  const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({} as PersonalInfo);
+
+  useEffect(() => {
+    async function fetchPersonalInfo() {
+      const data = await personalInfoApi.get();
+      if (data) setPersonalInfo(data);
+    }
+
+    fetchPersonalInfo();
+  }, []);
+
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth", });
   };
 
   const fadeIn = {
@@ -23,9 +36,9 @@ export default function Footer() {
       { label: "Contact", path: "/contact" },
     ],
     social: [
-      { icon: <Github size={22} />, url: "https://github.com", label: "GitHub" },
-      { icon: <Linkedin size={22} />, url: "https://linkedin.com", label: "LinkedIn" },
-      { icon: <Mail size={22} />, url: "mailto:contact@example.com", label: "Email" },
+      { icon: <Github size={22} />, url: personalInfo.github_url, label: "GitHub" },
+      { icon: <Linkedin size={22} />, url: personalInfo.linkedin_url, label: "LinkedIn" },
+      { icon: <Mail size={22} />, url: personalInfo.email, label: "Email" },
     ],
   };
 
@@ -97,9 +110,15 @@ export default function Footer() {
               Contact
             </h4>
             <ul className="space-y-3 text-gray-300">
-              <li className="hover:text-cyan-400 transition-colors">San Francisco, CA</li>
-              <li className="hover:text-cyan-400 transition-colors">contact@example.com</li>
-              <li className="hover:text-cyan-400 transition-colors">+1 (234) 567-890</li>
+              <li className="hover:text-cyan-400 transition-colors" aria-label="Location">
+                {personalInfo.location}
+              </li>
+              <li className="hover:text-cyan-400 transition-colors" aria-label="Email">
+                {personalInfo.email}
+              </li>
+              <li className="hover:text-cyan-400 transition-colors" aria-label="Phone number">
+                {personalInfo.phone}
+              </li>
             </ul>
           </motion.div>
         </div>
@@ -113,7 +132,7 @@ export default function Footer() {
           <motion.button
             onClick={scrollToTop}
             className="mt-4 md:mt-0 p-3 bg-cyan-500 hover:bg-cyan-400 text-gray-900 rounded-full transition-all shadow-md hover:shadow-lg group"
-            whileHover={{ scale: 1.15 }}
+            whileHover={{ scale: 1.15, boxShadow: "0px 0px 15px rgba(0, 255, 255, 0.4)" }}
             whileTap={{ scale: 0.95 }}
             aria-label="Scroll to top"
           >
