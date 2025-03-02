@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Code2, ExternalLink, Github, ArrowRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import type { Project } from '../lib/types';
@@ -7,6 +8,7 @@ import type { Project } from '../lib/types';
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProjects();
@@ -97,9 +99,9 @@ export default function Projects() {
 
                   <div className="flex flex-wrap gap-4 justify-between items-center">
                     <div className="flex gap-4">
-                      {project.github && (
+                      {project.link && (
                         <motion.a
-                          href={project.github}
+                          href={project.link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="p-2 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
@@ -124,6 +126,7 @@ export default function Projects() {
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
+                      onClick={() => navigate(`/projects/${project.id}`)}
                       className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
                     >
                       Details

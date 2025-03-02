@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, useTransform, useViewportScroll, useInView } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { contactsApi, personalInfoApi } from "../lib/api";
 import type { Contact, PersonalInfo } from "../lib/types";
@@ -17,11 +17,12 @@ export default function ContactSection() {
     phone: "",
     subject: "",
     message: "",
-  });
+  } as Contact);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [contactInfo, setContactInfo] = useState<PersonalInfo | null>(null);
 
+  // Handle form submission
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (
@@ -64,6 +65,7 @@ export default function ContactSection() {
     }
   }
 
+  // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -74,6 +76,7 @@ export default function ContactSection() {
     }));
   };
 
+  // Fetch contact info
   useEffect(() => {
     const fetchContactInfo = async () => {
       const data = await personalInfoApi.get();
@@ -84,10 +87,8 @@ export default function ContactSection() {
   }, []);
 
   return (
-    <section
-      id="contact"
-      className="py-16 md:py-16 px-4 relative overflow-hidden bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-gray-800 dark:to-gray-900"
-    >
+    <section className="py-16 sm:py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      {/* Animated Text Underline */}
       {alert && (
         <Alert
           type={alert.type}
@@ -95,7 +96,8 @@ export default function ContactSection() {
           onClose={() => setAlert(null)}
         />
       )}
-  
+
+      {/* Contact Content */}
       <div className="container mx-auto max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
         {/* Contact Information */}
         <motion.div
@@ -105,11 +107,9 @@ export default function ContactSection() {
           transition={{ duration: 0.6 }}
         >
           <div className="space-y-4">
-            {/* <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-              <span className="bg-gradient-to-r from-blue-800 to-cyan-600 bg-clip-text text-transparent">
-                Let's Connect
-              </span>
-            </h2> */}
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
+              Let's Connect
+            </h2>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-xl mx-auto lg:mx-0">
               Have a project in mind or just want to chat? Drop me a message and
               I'll get back to you within 24 hours.
@@ -140,7 +140,7 @@ export default function ContactSection() {
 
         {/* Contact Form */}
         <motion.form
-          className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg p-6 sm:p-8 rounded-2xl shadow-2xl border border-gray-200/50 dark:border-gray-700 space-y-6"
+          className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-700 p-6 sm:p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow space-y-6"
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -213,7 +213,8 @@ export default function ContactSection() {
   );
 }
 
-function ContactItem({ icon: Icon, title, value, link }) {
+// ContactItem Component
+function ContactItem({ icon: Icon, title, value, link }: { icon: any, title: string, value: string, link: string }) {
   return (
     <motion.a
       href={link}
@@ -237,14 +238,8 @@ function ContactItem({ icon: Icon, title, value, link }) {
   );
 }
 
-function InputField({
-  type,
-  placeholder,
-  name,
-  value,
-  onChange,
-  className = "",
-}) {
+// InputField Component
+function InputField({ type, placeholder, name, value, onChange, className = "", }: { type: string, placeholder: string, name: string, value: string, onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void, className?: string }) {
   return (
     <input
       type={type}

@@ -22,7 +22,7 @@ export default function FeaturedWork() {
     const fetchFeaturedProjects = async (): Promise<void> => {
         try {
             const data = await projectsApi.getAll();
-            if (data) setFeaturedProjects(data);
+            if (data) setFeaturedProjects(data.filter((p) => p.is_featured));
         } catch (error) {
             console.error("Error fetching featured projects:", error);
         } finally {
@@ -36,14 +36,14 @@ export default function FeaturedWork() {
 
     const filteredProjects = selectedTag
         ? featuredProjects.filter((project) =>
-              project.tags.includes(selectedTag),
-          )
+            project.tags.includes(selectedTag),
+        )
         : featuredProjects;
 
     if (isLoading) return null;
 
     return (
-        <section className="pt-16 md:py-32 px-4 relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-900 dark:to-gray-800">
+        <section className="py-16 sm:py-20 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
             <div className="container max-w-7xl mx-auto">
                 <div className="flex flex-col lg:flex-row gap-12 items-start">
                     {/* About Section */}
@@ -127,11 +127,10 @@ export default function FeaturedWork() {
                         <div className="mb-6 flex flex-wrap gap-2">
                             <button
                                 onClick={() => setSelectedTag(null)}
-                                className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
-                                    !selectedTag
-                                        ? "bg-blue-600 text-white"
-                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
-                                }`}
+                                className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${!selectedTag
+                                    ? "bg-blue-600 text-white"
+                                    : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                    }`}
                             >
                                 All
                             </button>
@@ -139,11 +138,10 @@ export default function FeaturedWork() {
                                 <button
                                     key={tag}
                                     onClick={() => setSelectedTag(tag)}
-                                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${
-                                        selectedTag === tag
-                                            ? "bg-blue-600 text-white"
-                                            : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
-                                    }`}
+                                    className={`px-3 py-1 text-sm font-medium rounded-full transition-colors ${selectedTag === tag
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600"
+                                        }`}
                                 >
                                     {tag}
                                 </button>

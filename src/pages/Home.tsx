@@ -4,7 +4,7 @@ import SkillsSection from "../components/SkillsSection";
 import ContactSection from "../components/ContactSection";
 import FeaturedWork from "../components/FeaturedWork";
 import ProfileSection from "../components/ProfileSection";
-import AnimatedTextUnderlign from "../components/AnimatedTextUnderlign";
+// import CombinedSection from "../components/CombinedSection";
 
 export default function Home() {
   return (
@@ -14,7 +14,6 @@ export default function Home() {
       <SkillsSection />
       <StatsSection />
       <FeaturedWork />
-      <AnimatedTextUnderlign />
       <ContactSection />
     </>
   );

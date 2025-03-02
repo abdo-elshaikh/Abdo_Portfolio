@@ -66,7 +66,7 @@ export default function Dashboard() {
       switch (activeTab) {
         case "projects": {
           const projects = await projectsApi.getAll();
-          setData(projects);
+          setData(projects || []);
           break;
         }
         case "personal_info": {
@@ -76,27 +76,27 @@ export default function Dashboard() {
         }
         case "education": {
           const education = await educationApi.getAll();
-          setData(education);
+          setData(education || []);
           break;
         }
         case "contacts": {
           const contacts = await contactsApi.getAll();
-          setData(contacts);
+          setData(contacts || []);
           break;
         }
         case "skills": {
           const skills = await skillsApi.getAll();
-          setData(skills);
+          setData(skills || []);
           break;
         }
         case "stats": {
           const stats = await statsApi.getAll();
-          setData(stats);
+          setData(stats || []);
           break;
         }
         case "experiences": {
           const experiences = await experiencesApi.getAll();
-          setData(experiences);
+          setData(experiences || []);
           break;
         }
         default:

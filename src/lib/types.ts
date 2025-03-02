@@ -5,6 +5,7 @@ export interface Project {
   image_url: string;
   tags: string[];
   link?: string;
+  is_featured: boolean;
   created_at: string;
   user_id: string;
 }
@@ -17,6 +18,7 @@ export interface PersonalInfo {
   description: string;
   email: string;
   phone?: string;
+  whatsapp?: string;
   location?: string;
   avatar_url?: string;
   github_url?: string;
