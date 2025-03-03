@@ -1,12 +1,5 @@
 import { motion, useAnimation, useInView } from "framer-motion";
-import {
-    Github,
-    Linkedin,
-    Twitter,
-    Mail,
-    Download,
-    Facebook,
-} from "lucide-react";
+import { Github, Linkedin, Twitter, Mail, Download, Facebook } from "lucide-react";
 import React, { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import * as THREE from "three";
@@ -76,7 +69,7 @@ const HeroSection = () => {
         );
 
         const particlesMaterial = new THREE.PointsMaterial({
-            color: theme === "dark" ? 0x4fd1c5 : 0x2d6cdf,
+            color: theme === "dark" ? 0x6d28d9 : 0x3b82f6, // Purple for dark, blue for light
             size: window.innerWidth < 768 ? 0.08 : 0.05, // Larger particles on mobile
             sizeAttenuation: true,
         });
@@ -161,11 +154,10 @@ const HeroSection = () => {
         visible: { opacity: 1, x: 0 },
     };
 
-
     return (
         <section className="relative pt-20 md:pt-5 min-h-screen flex items-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] dark:opacity-[0.1]"></div>
-            <div className="absolute inset-0 bg-gradient-to-tr from-primary-500/10 to-secondary-500/10 dark:from-primary-900/20 dark:to-secondary-900/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-blue-500/10 dark:from-purple-900/20 dark:to-blue-900/20"></div>
             <div
                 ref={containerRef}
                 className="absolute inset-0 z-0 opacity-40"
@@ -191,7 +183,7 @@ const HeroSection = () => {
                             </div>
                         </motion.div>
                         <motion.div variants={itemVariants}>
-                            <span className="font-mono text-sm text-cyan-500 dark:text-cyan-400">
+                            <span className="font-mono text-sm text-purple-600 dark:text-purple-400">
                                 Hi, my name is :
                             </span>
                         </motion.div>
@@ -200,7 +192,7 @@ const HeroSection = () => {
                             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-gray-100 leading-tight"
                             variants={itemVariants}
                         >
-                            <span className="bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-purple-700 to-blue-500 dark:from-purple-500 dark:to-blue-400 bg-clip-text text-transparent">
                                 Abdulrahman Mohamed
                             </span>
                             <span className="block mt-4 font-['Playwrite IT Moderna', serif] text-3xl sm:text-2xl md:text-3xl font-medium text-gray-600 dark:text-gray-300">
@@ -209,7 +201,7 @@ const HeroSection = () => {
                         </motion.h1>
 
                         <motion.hr
-                            className="w-18 border-b-2 border-cyan-500 dark:border-cyan-400 mx-auto lg:mx-0"
+                            className="w-18 border-b-2 border-purple-500 dark:border-purple-400 mx-auto lg:mx-0"
                             variants={itemVariants}
                         />
 
@@ -230,7 +222,7 @@ const HeroSection = () => {
                         >
                             <motion.a
                                 href="/contact"
-                                className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                                className="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-xl font-medium flex items-center justify-center gap-3 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.98 }}
                             >
@@ -241,7 +233,7 @@ const HeroSection = () => {
                                 href={personalInfo?.resume_url}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="px-8 py-4 border-2 border-cyan-500/30 hover:border-cyan-500/50 text-cyan-600 dark:text-cyan-400 hover:bg-cyan-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
+                                className="px-8 py-4 border-2 border-purple-500/30 hover:border-purple-500/50 text-purple-600 dark:text-purple-400 hover:bg-purple-500/5 rounded-xl font-medium flex items-center justify-center gap-3 transition-all hover:-translate-y-1"
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
@@ -300,9 +292,9 @@ const HeroSection = () => {
                         variants={avatarVariants}
                     >
                         <div className="relative w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96">
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-500 dark:from-blue-500 dark:to-cyan-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-700 to-blue-500 dark:from-purple-500 dark:to-blue-400 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity" />
                             <motion.div
-                                className="relative w-full h-full rounded-full border-8 border-white dark:border-gray-900 overflow-hidden shadow-2xl hover:shadow-cyan-500/20 transition-shadow"
+                                className="relative w-full h-full rounded-full border-8 border-white dark:border-gray-900 overflow-hidden shadow-2xl hover:shadow-purple-500/20 transition-shadow"
                                 whileHover={{ scale: 1.01 }}
                             >
                                 <img

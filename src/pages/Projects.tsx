@@ -32,11 +32,14 @@ export default function Projects() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-16 flex items-center justify-center">
+      <div className="min-h-screen pt-16 bg-gradient-to-br from-indigo-50 via-white to-purple-50/50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-indigo-900/20 dark:to-purple-900/20">
         <div className="space-y-8 w-full max-w-6xl px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {[...Array(3)].map((_, i) => (
-              <div key={i} className="h-96 bg-gray-200/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl animate-pulse" />
+              <div
+                key={i}
+                className="h-96 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl animate-pulse border border-gray-200/50 dark:border-gray-700/50"
+              />
             ))}
           </div>
         </div>
@@ -45,7 +48,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="min-h-screen pt-16 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90">
+    <div className="min-h-screen pt-16 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900/90">
       <section className="py-20 relative">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -53,10 +56,10 @@ export default function Projects() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary-600 via-cyan-500 to-emerald-500 bg-clip-text text-transparent mb-6">
+            <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent mb-6">
               Featured Creations
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto max-w-7xl">
+            <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
               Explore my portfolio of innovative solutions and creative implementations
             </p>
           </motion.div>
@@ -68,7 +71,7 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                className="group relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-200/50 dark:border-gray-700/50"
               >
                 <div className="relative h-64 overflow-hidden">
                   <img
@@ -127,7 +130,7 @@ export default function Projects() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => navigate(`/projects/${project.id}`)}
-                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg transition-all"
+                      className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg font-medium hover:shadow-lg transition-all"
                     >
                       Details
                       <ArrowRight className="w-4 h-4" />

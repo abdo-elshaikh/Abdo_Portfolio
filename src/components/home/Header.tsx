@@ -39,17 +39,16 @@ export default function Header() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/95 dark:bg-gray-900 backdrop-blur-md shadow-lg border-b border-gray-200/10 dark:border-gray-600"
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled
+          ? "bg-white/95 dark:bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-200/10 dark:border-gray-700/10"
           : "bg-transparent dark:bg-transparent"
-      }`}
+        }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-xl sm:text-2xl font-bold text-cyan-600 dark:text-cyan-400 hover:opacity-80 transition-opacity"
+          className="text-xl sm:text-2xl font-bold text-purple-600 dark:text-purple-400 hover:opacity-80 transition-opacity"
         >
           <img src={logo} alt="Logo" className="w-40 h-16 sm:w-50 sm:h-20" />
         </NavLink>
@@ -62,10 +61,9 @@ export default function Header() {
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `relative p-2 rounded-md font-medium transition-all text-sm sm:text-base ${
-                    isActive
-                      ? "text-cyan-600 dark:text-cyan-400"
-                      : "text-gray-600 dark:text-gray-300 hover:text-cyan-500 dark:hover:text-cyan-400"
+                  `relative p-2 rounded-md font-medium transition-all text-sm sm:text-base ${isActive
+                    ? "text-purple-600 dark:text-purple-400"
+                    : "text-gray-600 dark:text-gray-300 hover:text-purple-500 dark:hover:text-purple-400"
                   }`
                 }
               >
@@ -74,7 +72,7 @@ export default function Header() {
                     {item.label}
                     {isActive && (
                       <motion.div
-                        className="absolute bottom-0 left-0 right-0 h-[3px] bg-cyan-400 dark:bg-cyan-300"
+                        className="absolute bottom-0 left-0 right-0 h-[3px] bg-purple-400 dark:bg-purple-300"
                         layoutId="active-nav"
                         transition={{ type: "spring", stiffness: 500 }}
                       />
@@ -115,7 +113,7 @@ export default function Header() {
             animate="visible"
             exit="exit"
             variants={menuVariants}
-            className="md:hidden fixed top-[72px] bg-white/95 w-full dark:bg-gray-900/95 backdrop-blur-md z-40"
+            className="md:hidden fixed top-20 inset-x-0 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md z-40 shadow-lg"
             transition={{ duration: 0.2 }}
           >
             <div className="container mx-auto px-4 sm:px-6 py-4">
@@ -133,10 +131,9 @@ export default function Header() {
                     <NavLink
                       to={item.path}
                       className={({ isActive }) =>
-                        `block px-4 py-3 rounded-lg text-base font-medium transition-all ${
-                          isActive
-                            ? "bg-cyan-50 dark:bg-gray-800 text-cyan-600 dark:text-cyan-400"
-                            : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                        `block px-4 py-3 rounded-lg text-base font-medium transition-all ${isActive
+                          ? "bg-purple-50 dark:bg-gray-800 text-purple-600 dark:text-purple-400"
+                          : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                         }`
                       }
                       onClick={() => setIsMenuOpen(false)}

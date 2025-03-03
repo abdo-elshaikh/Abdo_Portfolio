@@ -91,7 +91,7 @@ export interface User {
 }
 
 export interface AlertProps {
-  type: "success" | "error" | "warning" | "info";
+  type: "success" | "error" | "warning" | "info" | "hidden";
   message: string;
   onClose?: () => void;
   isVisible?: boolean;

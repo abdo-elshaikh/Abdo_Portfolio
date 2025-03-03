@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  User,
-  Mail,
-  Phone,
-  GraduationCap,
-  Briefcase,
-  Download,
-} from "lucide-react";
+import { User, Mail, Phone, GraduationCap, Briefcase, Download } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useTheme } from "../contexts/ThemeContext";
@@ -67,7 +60,7 @@ export default function About() {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       variants={containerVariants}
-      className="min-h-screen py-20 bg-gradient-to-br from-gray-50/50 via-white to-cyan-50/30 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-900 dark:to-gray-900/90"
+      className="min-h-screen py-20 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900/90"
       id="about"
     >
       {/* Heading */}
@@ -76,12 +69,11 @@ export default function About() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary-600 via-cyan-500 to-emerald-500 bg-clip-text text-transparent mb-6">
+        <h2 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent mb-6">
           About Me
         </h2>
         <p className="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto">
-          Explore my portfolio of innovative solutions and creative
-          implementations
+          Explore my journey, skills, and professional milestones in the world of technology.
         </p>
       </motion.div>
 
@@ -93,8 +85,8 @@ export default function About() {
             variants={itemVariants}
             className="lg:col-span-5 flex justify-center relative group"
           >
-            <div className="relative w-full max-w-auto aspect-square rounded-xl overflow-hidden shadow-2xl isolate">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-600 opacity-20 blur-3xl -z-10" />
+            <div className="relative w-full max-w-auto aspect-square rounded-2xl overflow-hidden shadow-2xl isolate">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-pink-500 opacity-20 blur-3xl -z-10" />
               <img
                 src={"/abdo.jpg"}
                 alt="Profile"
@@ -105,11 +97,11 @@ export default function About() {
           </motion.div>
 
           {/* Content Section */}
-          <div className="lg:col-span-7 p-6 space-y-12 border rounded-3xl bg-white dark:bg-gray-900 shadow-lg">
+          <div className="lg:col-span-7 p-6 space-y-12 border rounded-3xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-lg">
             {/* Header Section */}
             <motion.div variants={itemVariants} className="space-y-6">
               <div className="space-y-2">
-                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent">
+                <h3 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
                   {personalInfo?.name || "John Doe"}
                 </h3>
                 <p className="text-2xl md:text-3xl font-medium text-gray-700 dark:text-gray-300">
@@ -122,7 +114,7 @@ export default function About() {
                 download
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all"
               >
                 <Download size={24} className="mr-3" />
                 Download Resume
@@ -155,11 +147,11 @@ export default function About() {
               ].map((item, index) => (
                 <div
                   key={index}
-                  className="p-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl border border-gray-200/50 dark:border-gray-700 hover:border-cyan-500/30 transition-colors"
+                  className="p-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl border border-gray-200/50 dark:border-gray-700 hover:border-purple-500/30 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="p-3 bg-cyan-500/10 rounded-lg">
-                      <item.icon className="w-6 h-6 text-cyan-600 dark:text-cyan-400" />
+                    <div className="p-3 bg-purple-500/10 rounded-lg">
+                      <item.icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                     </div>
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -200,7 +192,7 @@ export default function About() {
                       <span className="font-medium text-gray-900 dark:text-white">
                         {skill.title}
                       </span>
-                      <span className="text-sm text-cyan-600 dark:text-cyan-400">
+                      <span className="text-sm text-purple-600 dark:text-purple-400">
                         {skill.proficiency}%
                       </span>
                     </div>
@@ -211,7 +203,7 @@ export default function About() {
                           inView ? { width: `${skill.proficiency}%` } : {}
                         }
                         transition={{ duration: 1 }}
-                        className="h-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600"
+                        className="h-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500"
                       />
                     </div>
                   </div>
@@ -227,15 +219,15 @@ export default function About() {
               <div className="space-y-8 relative pl-6 border-l-2 border-gray-200/50 dark:border-gray-700">
                 {personalInfo?.timeline?.map((item, index) => (
                   <div key={index} className="relative">
-                    <div className="absolute w-4 h-4 bg-cyan-500 rounded-full -left-[21px] top-5 ring-4 ring-white dark:ring-gray-900" />
-                    <div className="ml-8 p-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl border border-gray-200/50 dark:border-gray-700 hover:border-cyan-500/30 transition-colors">
+                    <div className="absolute w-4 h-4 bg-purple-500 rounded-full -left-[21px] top-5 ring-4 ring-white dark:ring-gray-900" />
+                    <div className="ml-8 p-6 bg-white/50 dark:bg-gray-800/50 backdrop-blur-lg rounded-xl border border-gray-200/50 dark:border-gray-700 hover:border-purple-500/30 transition-colors">
                       <p className="text-lg font-semibold text-gray-900 dark:text-white">
                         {item.title}
                       </p>
                       <p className="text-gray-600 dark:text-gray-400 mt-1">
                         {item.subtitle}
                       </p>
-                      <p className="text-sm text-cyan-600 dark:text-cyan-400 mt-2">
+                      <p className="text-sm text-purple-600 dark:text-purple-400 mt-2">
                         {item.date}
                       </p>
                     </div>

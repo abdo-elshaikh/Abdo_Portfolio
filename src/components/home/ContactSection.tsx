@@ -16,7 +16,7 @@ export default function ContactSection() {
     email: "",
     phone: "",
     subject: "",
-    message: ""
+    message: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertType | null>(null);
@@ -51,14 +51,14 @@ export default function ContactSection() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setContactForm(prev => ({ ...prev, [name]: value }));
+    setContactForm((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <section className="py-16 bg-white dark:bg-gray-900">
+    <section className="py-20 bg-gradient-to-b from-purple-50/50 to-indigo-50/50 dark:from-gray-900 dark:to-gray-800">
       {alert && <Alert type={alert.type} message={alert.message} onClose={() => setAlert(null)} />}
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Contact Information */}
           <motion.div
@@ -110,7 +110,7 @@ export default function ContactSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="bg-gray-50 dark:bg-gray-800 p-8 rounded-xl space-y-6"
+            className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl space-y-6"
           >
             <div className="grid gap-4">
               <InputField
@@ -145,7 +145,7 @@ export default function ContactSection() {
                 placeholder="Your message..."
                 value={contactForm.message}
                 onChange={handleChange}
-                className="w-full p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 rows={5}
                 required
               />
@@ -155,7 +155,7 @@ export default function ContactSection() {
               type="submit"
               whileTap={{ scale: 0.98 }}
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-lg font-medium hover:bg-gradient-to-r hover:from-purple-700 hover:to-pink-600 transition-all"
             >
               <Send className="w-5 h-5" />
               {isLoading ? "Sending..." : "Send Message"}
@@ -167,7 +167,7 @@ export default function ContactSection() {
   );
 }
 
-const ContactItem = ({ icon: Icon, title, value, link }: { icon: any, title: string, value?: string, link?: string }) => (
+const ContactItem = ({ icon: Icon, title, value, link }: { icon: any; title: string; value?: string; link?: string }) => (
   <motion.a
     href={link}
     target="_blank"
@@ -175,8 +175,8 @@ const ContactItem = ({ icon: Icon, title, value, link }: { icon: any, title: str
     whileHover={{ y: -2 }}
     className="flex items-center gap-4 p-4 bg-white dark:bg-gray-700 rounded-lg hover:shadow-md transition-shadow"
   >
-    <div className="p-2 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
-      <Icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+    <div className="p-2 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
+      <Icon className="w-6 h-6 text-purple-600 dark:text-purple-400" />
     </div>
     <div>
       <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">{title}</h3>
@@ -200,6 +200,6 @@ const InputField = ({ name, type = "text", placeholder, value, onChange, require
     value={value}
     onChange={onChange}
     required={required}
-    className="w-full p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    className="w-full p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
   />
 );
