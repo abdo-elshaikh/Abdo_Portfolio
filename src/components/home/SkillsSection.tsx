@@ -10,8 +10,8 @@ import {
   Server,
   Rocket,
 } from "lucide-react";
-import { Skill } from "../lib/types";
-import { skillsApi } from "../lib/api";
+import { Skill } from "../../lib/types";
+import { skillsApi } from "../../lib/api";
 
 const staggerContainer = {
   animate: {

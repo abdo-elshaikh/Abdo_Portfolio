@@ -10,10 +10,10 @@ import {
 import React, { useRef, useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import * as THREE from "three";
-import { useTheme } from "../contexts/ThemeContext";
-import { useAlert } from "../contexts/AlertContext";
-import { PersonalInfo } from "../lib/types";
-import { personalInfoApi } from "../lib/api";
+import { useTheme } from "../../contexts/ThemeContext";
+import { useAlert } from "../../contexts/AlertContext";
+import { PersonalInfo } from "../../lib/types";
+import { personalInfoApi } from "../../lib/api";
 
 const HeroSection = () => {
     const containerRef = useRef(null);

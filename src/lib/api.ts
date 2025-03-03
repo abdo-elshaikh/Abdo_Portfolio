@@ -298,7 +298,7 @@ export const personalInfoApi = {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-    console.log("user", user, "data", data);
+    // console.log("user", user, "data", data);
     return data as PersonalInfo;
   },
 

@@ -8,8 +8,8 @@ import {
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AlertProvider } from "./contexts/AlertContext";
 import { useAlert } from "./contexts/AlertContext";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import Header from "./components/home/Header";
+import Footer from "./components/home/Footer";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";

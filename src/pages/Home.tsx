@@ -1,10 +1,9 @@
-import HeroSection from "../components/HeroSection";
-import StatsSection from "../components/StatsSection";
-import SkillsSection from "../components/SkillsSection";
-import ContactSection from "../components/ContactSection";
-import FeaturedWork from "../components/FeaturedWork";
-import ProfileSection from "../components/ProfileSection";
-// import CombinedSection from "../components/CombinedSection";
+import HeroSection from "../components/home/HeroSection";
+import StatsSection from "../components/home/StatsSection";
+import SkillsSection from "../components/home/SkillsSection";
+import ContactSection from "../components/home/ContactSection";
+import FeaturedWork from "../components/home/FeaturedWork";
+import ProfileSection from "../components/home/ProfileSection";
 
 export default function Home() {
   return (

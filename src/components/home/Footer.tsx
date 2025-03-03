@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { Github, Linkedin, Mail, Heart, ArrowUp } from "lucide-react";
-import { PersonalInfo } from "../lib/types";
-import { personalInfoApi } from "../lib/api";
+import { PersonalInfo } from "../../lib/types";
+import { personalInfoApi } from "../../lib/api";
 
 export default function Footer() {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo>({} as PersonalInfo);

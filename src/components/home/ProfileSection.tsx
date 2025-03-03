@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { User, Mail, Phone, MapPin, GraduationCap, icons } from "lucide-react";
-import { educationApi, personalInfoApi } from "../lib/api";
+import { educationApi, personalInfoApi } from "../../lib/api";
 import { useEffect, useState } from "react";
-import { PersonalInfo, Education } from "../lib/types";
+import { PersonalInfo, Education } from "../../lib/types";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },

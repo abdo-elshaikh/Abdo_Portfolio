@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 import CountUp from "react-countup";
 import { useInView } from "react-intersection-observer";
-import { Stat } from "../lib/types";
-import { statsApi } from "../lib/api";
+import { Stat } from "../../lib/types";
+import { statsApi } from "../../lib/api";
 import { useEffect, useState } from "react";
 
 interface StatCardProps extends Stat {
