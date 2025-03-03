@@ -93,7 +93,7 @@ export default function About() {
             variants={itemVariants}
             className="lg:col-span-5 flex justify-center relative group"
           >
-            <div className="relative w-full max-w-md aspect-square rounded-3xl overflow-hidden shadow-2xl isolate">
+            <div className="relative w-full max-w-auto aspect-square rounded-xl overflow-hidden shadow-2xl isolate">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-cyan-600 opacity-20 blur-3xl -z-10" />
               <img
                 src={"/abdo.jpg"}
@@ -146,6 +146,11 @@ export default function About() {
                   icon: GraduationCap,
                   label: "Education",
                   value: personalInfo?.education,
+                },
+                {
+                  icon: Briefcase,
+                  label: "Experience",
+                  value: personalInfo?.experience,
                 },
               ].map((item, index) => (
                 <div
