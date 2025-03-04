@@ -1,4 +1,3 @@
-import { getAll } from "three/examples/jsm/libs/tween.module.js";
 import { supabase } from "./supabase";
 import type {
   Project,
@@ -9,6 +8,33 @@ import type {
   Experience,
   Education,
 } from "./types";
+
+// Storage API
+export const storageApi = {
+  upload: async (file: File, path: string) => {
+    const { data, error } = await supabase.storage
+      .from("portfolio")
+      .upload(path, file, { contentType: file.type });
+    if (error) throw error;
+    if (data) {
+      console.log(data);
+    }
+    return data;
+  },
+
+  replace: async (file: File, path: string) => {
+    const { data, error } = await supabase.storage
+      .from("portfolio")
+      .update(path, file, { upsert: true, contentType: file.type });
+    if (error) throw error;
+    return data;
+  },
+
+  delete: async (path: string) => {
+    const { error } = await supabase.storage.from("portfolio").remove([path]);
+    if (error) throw error;
+  },
+};
 
 // Projects API
 export const projectsApi = {
@@ -119,7 +145,7 @@ export const contactsApi = {
     return data as Contact[];
   },
 
-  create: async (contact: Omit<Contact, "id" | "created_at" >) => {
+  create: async (contact: Omit<Contact, "id" | "created_at">) => {
     const { data, error } = await supabase
       .from("contacts")
       .insert(contact)

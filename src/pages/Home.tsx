@@ -4,6 +4,7 @@ import SkillsSection from "../components/home/SkillsSection";
 import ContactSection from "../components/home/ContactSection";
 import FeaturedWork from "../components/home/FeaturedWork";
 import ProfileSection from "../components/home/ProfileSection";
+import WhatsAppPopup from "../components/WhatsAppPopup";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <StatsSection />
       <FeaturedWork />
       <ContactSection />
+      <WhatsAppPopup />
     </>
   );
 }

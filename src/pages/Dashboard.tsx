@@ -16,6 +16,7 @@ import {
   experiencesApi,
   statsApi,
   contactsApi,
+  storageApi,
 } from "../lib/api";
 import {
   Project,
@@ -25,8 +26,8 @@ import {
   PersonalInfo,
   Skill,
   Stat,
+  AlertProps
 } from "../lib/types";
-// import { SearchBar } from "../components/SearchBar";
 
 type EntityType =
   | "projects"
@@ -37,10 +38,6 @@ type EntityType =
   | "stats"
   | "experiences";
 
-type AlertType = {
-  message: string;
-  type: "success" | "error" | "warning" | "info";
-};
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<EntityType>("projects");
@@ -51,7 +48,7 @@ export default function Dashboard() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const [alert, setAlert] = useState<AlertType | null>(null);
+  const [alert, setAlert] = useState<AlertProps | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
@@ -258,6 +255,37 @@ export default function Dashboard() {
     }
   };
 
+  const handleUpload = async (file: File, path: string) => {
+    try {
+      const data = await storageApi.upload(file, path);
+      setAlert({ type: "success", message: "File uploaded successfully." });
+      console.log("File uploaded:", data);
+    } catch (error) {
+      setAlert({ type: 'error', message: "can't upload file!... Please try again." });
+      throw error;
+    }
+  }
+
+  const handleReplace = async (file: File, path: string) => {
+    try {
+      await storageApi.replace(file, path);
+      setAlert({ type: "success", message: "File replaced successfully." });
+    } catch (error) {
+      setAlert({ type: 'error', message: "can't replace file!... Please try again." });
+      throw error;
+    }
+  }
+
+  const handleDeleteFile = async (path: string) => {
+    try {
+      await storageApi.delete(path);
+      setAlert({ type: "success", message: "File deleted successfully." });
+    } catch (error) {
+      setAlert({ type: 'error', message: "can't delete file!... Please try again." });
+      throw error;
+    }
+  }
+
   // Filter data based on search query
   const filteredData = data.filter((item) =>
     Object.values(item).some((value) =>
@@ -345,6 +373,9 @@ export default function Dashboard() {
           setIsEditing(null);
           setEditForm({});
         }}
+        handleUploadFile={handleUpload}
+        handleReplaceFile={handleReplace}
+        handleDeleteFile={handleDeleteFile}
         isEditing={!!isEditing}
         activeTab={activeTab}
         editForm={editForm}

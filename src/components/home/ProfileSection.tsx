@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { User, Mail, Phone, MapPin, GraduationCap } from "lucide-react";
+import { User, Mail, Phone, MapPin, GraduationCap, MessageSquare } from "lucide-react";
 import { educationApi, personalInfoApi } from "../../lib/api";
 import { useEffect, useState } from "react";
 import { PersonalInfo, Education } from "../../lib/types";
@@ -92,15 +92,7 @@ export default function ProfileSection() {
                     value: personalInfo.phone,
                   },
                   {
-                    icon: (
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 256 256"
-                        className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-purple-400"
-                      >
-                        <path fill="currentColor" d="M45.4 177.95C49.8 166.25 56.2 136.15 56.2 136.15s-14.7-7.3-14.7-29.6c0-22.3 14.4-34.1 32.1-34.1 17.7 0 26.3 10.7 26.3 32.8 0 24.6-14.4 50.1-34.4 50.1-4.8 0-8.4-2.4-10.5-5.3m83.1 3.1c-6.6 3.7-15.5 6.4-22.9 6.4-23.1 0-35.8-15.5-35.8-44.5 0-34.3 24.6-70.4 64.3-70.4 31.1 0 50.7 20.8 50.7 48.6 0 30.1-17.9 52.5-43.6 52.5-4.8 0-9.5-.8-13.3-2.4-1.7-.6-10.9-4.6-10.9-4.6s-7.7 30.5-9.3 36.7c-2.7 8.1-8.1 16.1-12.7 21.6 12.1 3.7 25.4 5.8 39.6 5.8 57.8 0 87.4-25.6 87.4-72.3 0-56.6-50.9-95.7-101.9-95.7C71.6 2.95 21 48.35 21 108.95c0 34.3 17.2 57.4 43.9 57.4 5.2 0 10.4-.6 13.6-2.4 1.2-.5 11.2-4.8 11.2-4.8s-2.1 8.5-2.1 13.1c0 13.1 7.6 23.3 19.2 23.3 9.9 0 20.2-6.2 26.4-15.5 3.7-5.5 7.1-12.7 9.3-20.4l9.6-35.5c3.4-12.8 6.7-25.5 6.7-35.9 0-16.7-10.7-25.4-23.1-25.4-18.9 0-27.8 19.5-27.8 35.9 0 13.1 5.5 21.1 5.5 21.1s-19.3 83.9-22.6 97.8c-6.3 26.5-3 60.5-1.8 63.1.3.6 1.2.8 1.8.8 1.8s.5-1.2 1.4-3.4c1.1-2.7 2.6-6.6 4.1-11.1 3.5-10.3 7.7-23.3 10.5-33.6l16.1-60.2c1.1-4.3 2.3-8.5 3.4-12.7z" />
-                      </svg>
-                    ),
+                    icon: <MessageSquare className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-600 dark:text-purple-400" />,
                     label: "WhatsApp",
                     value: personalInfo.whatsapp,
                   },
