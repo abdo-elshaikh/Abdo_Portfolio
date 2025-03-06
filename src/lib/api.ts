@@ -7,6 +7,7 @@ import type {
   Stat,
   Experience,
   Education,
+  Message,
 } from "./types";
 
 // Storage API
@@ -304,13 +305,135 @@ export const experiencesApi = {
   },
 };
 
+// Live Chat API
+export const liveChatApi = {
+  sendMessage: async (message: string): Promise<Message> => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('User not authenticated');
+
+      const { data, error } = await supabase
+        .from('messages')
+        .insert([
+          {
+            user_id: user.id,
+            username: user.email?.split('@')[0] || 'Anonymous',
+            message,
+            status: 'sent',
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as Message;
+    } catch (error) {
+      console.error('Error sending message:', error);
+      throw error;
+    }
+  },
+
+  markMessageAsReceived: async (messageId: string): Promise<Message> => {
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .update({ status: 'delivered' })
+        .eq('id', messageId)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data as Message;
+    } catch (error) {
+      console.error('Error marking message as received:', error);
+      throw error;
+    }
+  },
+
+  getAllMessages: async (): Promise<Message[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+      return data as Message[];
+    } catch (error) {
+      console.error('Error fetching messages:', error);
+      throw error;
+    }
+  },
+
+  subscribeToMessages: (callback: (message: Message) => void) => {
+    const subscription = supabase
+      .channel('realtime-messages')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'messages',
+        },
+        (payload) => {
+          callback(payload.new as Message);
+        }
+      )
+      .subscribe();
+
+    return subscription;
+  },
+
+  unsubscribeFromMessages: (subscription: any) => {
+    supabase.removeChannel(subscription);
+  },
+
+  deleteMessage: async (messageId: string): Promise<void> => {
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .delete()
+        .eq('id', messageId);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting message:', error);
+      throw error;
+    }
+  },
+};
+
 // User API
 export const userApi = {
-  get: async () => {
-    const { data, error } = await supabase.from("users").select("*").single();
+  getUser: async () => {
+    const { data, error } = await supabase.auth.getUser();
     if (error) throw error;
     return data;
   },
+  passwordRecovery: async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    if (error) throw error;
+    return data;
+  },
+  signup: async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) throw error;
+    return data;
+  },
+  logout: async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  },
+  login: async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw error;
+    return data;
+  },
+  otpLogin: async (phone: any) => {
+    const { data, error } = await supabase.auth.signInWithOtp({ phone });
+    if (error) throw error;
+    return data;
+  }
 };
 
 // Personal Info API

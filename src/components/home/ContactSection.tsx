@@ -17,7 +17,7 @@ export default function ContactSection() {
     phone: "",
     subject: "",
     message: "",
-  });
+  } as Contact);
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<AlertType | null>(null);
   const [contactInfo, setContactInfo] = useState<PersonalInfo | null>(null);

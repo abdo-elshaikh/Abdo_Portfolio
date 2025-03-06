@@ -26,7 +26,7 @@ import {
   PersonalInfo,
   Skill,
   Stat,
-  AlertProps
+  AlertProps,
 } from "../lib/types";
 
 type EntityType =
@@ -37,7 +37,6 @@ type EntityType =
   | "skills"
   | "stats"
   | "experiences";
-
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<EntityType>("projects");
@@ -60,64 +59,57 @@ export default function Dashboard() {
   const fetchData = async () => {
     setLoading(true);
     try {
+      let response: any;
       switch (activeTab) {
-        case "projects": {
-          const projects = await projectsApi.getAll();
-          setData(projects || []);
+        case "projects":
+          response = await projectsApi.getAll();
           break;
-        }
-        case "personal_info": {
-          const info = await personalInfoApi.get();
-          setData(info ? [info] : []);
+        case "personal_info":
+          response = await personalInfoApi.get();
+          setData(response ? [response] : []);
+          return;
+        case "education":
+          response = await educationApi.getAll();
           break;
-        }
-        case "education": {
-          const education = await educationApi.getAll();
-          setData(education || []);
+        case "contacts":
+          response = await contactsApi.getAll();
           break;
-        }
-        case "contacts": {
-          const contacts = await contactsApi.getAll();
-          setData(contacts || []);
+        case "skills":
+          response = await skillsApi.getAll();
           break;
-        }
-        case "skills": {
-          const skills = await skillsApi.getAll();
-          setData(skills || []);
+        case "stats":
+          response = await statsApi.getAll();
           break;
-        }
-        case "stats": {
-          const stats = await statsApi.getAll();
-          setData(stats || []);
+        case "experiences":
+          response = await experiencesApi.getAll();
           break;
-        }
-        case "experiences": {
-          const experiences = await experiencesApi.getAll();
-          setData(experiences || []);
-          break;
-        }
         default:
-          break;
+          response = [];
       }
+      setData(response || []);
       setAlert(null);
     } catch (error: any) {
-      const errorMessage =
-        error.message || "Failed to fetch data. Please try again.";
-      setAlert({
-        type: "error",
-        message: errorMessage.includes("authentication")
-          ? "Please sign in again to continue."
-          : `Failed to fetch ${activeTab.replace(/_/g, " ")}: ${errorMessage}`,
-      });
-      setData([]);
-      if (error.message?.includes("authentication")) {
-        await supabase.auth.signOut();
-        navigate("/auth");
-      }
-      console.error(`Fetch error for ${activeTab}:`, error);
+      handleError(error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleError = (error: any) => {
+    const errorMessage =
+      error.message || "Failed to fetch data. Please try again.";
+    setAlert({
+      type: "error",
+      message: errorMessage.includes("authentication")
+        ? "Please sign in again to continue."
+        : `Failed to fetch ${activeTab.replace(/_/g, " ")}: ${errorMessage}`,
+    });
+    setData([]);
+    if (error.message?.includes("authentication")) {
+      supabase.auth.signOut();
+      navigate("/auth");
+    }
+    console.error(`Fetch error for ${activeTab}:`, error);
   };
 
   // Auto-dismiss alerts after 5 seconds
@@ -128,7 +120,6 @@ export default function Dashboard() {
     }
   }, [alert]);
 
-  // Create / Update handler
   const handleCreateUpdate = async (formData: any) => {
     try {
       if (isEditing) {
@@ -169,8 +160,6 @@ export default function Dashboard() {
         case "experiences":
           await experiencesApi.create(formData);
           break;
-        default:
-          break;
       }
       setAlert({ type: "success", message: "Item created successfully." });
       setIsModalOpen(false);
@@ -206,8 +195,6 @@ export default function Dashboard() {
         case "experiences":
           await experiencesApi.update(id, formData);
           break;
-        default:
-          break;
       }
       setAlert({ type: "success", message: "Item updated successfully." });
       setIsModalOpen(false);
@@ -240,8 +227,6 @@ export default function Dashboard() {
         case "experiences":
           await experiencesApi.delete(id);
           break;
-        default:
-          break;
       }
       setAlert({ type: "success", message: "Item deleted successfully." });
       setItemToDelete(null);
@@ -260,33 +245,35 @@ export default function Dashboard() {
       const data = await storageApi.upload(file, path);
       setAlert({ type: "success", message: "File uploaded successfully." });
       console.log("File uploaded:", data);
+      return data.fullPath;
     } catch (error) {
-      setAlert({ type: 'error', message: "can't upload file!... Please try again." });
+      setAlert({ type: "error", message: "Failed to upload file. Please try again." });
       throw error;
     }
-  }
+  };
 
   const handleReplace = async (file: File, path: string) => {
     try {
-      await storageApi.replace(file, path);
+      const data = await storageApi.replace(file, path);
       setAlert({ type: "success", message: "File replaced successfully." });
+      console.log("File replaced:", data);
+      return data.fullPath;
     } catch (error) {
-      setAlert({ type: 'error', message: "can't replace file!... Please try again." });
+      setAlert({ type: "error", message: "Failed to replace file. Please try again." });
       throw error;
     }
-  }
+  };
 
   const handleDeleteFile = async (path: string) => {
     try {
       await storageApi.delete(path);
       setAlert({ type: "success", message: "File deleted successfully." });
     } catch (error) {
-      setAlert({ type: 'error', message: "can't delete file!... Please try again." });
+      setAlert({ type: "error", message: "Failed to delete file. Please try again." });
       throw error;
     }
-  }
+  };
 
-  // Filter data based on search query
   const filteredData = data.filter((item) =>
     Object.values(item).some((value) =>
       String(value).toLowerCase().includes(searchQuery.toLowerCase()),
@@ -295,7 +282,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Animated Alert */}
       <AnimatePresence>
         {alert && (
           <motion.div
@@ -313,7 +299,6 @@ export default function Dashboard() {
         )}
       </AnimatePresence>
 
-      {/* Header */}
       <DashboardHeader
         onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         onLogout={async () => {
@@ -323,7 +308,6 @@ export default function Dashboard() {
       />
 
       <div className="flex">
-        {/* Sidebar */}
         <DashboardSidebar
           activeTab={activeTab}
           isMobileMenuOpen={isMobileMenuOpen}
@@ -331,21 +315,18 @@ export default function Dashboard() {
           onCloseMobileMenu={() => setIsMobileMenuOpen(false)}
         />
 
-        {/* Main Content */}
         <motion.main
           className="flex-1 pt-20 pb-8 px-4 lg:px-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {/* Search Bar */}
           <SearchBar
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={`Search ${activeTab.replace(/_/g, " ")}...`}
           />
 
-          {/* Dashboard Content */}
           <DashboardContent
             activeTab={activeTab}
             data={filteredData}
@@ -365,7 +346,6 @@ export default function Dashboard() {
         </motion.main>
       </div>
 
-      {/* Modals */}
       <DashboardModal
         isOpen={isModalOpen}
         onClose={() => {
@@ -398,16 +378,13 @@ export default function Dashboard() {
   );
 }
 
-// Example SearchBar Component (if not imported from a separate file)
-export const SearchBar = ({
-  value,
-  onChange,
-  placeholder,
-}: {
+interface SearchBarProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
-}) => {
+}
+
+export const SearchBar = ({ value, onChange, placeholder }: SearchBarProps) => {
   return (
     <div className="mb-6">
       <input

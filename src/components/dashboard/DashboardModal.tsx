@@ -1,7 +1,7 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, UploadCloud, Trash2, RefreshCw } from 'lucide-react';
-import DashboardForm from './DashboardForm';
-import { useState } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { X } from "lucide-react";
+import DashboardForm from "./DashboardForm";
+import { useState } from "react";
 
 interface DashboardModalProps {
   isOpen: boolean;
@@ -11,8 +11,6 @@ interface DashboardModalProps {
   editForm: any;
   onFormSubmit: (formData: any) => void;
   onFormChange: (field: string, value: any) => void;
-  errors?: Record<string, string>;
-  isSubmitting?: boolean;
   handleUploadFile?: (file: File, path: string) => Promise<string>;
   handleDeleteFile?: (path: string) => Promise<void>;
   handleReplaceFile?: (file: File, path: string) => Promise<string>;
@@ -26,8 +24,6 @@ export default function DashboardModal({
   editForm,
   onFormSubmit,
   onFormChange,
-  errors,
-  isSubmitting,
   handleUploadFile,
   handleDeleteFile,
   handleReplaceFile,
@@ -41,23 +37,18 @@ export default function DashboardModal({
     try {
       setFileUploading(true);
       setFileError(null);
+      const base = import.meta.env.VITE_SUPABASE_ENDPOINT;
 
-      // If editing and file exists, replace it
-      if (isEditing && editForm[field]) {
-        if (handleReplaceFile) {
-          const newUrl = await handleReplaceFile(file, editForm[field]);
-          onFormChange(field, newUrl);
-        }
-      } else {
-        // Otherwise upload new file
-        if (handleUploadFile) {
-          const url = await handleUploadFile(file, `${activeTab}/${field}`);
-          onFormChange(field, url);
-        }
+      if (isEditing && editForm[field] && handleReplaceFile) {
+        const newUrl = await handleReplaceFile(file, `${activeTab}/${file.name}`);
+        onFormChange(field, `${base}${newUrl}`);
+      } else if (handleUploadFile) {
+        const url = await handleUploadFile(file, `${activeTab}/${file.name}`);
+        onFormChange(field, `${base}${url}`);
       }
     } catch (error) {
-      setFileError('File upload failed. Please try again.');
-      console.error('File upload error:', error);
+      setFileError("File upload failed. Please try again.");
+      console.error("File upload error:", error);
     } finally {
       setFileUploading(false);
     }
@@ -70,10 +61,10 @@ export default function DashboardModal({
       setFileUploading(true);
       setFileError(null);
       await handleDeleteFile(editForm[field]);
-      onFormChange(field, '');
+      onFormChange(field, "");
     } catch (error) {
-      setFileError('File deletion failed. Please try again.');
-      console.error('File deletion error:', error);
+      setFileError("File deletion failed. Please try again.");
+      console.error("File deletion error:", error);
     } finally {
       setFileUploading(false);
     }
@@ -101,10 +92,9 @@ export default function DashboardModal({
               }}
               className="p-4 md:p-6 space-y-4"
             >
-              {/* Header */}
               <div className="flex justify-between items-center">
                 <h3 className="text-xl font-semibold dark:text-white">
-                  {isEditing ? 'Edit' : 'Create'} {activeTab.replace(/_/g, ' ')}
+                  {isEditing ? "Edit" : "Create"} {activeTab.replace(/_/g, " ")}
                 </h3>
                 <button
                   type="button"
@@ -115,41 +105,36 @@ export default function DashboardModal({
                 </button>
               </div>
 
-              {/* File Upload Error */}
               {fileError && (
                 <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg text-red-600 dark:text-red-400 text-sm">
                   {fileError}
                 </div>
               )}
 
-              {/* Form Content */}
               <DashboardForm
                 activeTab={activeTab}
                 editForm={editForm}
                 onFormChange={onFormChange}
-                errors={errors}
-                isSubmitting={isSubmitting}
                 fileUploading={fileUploading}
                 handleFileChange={handleFileChange}
                 handleFileDelete={handleFileDelete}
               />
 
-              {/* Footer */}
               <div className="flex justify-end gap-3 pt-4">
                 <button
                   type="button"
                   onClick={onClose}
                   className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-                  disabled={fileUploading || isSubmitting}
+                  disabled={fileUploading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  disabled={fileUploading || isSubmitting}
+                  disabled={fileUploading}
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Saving...' : isEditing ? 'Save Changes' : 'Create'}
+                  {isEditing ? "Save Changes" : "Create"}
                 </button>
               </div>
             </form>

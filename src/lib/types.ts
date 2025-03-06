@@ -82,6 +82,14 @@ export interface Education {
   created_at: string;
 }
 
+export interface Message {
+  id: string;
+  created_at: string;
+  username: string;
+  message: string;
+  status: "sent" | "received";
+}
+
 export interface User {
   id: string;
   email: string;

@@ -1,17 +1,23 @@
-
 import { motion } from 'framer-motion';
 import { Plus, AlertTriangle } from 'lucide-react';
 import DashboardItem from './DashboardItem';
 import DashboardLoader from './DashboardLoader';
+import { useState } from 'react';
+
+interface Item {
+  id: string;
+  [key: string]: any; // Replace with specific fields as needed
+}
 
 interface DashboardContentProps {
   activeTab: string;
-  data: any[];
+  data: Item[];
   loading: boolean;
   error?: string;
-  onEdit: (item: any) => void;
+  onEdit: (item: Item) => void;
   onDelete: (id: string) => void;
   onAddNew: () => void;
+  onRetry?: () => void; // Optional retry function for error handling
 }
 
 export default function DashboardContent({
@@ -21,33 +27,57 @@ export default function DashboardContent({
   error,
   onEdit,
   onDelete,
-  onAddNew
+  onAddNew,
+  onRetry,
 }: DashboardContentProps) {
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
+  const handleDelete = (id: string) => {
+    setItemToDelete(id);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      onDelete(itemToDelete);
+      setItemToDelete(null);
+    }
+  };
+
   const renderContent = () => {
     if (loading) return <DashboardLoader />;
-    if (error) return (
-      <div className="flex items-center justify-center gap-2 text-red-500">
-        <AlertTriangle size={20} />
-        <p>{error}</p>
-      </div>
-    );
-    if (data.length === 0) return (
-      <div className="flex flex-col items-center justify-center gap-4 py-8">
-        <p className="text-gray-600 dark:text-gray-400">No items found</p>
-        {activeTab !== 'personal_info' && (
-          <button
-            onClick={onAddNew}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-          >
-            <Plus size={20} />
-            Add First Item
-          </button>
-        )}
-      </div>
-    );
+    if (error)
+      return (
+        <div className="flex flex-col items-center justify-center gap-2 text-red-500">
+          <AlertTriangle size={20} />
+          <p>{error}</p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+            >
+              Retry
+            </button>
+          )}
+        </div>
+      );
+    if (data.length === 0)
+      return (
+        <div className="flex flex-col items-center justify-center gap-4 py-8">
+          <p className="text-gray-600 dark:text-gray-400">No items found</p>
+          {activeTab !== 'personal_info' && (
+            <button
+              onClick={onAddNew}
+              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+            >
+              <Plus size={20} />
+              Add First Item
+            </button>
+          )}
+        </div>
+      );
 
     return (
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
@@ -57,7 +87,7 @@ export default function DashboardContent({
             key={item.id}
             item={item}
             onEdit={onEdit}
-            onDelete={onDelete}
+            onDelete={handleDelete}
           />
         ))}
       </motion.div>
@@ -75,6 +105,7 @@ export default function DashboardContent({
             <button
               onClick={onAddNew}
               className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+              aria-label="Add New Item"
             >
               <Plus size={20} />
               Add New
