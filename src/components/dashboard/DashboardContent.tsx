@@ -1,119 +1,157 @@
-import { motion } from 'framer-motion';
-import { Plus, AlertTriangle } from 'lucide-react';
-import DashboardItem from './DashboardItem';
-import DashboardLoader from './DashboardLoader';
-import { useState } from 'react';
+import { useEffect, useState } from "react";
+import { PersonalInfo, Education, Skill, Contact, Experience, Project, Stat } from "../../lib/types";
+import { statsApi, projectsApi, personalInfoApi, contactsApi, skillsApi, experiencesApi, educationApi, storageApi } from "../../lib/api";
+import { useAlert } from "../../contexts/AlertContext";
+import { useNavigate } from "react-router-dom";
+import DashboardLoader from "./DashboardLoader";
+import DashboardDeleteModal from "./DashboardDeleteModal";
+import DashboardModal from "./DashboardModal";
+import DashboardItem from "./DashboardItem";
 
-interface Item {
-  id: string;
-  [key: string]: any; // Replace with specific fields as needed
-}
+const RouteMap: any = {
+  personalInfo: personalInfoApi,
+  education: educationApi,
+  skills: skillsApi,
+  experiences: experiencesApi,
+  contacts: contactsApi,
+  projects: projectsApi,
+  stats: statsApi,
+};
+export default function DashboardContent({ route }: { route: string }) {
+  const [loading, setLoading] = useState(true);
+  const { showAlert } = useAlert();
+  const navigate = useNavigate();
 
-interface DashboardContentProps {
-  activeTab: string;
-  data: Item[];
-  loading: boolean;
-  error?: string;
-  onEdit: (item: Item) => void;
-  onDelete: (id: string) => void;
-  onAddNew: () => void;
-  onRetry?: () => void; // Optional retry function for error handling
-}
+  const [currentRoute, setCurrentRoute] = useState<any | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<any | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [editForm, setEditForm] = useState<any | null>(null);
 
-export default function DashboardContent({
-  activeTab,
-  data,
-  loading,
-  error,
-  onEdit,
-  onDelete,
-  onAddNew,
-  onRetry,
-}: DashboardContentProps) {
-  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  useEffect(() => {
+    fetchData();
+  }, [route, navigate]);
 
-  const handleDelete = (id: string) => {
-    setItemToDelete(id);
-  };
-
-  const confirmDelete = () => {
-    if (itemToDelete) {
-      onDelete(itemToDelete);
-      setItemToDelete(null);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const data = RouteMap[route] === personalInfoApi ?
+        await RouteMap[route].get() : await RouteMap[route].getAll();
+      setCurrentRoute(RouteMap[route] === personalInfoApi ? [data] : data);
+    } catch (error) {
+      console.error(`Error fetching ${route}:`, error);
+      showAlert('error', `Error fetching ${route}: ${error?.message}`);
+      navigate("/dashboard");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const renderContent = () => {
-    if (loading) return <DashboardLoader />;
-    if (error)
-      return (
-        <div className="flex flex-col items-center justify-center gap-2 text-red-500">
-          <AlertTriangle size={20} />
-          <p>{error}</p>
-          {onRetry && (
-            <button
-              onClick={onRetry}
-              className="mt-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-            >
-              Retry
-            </button>
-          )}
-        </div>
-      );
-    if (data.length === 0)
-      return (
-        <div className="flex flex-col items-center justify-center gap-4 py-8">
-          <p className="text-gray-600 dark:text-gray-400">No items found</p>
-          {activeTab !== 'personal_info' && (
-            <button
-              onClick={onAddNew}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-            >
-              <Plus size={20} />
-              Add First Item
-            </button>
-          )}
-        </div>
-      );
+  const createItem = async (data: any) => {
+    setLoading(true);
+    try {
+      await RouteMap[route]?.create(data);
+      fetchData(); // Refresh data after creation
+      showAlert('success', `${route} created successfully`);
+    } catch (error) {
+      console.error(`Error creating ${route}:`, error);
+      showAlert('error', `Error creating ${route}: ${error?.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        {data.map((item) => (
+  const updateItem = async (id: string, data: any) => {
+    setLoading(true);
+    try {
+      await RouteMap[route]?.update(id, data);
+      fetchData(); // Refresh data after update
+      showAlert('success', `${route} updated successfully`);
+    } catch (error) {
+      console.error(`Error updating ${route}:`, error);
+      showAlert('error', `Error updating ${route}: ${error?.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteItem = async (id: string) => {
+    setLoading(true);
+    try {
+      await RouteMap[route]?.delete(id);
+      fetchData(); // Refresh data after deletion
+      showAlert('success', `${route} deleted successfully`);
+    } catch (error) {
+      console.error(`Error deleting ${route}:`, error);
+      showAlert('error', `Error deleting ${route}: ${error?.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = (data: any) => {
+    if (editForm) {
+      updateItem(editForm.id, data); // Update existing item
+    } else {
+      createItem(data); // Create new item
+    }
+    setShowModal(false);
+  };
+
+  const handleDelete = (id: string) => {
+    setItemToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  const handleEdit = (item: any) => {
+    setEditForm(item);
+    setShowModal(true);
+  };
+
+  const handleFieldChange = async (field: string, value: any) => {
+    setEditForm({ ...editForm, [field]: value });
+  }
+
+  if (loading) return <DashboardLoader />;
+
+  return (
+    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-6 mt-16">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+        <div className="flex items-center space-x-4">
+          <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
+            Create {route}
+          </button>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {currentRoute?.map((item: PersonalInfo | Education | Skill | Contact | Experience | Project | Stat) => (
           <DashboardItem
             key={item.id}
             item={item}
-            onEdit={onEdit}
+            onEdit={handleEdit}
             onDelete={handleDelete}
           />
         ))}
-      </motion.div>
-    );
-  };
-
-  return (
-    <div className="lg:col-span-3">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            Manage {activeTab.replace(/_/g, ' ')}
-          </h2>
-          {activeTab !== 'personal_info' && !loading && !error && data.length > 0 && (
-            <button
-              onClick={onAddNew}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
-              aria-label="Add New Item"
-            >
-              <Plus size={20} />
-              Add New
-            </button>
-          )}
-        </div>
-        {renderContent()}
       </div>
+
+      <DashboardModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onSubmit={handleSubmit}
+        formData={editForm}
+        onChange={handleFieldChange}
+        route={route}
+      />
+
+      <DashboardDeleteModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={() => {
+          deleteItem(itemToDelete as string);
+          setShowDeleteModal(false);
+        }}
+      />
     </div>
   );
 }

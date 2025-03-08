@@ -15,7 +15,7 @@ export const storageApi = {
   upload: async (file: File, path: string) => {
     const { data, error } = await supabase.storage
       .from("portfolio")
-      .upload(path, file, { contentType: file.type });
+      .upload(path, file, { upsert: true, cacheControl: '3600' });
     if (error) throw error;
     if (data) {
       console.log(data);
@@ -26,7 +26,7 @@ export const storageApi = {
   replace: async (file: File, path: string) => {
     const { data, error } = await supabase.storage
       .from("portfolio")
-      .update(path, file, { upsert: true, contentType: file.type });
+      .update(path, file, { upsert: true });
     if (error) throw error;
     return data;
   },

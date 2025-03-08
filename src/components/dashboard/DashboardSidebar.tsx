@@ -1,119 +1,82 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
 import {
-  Code2,
-  User,
+  LayoutDashboard,
+  Folder,
   GraduationCap,
-  Mail,
+  Code,
   Briefcase,
   BarChart,
+  Contact,
+  User,
   X,
+  Menu,
+  Home
 } from "lucide-react";
 
-interface DashboardSidebarProps {
-  activeTab: string;
-  isMobileMenuOpen: boolean;
-  onTabChange: (tab: string) => void;
-  onCloseMobileMenu: () => void;
-}
-
-const tabs = [
-  { id: "projects", label: "Projects", icon: Code2 },
-  { id: "personal_info", label: "Personal Info", icon: User },
-  { id: "education", label: "Education", icon: GraduationCap },
-  { id: "contacts", label: "Contacts", icon: Mail },
-  { id: "skills", label: "Skills", icon: Briefcase },
-  { id: "stats", label: "Stats", icon: BarChart },
-  { id: "experiences", label: "Experiences", icon: Briefcase },
-];
-
 export default function DashboardSidebar({
-  activeTab,
   isMobileMenuOpen,
-  onTabChange,
-  onCloseMobileMenu,
-}: DashboardSidebarProps) {
+  onMenuToggle,
+}: {
+  isMobileMenuOpen: boolean;
+  onMenuToggle: () => void;
+}) {
+  const location = useLocation();
+
+  const navItems = [
+    { id: "dashboard", label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+    { id: "projects", label: "Projects", path: "/dashboard/projects", icon: Folder },
+    { id: "education", label: "Education", path: "/dashboard/education", icon: GraduationCap },
+    { id: "skills", label: "Skills", path: "/dashboard/skills", icon: Code },
+    { id: "experiences", label: "Experiences", path: "/dashboard/experiences", icon: Briefcase },
+    { id: "stats", label: "Stats", path: "/dashboard/stats", icon: BarChart },
+    { id: "contacts", label: "Contacts", path: "/dashboard/contacts", icon: Contact },
+    { id: "personal-info", label: "Personal Info", path: "/dashboard/personal-info", icon: User },
+    { id: "home", label: "Home", path: "/", icon: Home },
+  ];
+
   return (
     <>
-      {/* ✅ Desktop Sidebar */}
-      <nav className="hidden lg:flex flex-col w-60 h-full bg-white dark:bg-gray-900 shadow-lg p-4 rounded-xl">
-        <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-8">
-          Dashboard
-        </h2>
-        <div className="space-y-2">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => onTabChange(tab.id)}
-              className={`flex items-center gap-3 px-4 py-3 w-full rounded-lg transition-all duration-300 text-left ${
-                activeTab === tab.id
-                  ? "bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-sm"
-              }`}
-              aria-label={tab.label}
-            >
-              <div className="flex items-center justify-center w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                <tab.icon size={20} />
-              </div>
-              <span className="font-medium">{tab.label}</span>
-            </button>
-          ))}
-        </div>
-      </nav>
+      {/* Mobile Menu Overlay */}
+      <div
+        onClick={onMenuToggle}
+        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out 
+          ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      ></div>
 
-      {/* ✅ Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ duration: 0.3 }}
-            className="fixed inset-0 bg-black/50 backdrop-blur-md z-50 flex"
+      {/* Sidebar */}
+      <aside
+        className={`w-64 bg-white dark:bg-gray-800 shadow-lg h-screen fixed left-0 top-0 z-50 transform transition-transform duration-300 ease-in-out 
+          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-64 lg:translate-x-0"}`}
+      >
+        <div className="p-6 flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h2>
+          <button
+            onClick={onMenuToggle}
+            className="lg:hidden text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
           >
-            {/* Sidebar Panel */}
-            <motion.div
-              initial={{ x: -250 }}
-              animate={{ x: 0 }}
-              exit={{ x: -250 }}
-              transition={{ duration: 0.3 }}
-              className="w-64 bg-white/90 dark:bg-gray-600 h-full shadow-lg p-4 rounded-r-xl"
-            >
-              {/* ✅ Close Button */}
-              <button
-                onClick={onCloseMobileMenu}
-                className="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
-                aria-label="Close menu"
-              >
-                <X size={24} className="text-gray-700 dark:text-gray-300" />
-              </button>
-
-              {/* ✅ Menu Items */}
-              <div className="mt-10 space-y-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => {
-                      onTabChange(tab.id);
-                      onCloseMobileMenu();
-                    }}
-                    className={`flex items-center gap-3 px-4 py-3 w-full rounded-lg transition-all duration-300 text-left ${
-                      activeTab === tab.id
-                        ? "bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md"
-                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:shadow-sm"
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+        <nav className="mt-6">
+          <ul>
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <Link
+                  to={item.path}
+                  className={`flex items-center px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors 
+                    ${location.pathname === item.path
+                      ? "bg-gray-100 dark:bg-gray-700 font-semibold"
+                      : ""
                     }`}
-                    aria-label={tab.label}
-                  >
-                    <div className="flex items-center justify-center w-10 h-10 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                      <tab.icon size={20} />
-                    </div>
-                    <span className="font-medium">{tab.label}</span>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                >
+                  <item.icon className="w-5 h-5 mr-3" />
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
     </>
   );
 }

@@ -10,14 +10,14 @@ interface DashboardItemProps {
 
 export default function DashboardItem({ item, onEdit, onDelete }: DashboardItemProps) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600"
-    >
+    <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-600">
       <div className="flex items-start justify-between gap-4">
-        <div className="flex-1 min-w-0">
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          className="flex-1 min-w-0"
+        >
           <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 truncate">
             {item.title || item.name}
           </h3>
@@ -26,17 +26,18 @@ export default function DashboardItem({ item, onEdit, onDelete }: DashboardItemP
           </p>
           {item.tags && Array.isArray(item.tags) && item.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
-              {item.tags.map((tag: string) => (
+              {item.type === 'tags' ? <span className="text-sm font-semibold text-gray-500">Tags:</span> : null}
+              {item.tags.map((tag: string, index: number) => (
                 <span
-                  key={tag}
-                  className="px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-200 rounded-full"
+                  key={index}
+                  className="px-2 py-1 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-400 text-sm rounded-lg"
                 >
                   {tag}
                 </span>
               ))}
             </div>
           )}
-        </div>
+        </motion.div>
         <div className="flex flex-col gap-2">
           <button
             onClick={() => onEdit(item)}
@@ -54,6 +55,6 @@ export default function DashboardItem({ item, onEdit, onDelete }: DashboardItemP
           </button>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

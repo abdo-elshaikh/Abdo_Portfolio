@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 
-const PrivateRoute = () => {
+const PrivateRoute = ({ children }) => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -46,7 +46,7 @@ const PrivateRoute = () => {
     }
 
     // Render the child routes if the user is authenticated
-    return <Outlet />;
+    return children;
 };
 
 export default PrivateRoute;

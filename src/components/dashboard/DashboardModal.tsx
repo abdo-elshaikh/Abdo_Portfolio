@@ -1,146 +1,78 @@
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import { X } from "lucide-react";
 import DashboardForm from "./DashboardForm";
-import { useState } from "react";
 
-interface DashboardModalProps {
+type FormData = {
+  [key: string]: any;
+};
+
+type DashboardModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  isEditing: boolean;
-  activeTab: string;
-  editForm: any;
-  onFormSubmit: (formData: any) => void;
-  onFormChange: (field: string, value: any) => void;
-  handleUploadFile?: (file: File, path: string) => Promise<string>;
-  handleDeleteFile?: (path: string) => Promise<void>;
-  handleReplaceFile?: (file: File, path: string) => Promise<string>;
-}
+  onSubmit: (data: FormData) => void;
+  formData: FormData | null;
+  onChange: (field: string, value: any) => void;
+  onFileChange: (field: string, file: File | null) => Promise<void>;
+  onFileDelete: (field: string) => Promise<void>;
+  fileUploading: boolean;
+  route: string;
+};
 
 export default function DashboardModal({
   isOpen,
   onClose,
-  isEditing,
-  activeTab,
-  editForm,
-  onFormSubmit,
-  onFormChange,
-  handleUploadFile,
-  handleDeleteFile,
-  handleReplaceFile,
+  onSubmit,
+  formData,
+  onChange,
+  route,
 }: DashboardModalProps) {
-  const [fileUploading, setFileUploading] = useState(false);
-  const [fileError, setFileError] = useState<string | null>(null);
+  if (!isOpen) return null;
 
-  const handleFileChange = async (field: string, file: File | null) => {
-    if (!file) return;
-
-    try {
-      setFileUploading(true);
-      setFileError(null);
-      const base = import.meta.env.VITE_SUPABASE_ENDPOINT;
-
-      if (isEditing && editForm[field] && handleReplaceFile) {
-        const newUrl = await handleReplaceFile(file, `${activeTab}/${file.name}`);
-        onFormChange(field, `${base}${newUrl}`);
-      } else if (handleUploadFile) {
-        const url = await handleUploadFile(file, `${activeTab}/${file.name}`);
-        onFormChange(field, `${base}${url}`);
-      }
-    } catch (error) {
-      setFileError("File upload failed. Please try again.");
-      console.error("File upload error:", error);
-    } finally {
-      setFileUploading(false);
-    }
-  };
-
-  const handleFileDelete = async (field: string) => {
-    if (!editForm[field] || !handleDeleteFile) return;
-
-    try {
-      setFileUploading(true);
-      setFileError(null);
-      await handleDeleteFile(editForm[field]);
-      onFormChange(field, "");
-    } catch (error) {
-      setFileError("File deletion failed. Please try again.");
-      console.error("File deletion error:", error);
-    } finally {
-      setFileUploading(false);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData || {});
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
-        >
-          <motion.div
-            initial={{ scale: 0.95 }}
-            animate={{ scale: 1 }}
-            exit={{ scale: 0.95 }}
-            className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md md:max-w-2xl mx-2 overflow-y-auto max-h-[90vh]"
-          >
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                onFormSubmit(editForm);
-              }}
-              className="p-4 md:p-6 space-y-4"
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto p-4"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div className="fixed inset-0 bg-black bg-opacity-50 z-40">
+        <button
+          onClick={onClose}
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 w-full h-full cursor-default focus:outline-none"
+          aria-label="Close modal"
+        ></button>
+      </div>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-2xl p-6 relative z-50">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">
+          {formData ? "Edit" : "Create"} {route.replace(/_/g, " ")}
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <DashboardForm
+            activeTab={route}
+            editForm={formData}
+            onFormChange={onChange}
+          />
+          <div className="flex justify-end mt-6">
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn btn-secondary mr-2"
             >
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold dark:text-white">
-                  {isEditing ? "Edit" : "Create"} {activeTab.replace(/_/g, " ")}
-                </h3>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-                >
-                  <X size={24} />
-                </button>
-              </div>
-
-              {fileError && (
-                <div className="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg text-red-600 dark:text-red-400 text-sm">
-                  {fileError}
-                </div>
-              )}
-
-              <DashboardForm
-                activeTab={activeTab}
-                editForm={editForm}
-                onFormChange={onFormChange}
-                fileUploading={fileUploading}
-                handleFileChange={handleFileChange}
-                handleFileDelete={handleFileDelete}
-              />
-
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
-                  disabled={fileUploading}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={fileUploading}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isEditing ? "Save Changes" : "Create"}
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+            >
+              {formData ? "Update" : "Create"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }

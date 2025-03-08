@@ -39,7 +39,9 @@ function AppContent() {
   ];
 
   // Check if the current route is a full-screen route
-  const isFullScreen = fullScreenRoutes.includes(location.pathname);
+  const isFullScreen = fullScreenRoutes.some((route) =>
+    location.pathname.startsWith(route)
+  );
 
   return (
     <div>
@@ -53,9 +55,8 @@ function AppContent() {
           <Route path="/experience" element={<Experience />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/auth" element={<Auth />} />
-          <Route element={<PrivateRoute />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Route>
+          <Route path="/dashboard/*" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+          <Route path="/not-found" element={<NotFound />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

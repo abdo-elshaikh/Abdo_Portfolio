@@ -10,9 +10,6 @@ import {
     MapPin,
     Notebook,
     MessageCircleCode,
-    UploadCloud,
-    Trash2,
-    RefreshCw,
 } from "lucide-react";
 import FormField from "./FormField";
 
@@ -20,9 +17,6 @@ interface DashboardFormProps {
     activeTab: string;
     editForm: Record<string, any>;
     onFormChange: (field: string, value: any) => void;
-    fileUploading?: boolean;
-    handleFileChange?: (field: string, file: File | null) => Promise<void>;
-    handleFileDelete?: (field: string) => Promise<void>;
 }
 
 interface FieldConfig {
@@ -42,15 +36,12 @@ export default function DashboardForm({
     activeTab,
     editForm,
     onFormChange,
-    fileUploading = false,
-    handleFileChange,
-    handleFileDelete,
 }: DashboardFormProps) {
     const fields: FieldsConfig = useMemo(() => ({
         projects: [
             { name: "title", type: "text", label: "Title", required: true },
             { name: "description", type: "textarea", label: "Description", required: true },
-            { name: "image_url", type: "file", label: "Image", accept: "image/*" },
+            { name: "image_url", type: "file", label: `Image: ${editForm.image_url}`, accept: "image/*" },
             { name: "tags", type: "tags", label: "Tags" },
             { name: "link", type: "url", label: "Project Link" },
             { name: "is_featured", type: "checkbox", label: "Featured Project" },
@@ -63,8 +54,8 @@ export default function DashboardForm({
             { name: "phone", type: "tel", label: "Phone", icon: <Phone className="w-5 h-5" /> },
             { name: "whatsapp", type: "tel", label: "WhatsApp", icon: <MessageCircleCode className="w-5 h-5" /> },
             { name: "location", type: "text", label: "Location", icon: <MapPin className="w-5 h-5" /> },
-            { name: "avatar_url", type: "file", label: `Avatar: `, accept: "image/*" },
-            { name: "resume_url", type: "file", label: `Resume: `, accept: ".pdf,.doc,.docx", icon: <Notebook className="w-5 h-5" /> },
+            { name: "avatar_url", type: "file", label: `Avatar: ${editForm.avatar_url}`, accept: "image/*" },
+            { name: "resume_url", type: "file", label: `Resume: ${editForm.resume_url}`, accept: ".pdf,.doc,.docx", icon: <Notebook className="w-5 h-5" /> },
             { name: "facebook_url", type: "url", label: "Facebook", icon: <Facebook className="w-5 h-5" /> },
             { name: "github_url", type: "url", label: "GitHub", icon: <Github className="w-5 h-5" /> },
             { name: "linkedin_url", type: "url", label: "LinkedIn", icon: <Linkedin className="w-5 h-5" /> },
@@ -103,27 +94,26 @@ export default function DashboardForm({
             { name: "suffix", type: "text", label: "Suffix" },
             { name: "icon", type: "text", label: "Icon" },
         ],
-    }), []);
+    }), [editForm]);
 
     if (!fields[activeTab]) {
         return (
             <div className="text-center text-gray-500 dark:text-gray-400">
-                No fields found for this tab.
+                <p className="text-2xl font-bold">No fields available</p>
+                <p>Please select a different tab</p>
             </div>
         );
     }
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4">
             {fields[activeTab].map((field) => (
                 <FormField
                     key={field.name}
                     field={field}
                     value={editForm[field.name]}
                     onChange={(value) => onFormChange(field.name, value)}
-                    isSubmitting={fileUploading}
-                    handleFileChange={handleFileChange ? (file) => handleFileChange(field.name, file) : undefined}
-                    handleFileDelete={handleFileDelete ? () => handleFileDelete(field.name) : undefined}
+                    activeTab={activeTab}
                 />
             ))}
         </div>
