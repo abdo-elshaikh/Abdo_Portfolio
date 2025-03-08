@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import {
   LayoutDashboard,
   Folder,
@@ -10,15 +11,17 @@ import {
   User,
   X,
   Menu,
-  Home
+  Home,
 } from "lucide-react";
 
 export default function DashboardSidebar({
   isMobileMenuOpen,
   onMenuToggle,
+  setIsMobileMenuOpen,
 }: {
   isMobileMenuOpen: boolean;
   onMenuToggle: () => void;
+  setIsMobileMenuOpen: (value: boolean) => void;
 }) {
   const location = useLocation();
 
@@ -34,25 +37,38 @@ export default function DashboardSidebar({
     { id: "home", label: "Home", path: "/", icon: Home },
   ];
 
+  // Update document title and close mobile menu on route change
+  useEffect(() => {
+    const routeTitle = location.pathname.split("/")[2] || "Dashboard";
+    document.title = `${routeTitle.charAt(0).toUpperCase() + routeTitle.slice(1)} | Dashboard`;
+    setIsMobileMenuOpen(false); // Close mobile menu on route change
+  }, [location, setIsMobileMenuOpen]);
+
   return (
     <>
       {/* Mobile Menu Overlay */}
       <div
         onClick={onMenuToggle}
         className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out 
-          ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+          ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
+        }`}
+        aria-hidden={!isMobileMenuOpen}
       ></div>
 
       {/* Sidebar */}
       <aside
         className={`w-64 bg-white dark:bg-gray-800 shadow-lg h-screen fixed left-0 top-0 z-50 transform transition-transform duration-300 ease-in-out 
-          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-64 lg:translate-x-0"}`}
+          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-64"} 
+          lg:translate-x-0`} // Always visible on larger screens
+        aria-label="Sidebar"
       >
         <div className="p-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h2>
           <button
             onClick={onMenuToggle}
-            className="lg:hidden text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white"
+            className="lg:hidden text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMobileMenuOpen}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -68,6 +84,7 @@ export default function DashboardSidebar({
                       ? "bg-gray-100 dark:bg-gray-700 font-semibold"
                       : ""
                     }`}
+                  onClick={onMenuToggle} // Close mobile menu on link click
                 >
                   <item.icon className="w-5 h-5 mr-3" />
                   {item.label}

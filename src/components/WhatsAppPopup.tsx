@@ -72,7 +72,7 @@ const WhatsAppPopup = () => {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.9 }}
                         transition={{ type: "spring", bounce: 0.3 }}
-                        className="absolute bottom-20 right-0 w-96 bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800"
+                        className="fixed sm:absolute bottom-20 right-0 sm:w-96 w-full h-[calc(100vh-8rem)] sm:h-auto bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden border border-gray-100 dark:border-gray-800"
                     >
                         {/* Header */}
                         <div className="bg-green-600 p-4 flex items-center justify-between">
@@ -158,19 +158,20 @@ const WhatsAppPopup = () => {
                                     </div>
 
                                     {/* Action Button */}
-                                    <a
-                                        href={whatsappUrl}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-all ${phoneNumber
-                                            ? "bg-green-600 hover:bg-green-700 text-white"
-                                            : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                                            } focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2`}
-                                        aria-disabled={!phoneNumber}
+                                    <div
+                                        className="flex justify-center"
+                                        onClick={togglePopup}
                                     >
-                                        <Send className="w-4 h-4" />
-                                        Start Chat
-                                    </a>
+                                        <a
+                                            href={whatsappUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="flex items-center justify-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:shadow-md transition-all"
+                                        >
+                                            <Send className="w-5 h-5 mr-2" />
+                                            Send Message
+                                        </a>
+                                    </div>
                                 </>
                             )}
                         </div>

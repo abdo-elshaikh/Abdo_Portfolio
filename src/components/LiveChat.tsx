@@ -158,7 +158,7 @@ export default function LiveChat() {
                         initial={{ opacity: 0, y: 20, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="absolute bottom-16 right-0 w-96 h-[600px] bg-white dark:bg-gray-900 rounded-xl shadow-2xl
+                        className="fixed sm:absolute bottom-16 right-0 sm:w-96 w-full h-[calc(100vh-8rem)] sm:h-[600px] bg-white dark:bg-gray-900 rounded-xl shadow-2xl
                        flex flex-col border border-gray-100 dark:border-gray-800"
                     >
                         {/* Chat Header */}
@@ -178,6 +178,13 @@ export default function LiveChat() {
                                         </p>
                                     </div>
                                 </div>
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="sm:hidden p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800"
+                                    aria-label="Close chat"
+                                >
+                                    <XIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                                </button>
                             </div>
                         </div>
 
