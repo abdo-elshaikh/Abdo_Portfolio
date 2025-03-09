@@ -41,7 +41,7 @@ export default function DashboardForm({
         projects: [
             { name: "title", type: "text", label: "Title", required: true },
             { name: "description", type: "textarea", label: "Description", required: true },
-            { name: "image_url", type: "file", label: `Image: ${editForm.image_url}`, accept: "image/*" },
+            { name: "image_url", type: "file", label: `Image: ${editForm?.image_url}`, accept: "image/*" },
             { name: "tags", type: "tags", label: "Tags" },
             { name: "link", type: "url", label: "Project Link" },
             { name: "is_featured", type: "checkbox", label: "Featured Project" },
@@ -54,8 +54,8 @@ export default function DashboardForm({
             { name: "phone", type: "tel", label: "Phone", icon: <Phone className="w-5 h-5" /> },
             { name: "whatsapp", type: "tel", label: "WhatsApp", icon: <MessageCircleCode className="w-5 h-5" /> },
             { name: "location", type: "text", label: "Location", icon: <MapPin className="w-5 h-5" /> },
-            { name: "avatar_url", type: "file", label: `Avatar: ${editForm.avatar_url}`, accept: "image/*" },
-            { name: "resume_url", type: "file", label: `Resume: ${editForm.resume_url}`, accept: ".pdf,.doc,.docx", icon: <Notebook className="w-5 h-5" /> },
+            { name: "avatar_url", type: "file", label: `Avatar: ${editForm?.avatar_url}`, accept: "image/*" },
+            { name: "resume_url", type: "file", label: `Resume: ${editForm?.resume_url}`, accept: ".pdf,.doc,.docx", icon: <Notebook className="w-5 h-5" /> },
             { name: "facebook_url", type: "url", label: "Facebook", icon: <Facebook className="w-5 h-5" /> },
             { name: "github_url", type: "url", label: "GitHub", icon: <Github className="w-5 h-5" /> },
             { name: "linkedin_url", type: "url", label: "LinkedIn", icon: <Linkedin className="w-5 h-5" /> },
@@ -107,11 +107,11 @@ export default function DashboardForm({
 
     return (
         <div className="space-y-4">
-            {fields[activeTab].map((field) => (
+            {fields[activeTab]?.map((field) => (
                 <FormField
-                    key={field.name}
+                    key={field?.name}
                     field={field}
-                    value={editForm[field.name]}
+                    value={editForm[field?.name]}
                     onChange={(value) => onFormChange(field.name, value)}
                     activeTab={activeTab}
                 />

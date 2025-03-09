@@ -4,17 +4,16 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 import { projectsApi } from "../../lib/api";
+import { Project } from "../../lib/types";
 import { Code, Rocket, Paintbrush, Cloud, BookOpen, Sparkles } from "lucide-react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Project } from "../../lib/types";
 
 export default function FeaturedWork() {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [featuredProjects, setFeaturedProjects] = useState<Project[]>([]);
-    const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
     useEffect(() => {
         fetchFeaturedProjects();
@@ -22,8 +21,8 @@ export default function FeaturedWork() {
 
     const fetchFeaturedProjects = async () => {
         try {
-            const response = await projectsApi.getAll();
-            setFeaturedProjects(response.filter((project) => project.is_featured));
+            const data = await projectsApi.getAll();
+            setFeaturedProjects(data.filter((project) => project.is_featured));
         } catch (error) {
             console.error("Error fetching featured projects:", error);
         } finally {
@@ -31,11 +30,6 @@ export default function FeaturedWork() {
         }
     };
 
-    const allTags = Array.from(new Set(featuredProjects.flatMap((project) => project.tags)));
-
-    const filteredProjects = selectedTag
-        ? featuredProjects.filter((project) => project.tags.includes(selectedTag))
-        : featuredProjects;
 
     if (isLoading) return null;
 
@@ -51,9 +45,10 @@ export default function FeaturedWork() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <h2 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
+                        <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
                             Full Stack Developer & Designer
                         </h2>
+                        <hr className="w-16 h-1 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full" />
                         <p className="text-xl text-gray-700 dark:text-gray-300 font-medium">
                             Creating digital experiences that blend technical excellence with aesthetic vision.
                         </p>
@@ -93,7 +88,8 @@ export default function FeaturedWork() {
                                 className="px-8 py-3.5 rounded-xl text-lg font-semibold border border-purple-400 text-purple-600 dark:text-purple-300 hover:bg-purple-500/10 transition-all hover:-translate-y-1"
                                 whileTap={{ scale: 0.95 }}
                             >
-                                Explore Portfolio
+                                <Sparkles className="inline mr-2 w-5 h-5" />
+                                View Portfolio
                             </motion.a>
                         </div>
                     </motion.div>
@@ -106,34 +102,16 @@ export default function FeaturedWork() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                     >
                         <h3 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent mb-4">
-                            Spotlight Projects
+                            Featured Projects
                         </h3>
-
-                        {/* Tag Filters */}
-                        <div className="mb-6 flex flex-wrap gap-3">
-                            {["All", ...allTags].map((tag, index) => (
-                                <motion.button
-                                    key={index}
-                                    onClick={() => setSelectedTag(tag === "All" ? null : tag)}
-                                    className={`px-4 py-2 text-sm font-medium rounded-full transition-all 
-                                        ${selectedTag === tag || (tag === "All" && !selectedTag)
-                                            ? "bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg"
-                                            : "bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
-                                        }`}
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
-                                >
-                                    {tag}
-                                </motion.button>
-                            ))}
-                        </div>
+                        <hr className="w-16 h-1 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full" />
 
                         {/* Swiper Carousel */}
                         <Swiper
                             modules={[Navigation, Pagination, Autoplay]}
                             spaceBetween={32}
                             slidesPerView={1}
-                            loop={true}
+                            loop={featuredProjects.length > 2}
                             pagination={{ clickable: true }}
                             autoplay={{ delay: 5000, disableOnInteraction: false }}
                             breakpoints={{
@@ -142,7 +120,7 @@ export default function FeaturedWork() {
                             }}
                             className="mySwiper h-[30rem]"
                         >
-                            {filteredProjects?.map((project) => (
+                            {featuredProjects?.map((project) => (
                                 <SwiperSlide key={project.id}>
                                     <motion.div
                                         className="group relative bg-white dark:bg-gray-900 rounded-2xl shadow-xl overflow-hidden cursor-pointer hover:shadow-2xl transition-all flex flex-col"

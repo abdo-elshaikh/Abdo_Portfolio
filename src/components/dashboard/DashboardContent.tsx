@@ -112,21 +112,26 @@ export default function DashboardContent({ route }: { route: string }) {
     setEditForm({ ...editForm, [field]: value });
   }
 
+  const handleCreate = () => {
+    setEditForm({});
+    setShowModal(true);
+  };
+
   if (loading) return <DashboardLoader />;
 
   return (
-    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <div className="flex items-center justify-between mb-6 mt-8">
+    <div className="container mx-auto">
+      <div className="flex items-center justify-between mb-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow-md p-4">
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
           {route.replace(/^\w/, (c) => c.toUpperCase())}
         </h1>
         <div className="flex items-center space-x-4">
-          <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
+          <button className="btn btn-primary btn-sm" onClick={handleCreate}>
             Create {route}
           </button>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
         {currentRoute?.map((item: PersonalInfo | Education | Skill | Contact | Experience | Project | Stat) => (
           <DashboardItem
             key={item.id}

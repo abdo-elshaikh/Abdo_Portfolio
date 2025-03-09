@@ -67,7 +67,7 @@ export default function DashboardSidebar({
         flex flex-col border-r border-gray-200 dark:border-gray-700`}
       >
         {/* Sidebar Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700">
           {!isSidebarCollapsed && <h1 className="text-lg font-semibold text-gray-700 dark:text-white">Dashboard</h1>}
           <button
             onClick={toggleSidebarCollapse}
@@ -79,12 +79,12 @@ export default function DashboardSidebar({
         </div>
 
         {/* Navigation Links */}
-        <nav className="mt-4 flex flex-col flex-grow">
+        <nav className="mt-6 flex flex-col flex-grow">
           {navItems.map(({ id, label, path, icon: Icon }) => (
             <Link
               key={id}
               to={path}
-              className={`flex items-center gap-3 p-3 rounded-lg transition-all text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 
+              className={`flex items-center gap-3 p-3 transition-all text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 
               ${location.pathname === path ? "bg-gray-200 dark:bg-gray-800 font-semibold" : ""}`}
               aria-label={label}
             >
