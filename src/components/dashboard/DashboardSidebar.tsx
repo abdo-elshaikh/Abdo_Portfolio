@@ -9,19 +9,25 @@ import {
   BarChart,
   Contact,
   User,
-  X,
-  Menu,
   Home,
+  ChevronLeft,
+  ChevronRight,
+  X,
+  User2,
 } from "lucide-react";
 
 export default function DashboardSidebar({
   isMobileMenuOpen,
-  onMenuToggle,
+  toggleMobileMenu,
+  isSidebarCollapsed,
   setIsMobileMenuOpen,
+  toggleSidebarCollapse,
 }: {
   isMobileMenuOpen: boolean;
-  onMenuToggle: () => void;
+  toggleMobileMenu: () => void;
   setIsMobileMenuOpen: (value: boolean) => void;
+  toggleSidebarCollapse: () => void;
+  isSidebarCollapsed: boolean;
 }) {
   const location = useLocation();
 
@@ -34,65 +40,70 @@ export default function DashboardSidebar({
     { id: "stats", label: "Stats", path: "/dashboard/stats", icon: BarChart },
     { id: "contacts", label: "Contacts", path: "/dashboard/contacts", icon: Contact },
     { id: "personal-info", label: "Personal Info", path: "/dashboard/personal-info", icon: User },
+    { id: "users", label: "Users", path: "/dashboard/users", icon: User2 },
     { id: "home", label: "Home", path: "/", icon: Home },
   ];
 
-  // Update document title and close mobile menu on route change
   useEffect(() => {
     const routeTitle = location.pathname.split("/")[2] || "Dashboard";
     document.title = `${routeTitle.charAt(0).toUpperCase() + routeTitle.slice(1)} | Dashboard`;
-    setIsMobileMenuOpen(false); // Close mobile menu on route change
+    setIsMobileMenuOpen(false);
   }, [location, setIsMobileMenuOpen]);
 
   return (
     <>
-      {/* Mobile Menu Overlay */}
-      <div
-        onClick={onMenuToggle}
-        className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out 
-          ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"}
-        }`}
-        aria-hidden={!isMobileMenuOpen}
-      ></div>
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={toggleMobileMenu}
+        />
+      )}
 
-      {/* Sidebar */}
       <aside
-        className={`w-64 bg-white dark:bg-gray-800 shadow-lg h-screen fixed left-0 top-0 z-50 transform transition-transform duration-300 ease-in-out 
-          ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-64"} 
-          lg:translate-x-0`} // Always visible on larger screens
-        aria-label="Sidebar"
+        className={`fixed top-0 left-0 z-50 h-screen bg-white dark:bg-gray-900 shadow-lg transition-all duration-300 ease-in-out
+        ${isSidebarCollapsed ? "md:w-20" : "md:w-64"}
+        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        flex flex-col border-r border-gray-200 dark:border-gray-700`}
       >
-        <div className="p-6 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-white">Dashboard</h2>
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+          {!isSidebarCollapsed && <h1 className="text-lg font-semibold text-gray-700 dark:text-white">Dashboard</h1>}
           <button
-            onClick={onMenuToggle}
-            className="lg:hidden text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500"
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
+            onClick={toggleSidebarCollapse}
+            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-all"
+            aria-label="Toggle sidebar"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isSidebarCollapsed ? <ChevronRight className="w-6 h-6" /> : <ChevronLeft className="w-6 h-6" />}
           </button>
         </div>
-        <nav className="mt-6">
-          <ul>
-            {navItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  to={item.path}
-                  className={`flex items-center px-6 py-3 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors 
-                    ${location.pathname === item.path
-                      ? "bg-gray-100 dark:bg-gray-700 font-semibold"
-                      : ""
-                    }`}
-                  onClick={onMenuToggle} // Close mobile menu on link click
-                >
-                  <item.icon className="w-5 h-5 mr-3" />
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+        {/* Navigation Links */}
+        <nav className="mt-4 flex flex-col flex-grow">
+          {navItems.map(({ id, label, path, icon: Icon }) => (
+            <Link
+              key={id}
+              to={path}
+              className={`flex items-center gap-3 p-3 rounded-lg transition-all text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 
+              ${location.pathname === path ? "bg-gray-200 dark:bg-gray-800 font-semibold" : ""}`}
+              aria-label={label}
+            >
+              <Icon className="w-6 h-6" />
+              <span className={`md:${isSidebarCollapsed ? "hidden" : "block"}`}>{label}</span>
+            </Link>
+          ))}
         </nav>
+
+        {/* Mobile Close Button */}
+        {isMobileMenuOpen && (
+          <button
+            onClick={toggleMobileMenu}
+            className="absolute top-4 right-4 p-2 bg-gray-200 dark:bg-gray-800 rounded-full"
+            aria-label="Close menu"
+          >
+            <X className="w-6 h-6 text-gray-700 dark:text-gray-300" />
+          </button>
+        )}
       </aside>
     </>
   );

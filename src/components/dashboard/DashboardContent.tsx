@@ -115,9 +115,11 @@ export default function DashboardContent({ route }: { route: string }) {
   if (loading) return <DashboardLoader />;
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md">
-      <div className="flex items-center justify-between mb-6 mt-16">
-        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Dashboard</h1>
+    <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <div className="flex items-center justify-between mb-6 mt-8">
+        <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
+          {route.replace(/^\w/, (c) => c.toUpperCase())}
+        </h1>
         <div className="flex items-center space-x-4">
           <button className="btn btn-primary btn-sm" onClick={() => setShowModal(true)}>
             Create {route}

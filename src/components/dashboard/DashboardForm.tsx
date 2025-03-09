@@ -15,7 +15,7 @@ import FormField from "./FormField";
 
 interface DashboardFormProps {
     activeTab: string;
-    editForm: Record<string, any>;
+    editForm: any;
     onFormChange: (field: string, value: any) => void;
 }
 

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
+import { useAlert } from "../contexts/AlertContext";
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const { showAlert } = useAlert();
 
     useEffect(() => {
         // Check the current session when the component mounts
@@ -44,6 +46,13 @@ const PrivateRoute = ({ children }) => {
     if (!user) {
         return <Navigate to="/auth" replace />;
     }
+
+    // If the user is not active, show a message and log them out
+    // if (!user?.email_verified) {
+    //     showAlert("error", "Please verify your email to continue");
+    //     supabase.auth.signOut();
+    //     return <Navigate to="/auth" replace />;
+    // }
 
     // Render the child routes if the user is authenticated
     return children;
