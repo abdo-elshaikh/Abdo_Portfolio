@@ -175,7 +175,7 @@ const HeroSection = () => {
                     <div className="lg:w-1/2 space-y-6 lg:space-y-8 text-center lg:text-left">
                         {/* Availability Badge */}
                         <motion.div variants={itemVariants}>
-                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-200 dark:bg-gray-800 rounded-full backdrop-blur-sm">
+                            <div className="inline-flex items-center gap-3 px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-full backdrop-blur-sm">
                                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                                 <span className="text-sm font-medium">
                                     Available for new projects

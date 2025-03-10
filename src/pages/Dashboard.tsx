@@ -38,7 +38,7 @@ export default function Dashboard() {
         <DashboardHeader toggleMobileMenu={toggleMobileMenu} />
 
         {/* Main Area */}
-        <main className="flex-1 h-full p-4 md:p-6 lg:p-8 overflow-y-auto">
+        <main className="flex-1 h-full p-2 md:p-4 lg:p-6 overflow-y-auto">
           <Routes>
             <Route path="/" element={<DashboardMain />} />
             <Route path="/projects" element={<DashboardContent route="projects" />} />
